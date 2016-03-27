@@ -1,4 +1,4 @@
-# TheMovieDbWrapper
+# TheMovieDb.org Wrapper
 TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API.
 
 A nuget package is available directly through Visual Studio: https://www.nuget.org/packages/TheMovieDbWrapper/
