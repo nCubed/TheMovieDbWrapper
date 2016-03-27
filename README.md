@@ -1,5 +1,7 @@
 # TheMovieDbWrapper
-TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API. 
+TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API.
+
+A nuget package is available directly through Visual Studio: https://www.nuget.org/packages/TheMovieDbWrapper/
 
 ##### Common Requests
 The current release supports common requests for movie and other miscellaneous information, such as:
