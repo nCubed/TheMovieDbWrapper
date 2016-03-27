@@ -34,7 +34,7 @@ namespace DM.MovieApi
         IApiProfessionRequest IndustryProfessions { get; }
 
         /// <summary>
-        /// Provides access for retrieving infromation about Movies.
+        /// Provides access for retrieving information about Movies.
         /// </summary>
         IApiMovieRequest Movies { get; }
 

@@ -5,7 +5,7 @@ using DM.MovieApi.ApiResponse;
 namespace DM.MovieApi.MovieDb.Movies
 {
     /// <summary>
-    /// Interface for retrieving infromation about Movies.
+    /// Interface for retrieving information about Movies.
     /// </summary>
     public interface IApiMovieRequest : IApiRequest
     {
