@@ -64,9 +64,9 @@ The [ApiSearchResponse](DM.MovieApi/ApiResponse/ApiSearchResponse.cs) provides r
 // RegisterSettings only needs to be called one time when your application starts-up.
 MovieDbFactory.RegisterSettings( new YourMovieDbSettings() )
 
-var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value
+var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
 
-ApiSearchResponse<MovieInfo> response = await _api.SearchByTitleAsync( "Star Trek" );
+ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Star Trek" );
 
 foreach( MovieInfo info in response.Results )
 {
@@ -79,10 +79,10 @@ See the [MovieInfo](DM.MovieApi/MovieDb/Movies/MovieInfo.cs) class for all avail
 #### Usage - Examples: Paging a search result
 ```csharp
 int pageNumber;
-var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value
+var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
 do
 {
-    ApiSearchResponse<MovieInfo> response = await _api.SearchByTitleAsync( "Harry" );
+    ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Harry" );
 
     foreach( MovieInfo info in response.Results )
     {
