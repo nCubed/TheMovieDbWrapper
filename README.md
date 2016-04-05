@@ -1,6 +1,3 @@
-### Do you have a comprehensive list of examples?
-The API we've exposed should be fairly straight forward. All interfaces, classes, methods, properties, etc... have full intellisense support. If you need more detailed examples, just ask!
-=======
 # TheMovieDb.org Wrapper
 TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API.
 
