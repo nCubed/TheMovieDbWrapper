@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
+using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Movies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,6 +13,30 @@ namespace DM.MovieApi.IntegrationTests
     [TestClass]
     public class MovieDbFactoryTests
     {
+        [TestMethod]
+        public async Task RegisterSettings_CanUse_RawStrings()
+        {
+            try
+            {
+                MovieDbFactory.ResetFactory();
+                MovieDbFactory.RegisterSettings( AssemblyInit.Settings.ApiKey, AssemblyInit.Settings.ApiUrl );
+
+                var api = MovieDbFactory.Create<IApiMovieRequest>().Value;
+
+                ApiQueryResponse<Movie> response = await api.GetLatestAsync();
+
+                Assert.IsNull( response.Error );
+                Assert.IsNotNull( response.Item );
+                Assert.IsTrue( response.Item.Id > 391000 );
+            }
+            finally
+            {
+                // keeps all other tests running since the settings are registered in AssemblyInit for all tests.
+                AssemblyInit.RegisterFactorySettings();
+            }
+        }
+
+
         [TestMethod]
         public void Create_Throws_InvalidOperationException_When_SettingsNotRegistered()
         {

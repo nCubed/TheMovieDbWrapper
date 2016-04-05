@@ -21,7 +21,7 @@ namespace DM.MovieApi
         public static bool IsFactoryComposed { get { return _container != null; } }
 
         /// <summary>
-        /// Registers themoviedb.org settings to use with the MEF container.
+        /// Registers themoviedb.org settings for use with the MEF container.
         /// </summary>
         /// <param name="settings">The implementation of <see cref="IMovieDbSettings"/> containing
         /// the themoviedb.org credentials to use when connecting to the service.</param>
@@ -30,6 +30,18 @@ namespace DM.MovieApi
             _container = CreateContainer();
 
             _container.ComposeExportedValue( settings );
+        }
+
+        /// <summary>
+        /// Registers themoviedb.org settings for use with the MEF container.
+        /// </summary>
+        /// <param name="apiKey">Private key required to query themoviedb.org API.</param>
+        /// <param name="apiUrl">URL used for api calls to themoviedb.org.</param>
+        public static void RegisterSettings( string apiKey, string apiUrl )
+        {
+            var settings = new MovieDbSettings( apiKey, apiUrl );
+
+            RegisterSettings( settings );
         }
 
         /// <summary>
@@ -94,6 +106,18 @@ namespace DM.MovieApi
             if( !IsFactoryComposed )
             {
                 throw new InvalidOperationException( "RegisterSettings must be called before the Factory can Create anything." );
+            }
+        }
+
+        private class MovieDbSettings : IMovieDbSettings
+        {
+            public string ApiKey { get; private set; }
+            public string ApiUrl { get; private set; }
+
+            public MovieDbSettings( string apiKey, string apiUrl )
+            {
+                ApiKey = apiKey;
+                ApiUrl = apiUrl;
             }
         }
     }
