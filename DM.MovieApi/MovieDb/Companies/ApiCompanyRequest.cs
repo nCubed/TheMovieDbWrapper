@@ -46,10 +46,7 @@ namespace DM.MovieApi.MovieDb.Companies
                 return response;
             }
 
-            foreach( MovieInfo info in response.Results )
-            {
-                info.PopulateGenres( _genreApi.AllGenres );
-            }
+            response.Results.PopulateGenres( _genreApi.AllGenres );
 
             return response;
         }

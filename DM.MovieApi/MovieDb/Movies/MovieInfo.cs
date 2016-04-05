@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using DM.MovieApi.MovieDb.Genres;
 
@@ -22,9 +21,9 @@ namespace DM.MovieApi.MovieDb.Movies
         public string BackdropPath { get; private set; }
 
         [DataMember( Name = "genre_ids" )]
-        private IReadOnlyList<int> GenreIds { get; set; }
+        internal IReadOnlyList<int> GenreIds { get; set; }
 
-        public IReadOnlyList<Genre> Genres { get; private set; }
+        public IReadOnlyList<Genre> Genres { get; internal set; }
 
         [DataMember( Name = "original_title" )]
         public string OriginalTitle { get; private set; }
@@ -54,20 +53,6 @@ namespace DM.MovieApi.MovieDb.Movies
         {
             GenreIds = new int[0];
             Genres = new Genre[0];
-        }
-
-        internal void PopulateGenres( IEnumerable<Genre> allGenres )
-        {
-            if( !GenreIds.Any() )
-            {
-                return;
-            }
-
-            // TODO: (K. Chase) [2016-01-03] Look into creating a custom deserializer that will populate Genres.
-            Genres = GenreIds
-                .Select( x => allGenres.First( y => y.Id == x ) )
-                .ToList()
-                .AsReadOnly();
         }
 
         public override string ToString()

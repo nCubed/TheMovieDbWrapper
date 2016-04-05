@@ -97,10 +97,7 @@ namespace DM.MovieApi.MovieDb.Genres
                 return response;
             }
 
-            foreach( MovieInfo info in response.Results )
-            {
-                info.PopulateGenres( AllGenres );
-            }
+            response.Results.PopulateGenres( AllGenres );
 
             return response;
         }
