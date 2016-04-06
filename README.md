@@ -16,7 +16,7 @@ The current release supports common requests for movie and other miscellaneous i
 In order to use any feature of the wrapper, a concrete implementation of the [IMovieDbSettings](DM.MovieApi/IMovieDbSettings.cs) interface must be created. The interface only contains 2 properties:
 
 1. ApiKey: a private key required to query [themoviedb.org API](https://www.themoviedb.org/documentation/api).
-2. ApiUrl: the URL used for api calls to themoviedb.org. This URL should be static, but is included in case an alternative URL is ever provided.
+2. ApiUrl: the URL used for api calls to themoviedb.org. This URL should be static, but is included in case an alternative URL is ever provided. The current URL is `http://api.themoviedb.org/3/`
 
 ### Usage - MovieDbFactory
 The `MovieDbFactory` provides access to all exposed operations for retrieving information from themoviedb.org. The factory exposes the following methods (other methods may be exposed, but these are the important ones):
@@ -36,6 +36,9 @@ The following interfaces can be used to retrieve information:
 Register your settings first:
 ```csharp
 MovieDbFactory.RegisterSettings( new YourMovieDbSettings() )
+
+// alternative method of registration
+MovieDbFactory.RegisterSettings( "apiKey", "apiUrl" )
 ```
 
 Retrieve an API request interface (see Usage - Interfaces above for available interfaces):
