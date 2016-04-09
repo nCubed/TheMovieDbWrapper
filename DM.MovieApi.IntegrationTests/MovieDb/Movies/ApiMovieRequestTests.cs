@@ -63,6 +63,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             MovieInfo movie = response.Results.Single();
 
+            Assert.AreEqual( 104, movie.Id );
+
             Assert.AreEqual( expectedTitle, movie.Title );
 
             Assert.AreEqual( new DateTime( 1998, 08, 20 ), movie.ReleaseDate );
@@ -74,7 +76,6 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 GenreFactory.Thriller(),
             };
             CollectionAssert.AreEquivalent( expectedGenres, movie.Genres.ToList() );
-
         }
 
         [TestMethod]
