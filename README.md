@@ -88,11 +88,15 @@ See the [MovieInfo](DM.MovieApi/MovieDb/Movies/MovieInfo.cs) class for all avail
 
 #### Usage - Examples: Paging a search result
 ```csharp
-int pageNumber;
 var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
+
+int pageNumber;
 do
 {
     ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Harry" );
+
+    // alternatively, just call response.ToString() which will provide the same paged information format as below:
+    Console.WriteLine( "Page {0} of {1} ({2} total results)", response.PageNumber, response.TotalPages, response.TotalResults );
 
     foreach( MovieInfo info in response.Results )
     {
