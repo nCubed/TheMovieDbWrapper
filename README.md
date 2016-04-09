@@ -25,16 +25,17 @@ The `MovieDbFactory` provides access to all exposed operations for retrieving in
 
 ### Usage - Interfaces
 The following interfaces can be used to retrieve information:
-* `IApiConfigurationRequest`: Provides access for retrieving themoviedb.org configuration information.
-* `IApiMovieRequest`: Provides access for retrieving information about Movies.
-* `IApiMovieRatingRequest`: Provides access for retrieving movie rating information.
-* `IApiGenreRequest`: Provides access for retrieving Movie and TV genres.
-* `IApiCompanyRequest`: Provides access for retrieving production company information.
-* `IApiProfessionRequest`: Provides access for retrieving information about Movie/TV industry specific professions.
+* [`IApiConfigurationRequest`](DM.MovieApi/MovieDb/Configuration/IApiConfigurationRequest.cs): Provides access for retrieving themoviedb.org configuration information.
+* [`IApiMovieRequest`](DM.MovieApi/MovieDb/Movies/IApiMovieRequest.cs): Provides access for retrieving information about Movies.
+* [`IApiMovieRatingRequest`](DM.MovieApi/MovieDb/Certifications/IApiMovieRatingRequest.cs): Provides access for retrieving movie rating information.
+* [`IApiGenreRequest`](DM.MovieApi/MovieDb/Genres/IApiGenreRequest.cs): Provides access for retrieving Movie and TV genres.
+* [`IApiCompanyRequest`](DM.MovieApi/MovieDb/Companies/IApiCompanyRequest.cs): Provides access for retrieving production company information.
+* [`IApiProfessionRequest`](DM.MovieApi/MovieDb/IndustryProfessions/IApiProfessionRequest.cs): Provides access for retrieving information about Movie/TV industry specific professions.
 
 ### Usage - Examples
 Register your settings first:
 ```csharp
+// registration with an implementation your own IMovieDbSettings
 MovieDbFactory.RegisterSettings( new YourMovieDbSettings() )
 
 // alternative method of registration
@@ -53,12 +54,18 @@ Use the API request interface to retrieve information:
 ApiSearchResponse<MovieInfo> response = await _api.SearchByTitleAsync( "Star Trek" );
 ```
 
-The [ApiSearchResponse](DM.MovieApi/ApiResponse/ApiSearchResponse.cs) provides rich information about the results of the search:
+The [`ApiSearchResponse<T>`](DM.MovieApi/ApiResponse/ApiSearchResponse.cs) provides rich information about the results of the search:
 * `IReadOnlyList<T> Results`: The list of results from the search.
 * `int PageNumber`: The current page number of the search result.
 * `int TotalPages`: The total number of pages found from the search result.
 * `int TotalResults`: The total number of results from the search.
 * `ToString()`: returns "Page x of y (z total results)".
+* `ApiError Error`: Contains specific error information if an error was encountered during the API call to themoviedb.org.
+* `ApiRateLimit RateLimit`: Contains the current rate limits from your most recent API call to themoviedb.org.
+
+Other methods querying on specific Id's, such as `IApiMovieRequest.FindByIdAsync( movieId )` will return an [`ApiQueryResponse<T>`](DM.MovieApi/ApiResponse/ApiQueryResponse.cs) with a single result as well as some common information seen in the `ApiSearchResponse`:
+* `T Item`: The item returned from the API call, where T is the specific query such as `MovieInfo`, `Movie`, `MovieCredit`, etc..
+* `ToString()`: returns the ToString method of the Item.
 * `ApiError Error`: Contains specific error information if an error was encountered during the API call to themoviedb.org.
 * `ApiRateLimit RateLimit`: Contains the current rate limits from your most recent API call to themoviedb.org.
 
