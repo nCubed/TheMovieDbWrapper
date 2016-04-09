@@ -21,7 +21,7 @@ namespace DM.MovieApi.MovieDb.Companies
             _genreApi = genreApi;
         }
 
-        public async Task<ApiQueryResponse<ProductionCompany>> FindByIdAsyc( int companyId )
+        public async Task<ApiQueryResponse<ProductionCompany>> FindByIdAsync( int companyId )
         {
             string command = string.Format( "company/{0}", companyId );
 

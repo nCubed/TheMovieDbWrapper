@@ -14,7 +14,7 @@ namespace DM.MovieApi.MovieDb.Companies
         /// Gets all the basic information about a specific company.
         /// </summary>
         /// <param name="companyId">The company Id is typically found from a Movie or TV query.</param>
-        Task<ApiQueryResponse<ProductionCompany>> FindByIdAsyc( int companyId );
+        Task<ApiQueryResponse<ProductionCompany>> FindByIdAsync( int companyId );
 
         /// <summary>
         /// Get the list of movies associated with a particular company.

@@ -28,7 +28,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Companies
             const string expectedHeadquarters = "San Francisco, California";
             const string expectedHomepage = "http://www.lucasfilm.com";
 
-            ApiQueryResponse<ProductionCompany> response = await _api.FindByIdAsyc( id );
+            ApiQueryResponse<ProductionCompany> response = await _api.FindByIdAsync( id );
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
@@ -49,7 +49,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Companies
             const string expectedParentName = "Walt Disney Pictures";
             const int expectedParentId = 2;
 
-            ApiQueryResponse<ProductionCompany> response = await _api.FindByIdAsyc( id );
+            ApiQueryResponse<ProductionCompany> response = await _api.FindByIdAsync( id );
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
