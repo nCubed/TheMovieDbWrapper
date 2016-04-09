@@ -93,5 +93,19 @@ namespace DM.MovieApi.MovieDb.Movies
 
             return response;
         }
+
+        public async Task<ApiQueryResponse<MovieCredit>> GetCreditsAsync( int movieId, string language = "en" )
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+            };
+
+            string command = string.Format( "movie/{0}/credits", movieId );
+
+            ApiQueryResponse<MovieCredit> response = await base.QueryAsync<MovieCredit>( command, param );
+
+            return response;
+        }
     }
 }

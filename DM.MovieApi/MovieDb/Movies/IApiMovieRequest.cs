@@ -42,5 +42,12 @@ namespace DM.MovieApi.MovieDb.Movies
         /// <param name="pageNumber">Default is page 1. The page number to retrieve; the <see cref="ApiSearchResponse{T}"/> will contain the current page returned and the total number of pages available.</param>
         /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
         Task<ApiSearchResponse<Movie>> GetUpcomingAsync( int pageNumber = 1, string language = "en" );
+
+        /// <summary>
+        /// Get the cast and crew information for a specific movie id.
+        /// </summary>
+        /// <param name="movieId">The movie Id is typically found from a more generic Movie query.</param>
+        /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
+        Task<ApiQueryResponse<MovieCredit>> GetCreditsAsync( int movieId, string language = "en" );
     }
 }
