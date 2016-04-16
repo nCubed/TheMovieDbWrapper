@@ -4,13 +4,6 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.MovieApi", "DM.MovieApi\DM.MovieApi.csproj", "{8BB3A8DD-7BBC-426C-89FE-2AE4CA7CE7FD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F348997D-DC5F-4DBF-8A51-0ED4EDF54470}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.MovieApi.IntegrationTests", "DM.MovieApi.IntegrationTests\DM.MovieApi.IntegrationTests.csproj", "{6177CF01-41E5-41B3-B936-76711E701DFC}"
 EndProject
 Global
