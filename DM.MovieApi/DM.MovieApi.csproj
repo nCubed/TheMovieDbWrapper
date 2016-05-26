@@ -97,6 +97,13 @@
     <Compile Include="MovieDb\Movies\Movie.cs" />
     <Compile Include="MovieDb\Movies\MovieInfo.cs" />
     <Compile Include="MovieDb\Movies\MovieInfoExtensions.cs" />
+    <Compile Include="MovieDb\TV\ApiTVShowRequest.cs" />
+    <Compile Include="MovieDb\TV\IApiTVShowRequest.cs" />
+    <Compile Include="MovieDb\TV\Network.cs" />
+    <Compile Include="MovieDb\TV\Season.cs" />
+    <Compile Include="MovieDb\TV\TVShow.cs" />
+    <Compile Include="MovieDb\TV\TVShowCreator.cs" />
+    <Compile Include="MovieDb\TV\TVShowInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -75,6 +75,7 @@
     <Compile Include="MovieDb\Movies\ApiMovieRequestTests_GetCredits.cs" />
     <Compile Include="MovieDb\Professions\ApiProfessionRequestTests.cs" />
     <Compile Include="AssemblyInit.cs" />
+    <Compile Include="MovieDb\TV\ApiTVShowRequestTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MovieDb\Configuration\ApiConfigurationRequestTests.cs" />
     <Compile Include="MovieDbFactoryTests.cs" />
