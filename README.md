@@ -8,6 +8,7 @@ The current release supports common requests for movie and other miscellaneous i
 * themoviedb.org configuration information
 * Movie information
 * Movie rating information
+* TV show information
 * Movie and TV genres
 * Movie/TV industry specific professions
 * Production company information
@@ -28,6 +29,7 @@ The following interfaces can be used to retrieve information:
 * [`IApiConfigurationRequest`](DM.MovieApi/MovieDb/Configuration/IApiConfigurationRequest.cs): Provides access for retrieving themoviedb.org configuration information.
 * [`IApiMovieRequest`](DM.MovieApi/MovieDb/Movies/IApiMovieRequest.cs): Provides access for retrieving information about Movies.
 * [`IApiMovieRatingRequest`](DM.MovieApi/MovieDb/Certifications/IApiMovieRatingRequest.cs): Provides access for retrieving movie rating information.
+* [`IApiTVShowRequest`](DM.MovieApi/MovieDb/TV/IApiTVShowRequest.cs): Provides access for retrieving information about TV shows.
 * [`IApiGenreRequest`](DM.MovieApi/MovieDb/Genres/IApiGenreRequest.cs): Provides access for retrieving Movie and TV genres.
 * [`IApiCompanyRequest`](DM.MovieApi/MovieDb/Companies/IApiCompanyRequest.cs): Provides access for retrieving production company information.
 * [`IApiProfessionRequest`](DM.MovieApi/MovieDb/IndustryProfessions/IApiProfessionRequest.cs): Provides access for retrieving information about Movie/TV industry specific professions.
