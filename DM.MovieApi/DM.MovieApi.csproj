@@ -79,6 +79,7 @@
     <Compile Include="MovieDb\Companies\ProductionCompanyInfo.cs" />
     <Compile Include="MovieDb\Configuration\IApiConfigurationRequest.cs" />
     <Compile Include="MovieDb\Genres\GenreFactory.cs" />
+    <Compile Include="MovieDb\Genres\GenreIdCollectionMappingExtensions.cs" />
     <Compile Include="MovieDb\Genres\IApiGenreRequest.cs" />
     <Compile Include="MovieDb\Country.cs" />
     <Compile Include="MovieDb\IndustryProfessions\ApiProfessionRequest.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="MovieDb\Language.cs" />
     <Compile Include="MovieDb\Movies\Movie.cs" />
     <Compile Include="MovieDb\Movies\MovieInfo.cs" />
-    <Compile Include="MovieDb\Movies\MovieInfoExtensions.cs" />
     <Compile Include="MovieDb\TV\ApiTVShowRequest.cs" />
     <Compile Include="MovieDb\TV\IApiTVShowRequest.cs" />
     <Compile Include="MovieDb\TV\Network.cs" />
