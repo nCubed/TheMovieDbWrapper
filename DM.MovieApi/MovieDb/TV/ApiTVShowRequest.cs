@@ -45,6 +45,13 @@ namespace DM.MovieApi.MovieDb.TV
 
             ApiSearchResponse<TVShowInfo> response = await base.SearchAsync<TVShowInfo>( command, pageNumber, param );
 
+            if( response.Error != null )
+            {
+                return response;
+            }
+
+            response.Results.PopulateGenres( _genreApi.AllGenres );
+
             return response;
         }
 

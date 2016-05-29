@@ -9,13 +9,13 @@ namespace DM.MovieApi.MovieDb.TV
     public class TVShowInfo
     {
         [DataMember( Name = "id" )]
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         [DataMember( Name = "name" )]
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         [DataMember( Name = "original_name" )]
-        public string OriginalName { get; set; }
+        public string OriginalName { get; private set; }
 
         [DataMember( Name = "poster_path" )]
         public string PosterPath { get; set; }
@@ -24,30 +24,30 @@ namespace DM.MovieApi.MovieDb.TV
         public string BackdropPath { get; set; }
 
         [DataMember( Name = "popularity" )]
-        public double Popularity { get; set; }
+        public double Popularity { get; private set; }
 
         [DataMember( Name = "vote_average" )]
-        public double VoteAverage { get; set; }
+        public double VoteAverage { get; private set; }
 
         [DataMember( Name = "vote_count" )]
-        public int VoteCount { get; set; }
+        public int VoteCount { get; private set; }
 
         [DataMember( Name = "overview" )]
-        public string Overview { get; set; }
+        public string Overview { get; private set; }
 
         [DataMember( Name = "first_air_date" )]
-        public DateTime FirstAirDate { get; set; }
+        public DateTime FirstAirDate { get; private set; }
 
         [DataMember( Name = "origin_country" )]
-        public IReadOnlyList<string> OriginCountry { get; set; }
+        public IReadOnlyList<string> OriginCountry { get; private set; }
 
         [DataMember( Name = "genre_ids" )]
-        public IReadOnlyList<int> GenreIds { get; set; }
+        internal IReadOnlyList<int> GenreIds { get; set; }
 
-        public IReadOnlyList<Genre> Genres { get; set; }
+        public IReadOnlyList<Genre> Genres { get; internal set; }
 
         [DataMember( Name = "original_language" )]
-        public string OriginalLanguage { get; set; }
+        public string OriginalLanguage { get; private set; }
 
         public TVShowInfo()
         {

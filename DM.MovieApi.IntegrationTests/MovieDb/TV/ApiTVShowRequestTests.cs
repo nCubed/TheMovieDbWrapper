@@ -73,6 +73,27 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
         }
 
         [TestMethod]
+        public async Task SearchByNameAsync_GameOfThrones_Returns_PopulatedGenres()
+        {
+            const string query = "Game of Thrones";
+
+            ApiSearchResponse<TVShowInfo> response = await _api.SearchByNameAsync( query );
+
+            ApiResponseUtil.AssertErrorIsNull( response );
+
+            TVShowInfo gameOfThrones = response.Results.Single();
+
+            var expGenres = new Genre[]
+           {
+                GenreFactory.SciFiAndFantasy(),
+                GenreFactory.ActionAndAdventure(),
+                GenreFactory.Drama()
+           };
+
+            CollectionAssert.AreEquivalent( expGenres, gameOfThrones.Genres.ToArray() );
+        }
+
+        [TestMethod]
         public async Task SearchByNameAsync_CanPageResults()
         {
             const string query = "full";
@@ -183,7 +204,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             Assert.IsTrue( shows.Count > 0 );
 
-            foreach(TVShowInfo show in shows)
+            foreach( TVShowInfo show in shows )
             {
                 Assert.IsTrue( show.Id > 0 );
                 Assert.IsTrue( !string.IsNullOrEmpty( show.Name ) );
