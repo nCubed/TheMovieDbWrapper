@@ -83,11 +83,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             TVShowInfo gameOfThrones = response.Results.Single();
 
-            var expGenres = new Genre[]
+            Genre[] expGenres =
            {
                 GenreFactory.SciFiAndFantasy(),
                 GenreFactory.ActionAndAdventure(),
-                GenreFactory.Drama()
+                GenreFactory.Drama(),
            };
 
             CollectionAssert.AreEquivalent( expGenres, gameOfThrones.Genres.ToArray() );
@@ -118,45 +118,45 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             TVShow show = response.Item;
 
-            var expCreatedBy = new TVShowCreator[]
-            {
+            TVShowCreator[] expCreatedBy =
+                {
                 new TVShowCreator(9813, "David Benioff", "/8CuuNIKMzMUL1NKOPv9AqEwM7og.jpg"),
-                new TVShowCreator(228068, "D. B. Weiss", "/caUAtilEe06OwOjoQY3B7BgpARi.jpg")
+                new TVShowCreator(228068, "D. B. Weiss", "/caUAtilEe06OwOjoQY3B7BgpARi.jpg"),
             };
 
             CollectionAssert.AreEquivalent( expCreatedBy, show.CreatedBy.ToArray() );
 
-            var expRunTime = new int[] { 60 };
+            var expRunTime = new[] { 60 };
 
             CollectionAssert.AreEquivalent( expRunTime, show.EpisodeRunTime.ToArray() );
 
             Assert.AreEqual( expFirstAirDate.Date, show.FirstAirDate.Date );
 
-            var expGenres = new Genre[]
+            Genre[] expGenres =
             {
                 GenreFactory.SciFiAndFantasy(),
                 GenreFactory.ActionAndAdventure(),
-                GenreFactory.Drama()
+                GenreFactory.Drama(),
             };
 
             CollectionAssert.AreEquivalent( expGenres, show.Genres.ToArray() );
 
             Assert.AreEqual( expHomepage, show.Homepage );
 
-            var expLanguages = new string[] { "es", "en", "de" };
+            var expLanguages = new[] { "es", "en", "de" };
 
             CollectionAssert.AreEquivalent( expLanguages, show.Languages.ToArray() );
 
             Assert.AreEqual( expName, show.Name );
 
-            var expNetworks = new Network[]
+            Network[] expNetworks =
             {
                 new Network(49, "HBO")
             };
 
             CollectionAssert.AreEquivalent( expNetworks, show.Networks.ToArray() );
 
-            var expCountryCodes = new string[] { "US" };
+            var expCountryCodes = new[] { "US" };
 
             CollectionAssert.AreEquivalent( expCountryCodes, show.OriginCountry.ToArray() );
 
@@ -165,7 +165,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             ApiResponseUtil.AssertImagePath( show.BackdropPath );
             ApiResponseUtil.AssertImagePath( show.PosterPath );
 
-            var expProductionCompanies = new ProductionCompanyInfo[]
+            ProductionCompanyInfo[] expProductionCompanies =
             {
                 new ProductionCompanyInfo( 3268, "Home Box Office (HBO)" ),
                 new ProductionCompanyInfo( 5820, "Generator Entertainment" ),

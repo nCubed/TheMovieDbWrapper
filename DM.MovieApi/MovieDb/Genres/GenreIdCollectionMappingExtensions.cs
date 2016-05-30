@@ -9,17 +9,21 @@ namespace DM.MovieApi.MovieDb.Genres
     {
         public static void PopulateGenres( this IEnumerable<MovieInfo> movies, IEnumerable<Genre> allGenres )
         {
+            var genres = allGenres.ToArray();
+
             foreach( MovieInfo movie in movies )
             {
-                movie.Genres = MapGenreIdsToGenres( movie.GenreIds, allGenres );
+                movie.Genres = MapGenreIdsToGenres( movie.GenreIds, genres );
             }
         }
 
         public static void PopulateGenres( this IEnumerable<TVShowInfo> tvShows, IEnumerable<Genre> allGenres )
         {
+            var genres = allGenres.ToArray();
+
             foreach( TVShowInfo tvShow in tvShows )
             {
-                tvShow.Genres = MapGenreIdsToGenres( tvShow.GenreIds, allGenres );
+                tvShow.Genres = MapGenreIdsToGenres( tvShow.GenreIds, genres );
             }
         }
 
