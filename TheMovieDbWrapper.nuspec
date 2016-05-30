@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>TheMovieDbWrapper</id>
-    <version>0.3</version>
+    <version>0.4</version>
     <title>TheMovieDb.org Wrapper</title>
     <authors>Kindler Chase</authors>
     <owners>Kindler Chase</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/nCubed/TheMovieDbWrapper</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C# wrapper for common requests against themoviedb.org API.</description>
-    <releaseNotes>Added ability to retrieve movie credits.</releaseNotes>
+    <releaseNotes>Added ability to retrieve Television show information.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Movie Movies themoviedb TMDB Film TV Television</tags>
     <dependencies>
