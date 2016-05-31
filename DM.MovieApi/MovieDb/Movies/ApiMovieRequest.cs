@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
@@ -90,6 +91,48 @@ namespace DM.MovieApi.MovieDb.Movies
             const string command = "movie/upcoming";
 
             ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>( command, pageNumber, param );
+
+            return response;
+        }
+
+        public async Task<ApiSearchResponse<MovieInfo>> GetTopRatedAsync( int pageNumber = 1, string language = "en" )
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+            };
+
+            const string command = "movie/top_rated";
+
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+
+            if( response.Error != null )
+            {
+                return response;
+            }
+
+            response.Results.PopulateGenres( _genreApi.AllGenres );
+
+            return response;
+        }
+
+        public async Task<ApiSearchResponse<MovieInfo>> GetPopularAsync( int pageNumber = 1, string language = "en" )
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+            };
+
+            const string command = "movie/popular";
+
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+
+            if( response.Error != null )
+            {
+                return response;
+            }
+
+            response.Results.PopulateGenres( _genreApi.AllGenres );
 
             return response;
         }

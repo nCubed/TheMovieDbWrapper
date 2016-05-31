@@ -190,7 +190,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             Assert.IsNotNull( show );
 
             Assert.IsTrue( show.Id > 0 );
-            Assert.IsTrue( !string.IsNullOrEmpty( show.Name ) );
+            Assert.IsFalse( string.IsNullOrEmpty( show.Name ) );
         }
 
         [TestMethod]
@@ -200,15 +200,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            IReadOnlyList<TVShowInfo> shows = response.Results;
+            IReadOnlyList<TVShowInfo> results = response.Results;
 
-            Assert.IsTrue( shows.Count > 0 );
-
-            foreach( TVShowInfo show in shows )
-            {
-                Assert.IsTrue( show.Id > 0 );
-                Assert.IsTrue( !string.IsNullOrEmpty( show.Name ) );
-            }
+            ApiResponseUtil.AssertTVShowInformation( results );
         }
 
         [TestMethod]
@@ -228,15 +222,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            IReadOnlyList<TVShowInfo> shows = response.Results;
+            IReadOnlyList<TVShowInfo> results = response.Results;
 
-            Assert.IsTrue( shows.Count > 0 );
-
-            foreach( TVShowInfo show in shows )
-            {
-                Assert.IsTrue( show.Id > 0 );
-                Assert.IsTrue( !string.IsNullOrEmpty( show.Name ) );
-            }
+            ApiResponseUtil.AssertTVShowInformation( results );
         }
 
         [TestMethod]
