@@ -7,6 +7,7 @@ using DM.MovieApi.MovieDb;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.MovieDb.Movies;
+using DM.MovieApi.MovieDb.TV;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DM.MovieApi.IntegrationTests
@@ -136,6 +137,58 @@ namespace DM.MovieApi.IntegrationTests
             {
                 Assert.IsFalse( string.IsNullOrWhiteSpace( language.Iso639Code ) );
                 Assert.IsFalse( string.IsNullOrWhiteSpace( language.Name ) );
+            }
+        }
+
+        public static void AssertMovieInformation( IEnumerable<MovieInfo> movies )
+        {
+            Assert.IsTrue( movies.Any() );
+
+            foreach( MovieInfo movie in movies )
+            {
+                AssertMovieInformation( movie );
+            }
+        }
+
+        public static void AssertMovieInformation( MovieInfo movie )
+        {
+            Assert.IsFalse( string.IsNullOrWhiteSpace( movie.Title ) );
+            Assert.IsTrue( movie.Id > 0 );
+
+            Assert.AreEqual( movie.GenreIds.Count, movie.Genres.Count );
+            if( movie.GenreIds.Count > 0 )
+            {
+                foreach( Genre genre in movie.Genres )
+                {
+                    Assert.IsFalse( string.IsNullOrWhiteSpace( genre.Name ) );
+                    Assert.IsTrue( genre.Id > 0 );
+                }
+            }
+        }
+
+        public static void AssertTVShowInformation( IEnumerable<TVShowInfo> tvShows )
+        {
+            Assert.IsTrue( tvShows.Any() );
+
+            foreach( TVShowInfo tvShow in tvShows )
+            {
+                AssertTVShowInformation( tvShow );
+            }
+        }
+
+        public static void AssertTVShowInformation( TVShowInfo tvShow )
+        {
+            Assert.IsTrue( tvShow.Id > 0 );
+            Assert.IsFalse( string.IsNullOrEmpty( tvShow.Name ) );
+
+            Assert.AreEqual( tvShow.GenreIds.Count, tvShow.Genres.Count );
+            if( tvShow.GenreIds.Count > 0 )
+            {
+                foreach( Genre genre in tvShow.Genres )
+                {
+                    Assert.IsFalse( string.IsNullOrWhiteSpace( genre.Name ) );
+                    Assert.IsTrue( genre.Id > 0 );
+                }
             }
         }
     }

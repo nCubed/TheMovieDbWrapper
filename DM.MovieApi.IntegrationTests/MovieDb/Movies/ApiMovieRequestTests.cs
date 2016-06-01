@@ -238,5 +238,49 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
                 ( str, page ) => _api.GetUpcomingAsync( page ), x => x.Id );
         }
+
+        [TestMethod]
+        public async Task GetTopRatedAsync_Returns_ValidResults()
+        {
+            ApiSearchResponse<MovieInfo> response = await _api.GetTopRatedAsync();
+
+            ApiResponseUtil.AssertErrorIsNull( response );
+
+            IReadOnlyList<MovieInfo> results = response.Results;
+
+            ApiResponseUtil.AssertMovieInformation( results );
+        }
+
+        [TestMethod]
+        public async Task GetTopRatedAsync_CanPageResults()
+        {
+            const int minimumPageCount = 2;
+            const int minimumMovieCount = 40; 
+
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+                ( str, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
+        }
+
+        [TestMethod]
+        public async Task GetPopularAsync_Returns_ValidResults()
+        {
+            ApiSearchResponse<MovieInfo> response = await _api.GetPopularAsync();
+
+            ApiResponseUtil.AssertErrorIsNull( response );
+
+            IReadOnlyList<MovieInfo> results = response.Results;
+
+            ApiResponseUtil.AssertMovieInformation( results );
+        }
+
+        [TestMethod]
+        public async Task GetPopularAsync_CanPageResults()
+        {
+            const int minimumPageCount = 2;
+            const int minimumMovieCount = 40;
+
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+                ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
+        }
     }
 }
