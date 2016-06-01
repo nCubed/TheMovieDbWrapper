@@ -14,7 +14,8 @@ namespace DM.MovieApi.MovieDb.TV
         private readonly IApiGenreRequest _genreApi;
 
         [ImportingConstructor]
-        public ApiTVShowRequest( IMovieDbSettings settings, IApiGenreRequest genreApi ) : base( settings )
+        public ApiTVShowRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
+            : base( settings )
         {
             _genreApi = genreApi;
         }
@@ -23,7 +24,7 @@ namespace DM.MovieApi.MovieDb.TV
         {
             var param = new Dictionary<string, string>
             {
-                {"language", language},
+                { "language", language },
             };
 
             string command = string.Format( "tv/{0}", tvShowId );

@@ -118,7 +118,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             TVShow show = response.Item;
 
             TVShowCreator[] expCreatedBy =
-                {
+            {
                 new TVShowCreator(9813, "David Benioff", "/8CuuNIKMzMUL1NKOPv9AqEwM7og.jpg"),
                 new TVShowCreator(228068, "D. B. Weiss", "/caUAtilEe06OwOjoQY3B7BgpARi.jpg"),
             };
@@ -174,7 +174,6 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             };
 
             CollectionAssert.AreEquivalent( expProductionCompanies, show.ProductionCompanies.ToArray() );
-
         }
 
         [TestMethod]
@@ -201,7 +200,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             IReadOnlyList<TVShowInfo> results = response.Results;
 
-            ApiResponseUtil.AssertTVShowInformation( results );
+            ApiResponseUtil.AssertTVShowInformationStructure( results );
         }
 
         [TestMethod]
@@ -223,7 +222,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             IReadOnlyList<TVShowInfo> results = response.Results;
 
-            ApiResponseUtil.AssertTVShowInformation( results );
+            ApiResponseUtil.AssertTVShowInformationStructure( results );
         }
 
         [TestMethod]

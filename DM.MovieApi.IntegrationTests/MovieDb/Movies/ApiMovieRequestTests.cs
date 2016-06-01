@@ -194,7 +194,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            ApiResponseUtil.AssertMovie( response.Item );
+            ApiResponseUtil.AssertMovieStructure( response.Item );
         }
 
         [TestMethod]
@@ -204,7 +204,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            ApiResponseUtil.AssertMovies( response.Results );
+            ApiResponseUtil.AssertMovieStructure( response.Results );
         }
 
         [TestMethod]
@@ -225,7 +225,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            ApiResponseUtil.AssertMovies( response.Results );
+            ApiResponseUtil.AssertMovieStructure( response.Results );
         }
 
         [TestMethod]
@@ -248,7 +248,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             IReadOnlyList<MovieInfo> results = response.Results;
 
-            ApiResponseUtil.AssertMovieInformation( results );
+            ApiResponseUtil.AssertMovieInformationStructure( results );
         }
 
         [TestMethod]
@@ -270,7 +270,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             IReadOnlyList<MovieInfo> results = response.Results;
 
-            ApiResponseUtil.AssertMovieInformation( results );
+            ApiResponseUtil.AssertMovieInformationStructure( results );
         }
 
         [TestMethod]

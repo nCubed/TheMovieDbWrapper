@@ -63,7 +63,7 @@ namespace DM.MovieApi.IntegrationTests
 
                 if( typeof( T ) == typeof( Movie ) )
                 {
-                    AssertMovies( (IEnumerable<Movie>)response.Results );
+                    AssertMovieStructure( ( IEnumerable<Movie> )response.Results );
                 }
 
                 allFound.AddRange( response.Results );
@@ -98,19 +98,19 @@ namespace DM.MovieApi.IntegrationTests
             Assert.AreEqual( 0, dups.Count, note + " Duplicates: " + Environment.NewLine + string.Join( Environment.NewLine, dups ) );
         }
 
-        public static void AssertMovies( IEnumerable<Movie> movies )
+        public static void AssertMovieStructure( IEnumerable<Movie> movies )
         {
             // ReSharper disable PossibleMultipleEnumeration
             Assert.IsTrue( movies.Any() );
 
             foreach( Movie movie in movies )
             {
-                AssertMovie( movie );
+                AssertMovieStructure( movie );
             }
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        public static void AssertMovie( Movie movie )
+        public static void AssertMovieStructure( Movie movie )
         {
             Assert.IsTrue( movie.Id > 0 );
             Assert.IsFalse( string.IsNullOrWhiteSpace( movie.Title ) );
@@ -140,17 +140,19 @@ namespace DM.MovieApi.IntegrationTests
             }
         }
 
-        public static void AssertMovieInformation( IEnumerable<MovieInfo> movies )
+        public static void AssertMovieInformationStructure( IEnumerable<MovieInfo> movies )
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             Assert.IsTrue( movies.Any() );
 
+            // ReSharper disable once PossibleMultipleEnumeration
             foreach( MovieInfo movie in movies )
             {
-                AssertMovieInformation( movie );
+                AssertMovieInformationStructure( movie );
             }
         }
 
-        public static void AssertMovieInformation( MovieInfo movie )
+        public static void AssertMovieInformationStructure( MovieInfo movie )
         {
             Assert.IsFalse( string.IsNullOrWhiteSpace( movie.Title ) );
             Assert.IsTrue( movie.Id > 0 );
@@ -166,17 +168,19 @@ namespace DM.MovieApi.IntegrationTests
             }
         }
 
-        public static void AssertTVShowInformation( IEnumerable<TVShowInfo> tvShows )
+        public static void AssertTVShowInformationStructure( IEnumerable<TVShowInfo> tvShows )
         {
+            // ReSharper disable once PossibleMultipleEnumeration
             Assert.IsTrue( tvShows.Any() );
 
+            // ReSharper disable once PossibleMultipleEnumeration
             foreach( TVShowInfo tvShow in tvShows )
             {
-                AssertTVShowInformation( tvShow );
+                AssertTVShowInformationStructure( tvShow );
             }
         }
 
-        public static void AssertTVShowInformation( TVShowInfo tvShow )
+        public static void AssertTVShowInformationStructure( TVShowInfo tvShow )
         {
             Assert.IsTrue( tvShow.Id > 0 );
             Assert.IsFalse( string.IsNullOrEmpty( tvShow.Name ) );
