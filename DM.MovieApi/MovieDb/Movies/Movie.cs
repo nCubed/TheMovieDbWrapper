@@ -65,7 +65,7 @@ namespace DM.MovieApi.MovieDb.Movies
         public DateTime ReleaseDate { get; set; }
 
         [DataMember( Name = "revenue" )]
-        public int Revenue { get; set; }
+        public decimal Revenue { get; set; }
 
         [DataMember( Name = "runtime" )]
         public int Runtime { get; set; }

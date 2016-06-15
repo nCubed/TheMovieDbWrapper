@@ -188,6 +188,21 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         }
 
         [TestMethod]
+        public async Task MovieWithLargeRevenue_Will_Deserialize()
+        {
+            const int id = 19995;
+            const string expectedTitle = "Avatar";
+
+            ApiQueryResponse<Movie> response = await _api.FindByIdAsync( id );
+
+            ApiResponseUtil.AssertErrorIsNull( response );
+
+            Assert.AreEqual( expectedTitle, response.Item.Title );
+            Assert.IsTrue( response.Item.Revenue > int.MaxValue );
+        }
+
+
+        [TestMethod]
         public async Task GetLatestAsync_Returns_ValidResult()
         {
             ApiQueryResponse<Movie> response = await _api.GetLatestAsync();
@@ -255,7 +270,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         public async Task GetTopRatedAsync_CanPageResults()
         {
             const int minimumPageCount = 2;
-            const int minimumMovieCount = 40; 
+            const int minimumMovieCount = 40;
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
                 ( str, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
