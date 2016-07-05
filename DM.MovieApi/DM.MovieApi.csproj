@@ -85,6 +85,7 @@
     <Compile Include="MovieDb\IndustryProfessions\ApiProfessionRequest.cs" />
     <Compile Include="MovieDb\IndustryProfessions\IApiProfessionRequest.cs" />
     <Compile Include="MovieDb\IndustryProfessions\Profession.cs" />
+    <Compile Include="MovieDb\Movies\Keywords.cs" />
     <Compile Include="MovieDb\Movies\MovieCredit.cs" />
     <Compile Include="MovieDb\Movies\IApiMovieRequest.cs" />
     <Compile Include="MovieDbApi.cs" />
