@@ -6,6 +6,7 @@ using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Keywords;
 using DM.MovieApi.MovieDb.Movies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -134,7 +135,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             // Spoken Languages
             var languages = new[]
             {
-                new Language( "en", "English" ),
+                new Language("en", "English"),
             };
             CollectionAssert.AreEqual( languages, movie.SpokenLanguages.ToArray() );
 
@@ -170,6 +171,19 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 GenreFactory.Fantasy(),
             };
             CollectionAssert.AreEquivalent( expectedGenres, movie.Genres.ToList() );
+
+            // Keywords
+            var expectedKeywords = new List<Keyword>
+            {
+                new Keyword(803, "android"),
+                new Keyword(9831, "spaceship"),
+                new Keyword(9944, "star wars"),
+                new Keyword(10527, "jedi"),
+                new Keyword(156395, "imax"),
+                new Keyword(161176, "space opera"),
+                new Keyword(209714, "3d"),
+            };
+            CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToList() );
         }
 
         [TestMethod]

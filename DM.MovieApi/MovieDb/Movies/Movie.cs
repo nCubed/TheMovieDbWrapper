@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 using DM.MovieApi.MovieDb.Collections;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Keywords;
+using Newtonsoft.Json;
 
 namespace DM.MovieApi.MovieDb.Movies
 {
@@ -88,9 +90,14 @@ namespace DM.MovieApi.MovieDb.Movies
         [DataMember( Name = "vote_count" )]
         public int VoteCount { get; set; }
 
+        [DataMember( Name = "keywords" )]
+        [JsonConverter( typeof( KeywordConverter ) )]
+        public IReadOnlyList<Keyword> Keywords { get; set; }
+
         public Movie()
         {
             Genres = new Genre[0];
+            Keywords = new Keyword[0];
             ProductionCompanies = new ProductionCompanyInfo[0];
             ProductionCountries = new Country[0];
             SpokenLanguages = new Language[0];
