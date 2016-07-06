@@ -20,6 +20,15 @@ namespace DM.MovieApi.MovieDb.Movies
             _genreApi = genreApi;
         }
 
+        public async Task<ApiQueryResponse<Keywords>> GetKeywordsById(int movieId)
+        { 
+            string command = string.Format("movie/{0}/keywords", movieId);
+
+            ApiQueryResponse<Keywords> response = await base.QueryAsync<Keywords>(command);
+
+            return response;
+        }
+
         public async Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en" )
         {
             var param = new Dictionary<string, string>

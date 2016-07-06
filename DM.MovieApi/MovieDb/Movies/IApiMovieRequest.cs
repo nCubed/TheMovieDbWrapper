@@ -9,6 +9,8 @@ namespace DM.MovieApi.MovieDb.Movies
     /// </summary>
     public interface IApiMovieRequest : IApiRequest
     {
+
+        Task<ApiQueryResponse<Keywords>> GetKeywordsById(int movideId);
         /// <summary>
         /// Gets all the information about a specific Movie.
         /// </summary>
