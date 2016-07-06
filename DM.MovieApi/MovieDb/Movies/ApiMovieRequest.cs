@@ -60,9 +60,15 @@ namespace DM.MovieApi.MovieDb.Movies
 
         public async Task<ApiQueryResponse<Movie>> GetLatestAsync()
         {
+            var param = new Dictionary<string, string>
+            {
+                {"language", "en"},
+                {"append_to_response", "keywords"},
+            };
+
             const string command = "movie/latest";
 
-            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command );
+            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
 
             return response;
         }
@@ -72,6 +78,7 @@ namespace DM.MovieApi.MovieDb.Movies
             var param = new Dictionary<string, string>
             {
                 {"language", language},
+                {"append_to_response", "keywords"},
             };
 
             const string command = "movie/now_playing";
@@ -86,6 +93,7 @@ namespace DM.MovieApi.MovieDb.Movies
             var param = new Dictionary<string, string>
             {
                 {"language", language},
+                {"append_to_response", "keywords"},
             };
 
             const string command = "movie/upcoming";
