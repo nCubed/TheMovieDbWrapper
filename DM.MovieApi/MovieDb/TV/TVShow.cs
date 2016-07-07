@@ -91,6 +91,7 @@ namespace DM.MovieApi.MovieDb.TV
             OriginCountry = new string[0];
             ProductionCompanies = new ProductionCompanyInfo[0];
             Seasons = new Season[0];
+            Keywords = new Keyword[0];
         }
 
         public override string ToString()
