@@ -25,6 +25,7 @@ namespace DM.MovieApi.MovieDb.TV
             var param = new Dictionary<string, string>
             {
                 { "language", language },
+                { "append_to_response", "keywords" },
             };
 
             string command = $"tv/{tvShowId}";
@@ -56,11 +57,17 @@ namespace DM.MovieApi.MovieDb.TV
             return response;
         }
 
-        public async Task<ApiQueryResponse<TVShow>> GetLatestAsync()
+        public async Task<ApiQueryResponse<TVShow>> GetLatestAsync( string language = "en" )
         {
+            var param = new Dictionary<string, string>
+            {
+                { "language", language },
+                { "append_to_response", "keywords" },
+            };
+
             const string command = "tv/latest";
 
-            ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command );
+            ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command, param );
 
             return response;
         }

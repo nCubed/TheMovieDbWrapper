@@ -91,7 +91,7 @@ namespace DM.MovieApi.MovieDb.Movies
         public int VoteCount { get; set; }
 
         [DataMember( Name = "keywords" )]
-        [JsonConverter( typeof( KeywordConverter ) )]
+        [JsonConverter( typeof( KeywordConverter ), "keywords" )]
         public IReadOnlyList<Keyword> Keywords { get; set; }
 
         public Movie()

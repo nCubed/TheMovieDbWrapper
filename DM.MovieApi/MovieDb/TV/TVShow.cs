@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Keywords;
+using Newtonsoft.Json;
 
 namespace DM.MovieApi.MovieDb.TV
 {
@@ -74,6 +76,10 @@ namespace DM.MovieApi.MovieDb.TV
 
         [DataMember( Name = "seasons" )]
         public IReadOnlyList<Season> Seasons { get; set; }
+
+        [DataMember( Name = "keywords" )]
+        [JsonConverter( typeof( KeywordConverter ), "results" )]
+        public IReadOnlyList<Keyword> Keywords { get; set; }
 
         public TVShow()
         {

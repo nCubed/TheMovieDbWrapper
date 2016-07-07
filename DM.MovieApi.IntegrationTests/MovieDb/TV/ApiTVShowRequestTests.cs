@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Keywords;
 using DM.MovieApi.MovieDb.TV;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -172,8 +173,19 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 new ProductionCompanyInfo( 12526, "Bighead Littlehead" ),
                 new ProductionCompanyInfo( 76043, "Revolution Sun Studios" )
             };
-
             CollectionAssert.AreEquivalent( expProductionCompanies, show.ProductionCompanies.ToArray() );
+
+            Keyword[] expKeywords =
+            {
+                new Keyword(6091, "war"),
+                new Keyword(818, "based on novel"),
+                new Keyword(4152, "kingdom"),
+                new Keyword(12554, "dragon"),
+                new Keyword(13084, "king"),
+                new Keyword(34038, "intrigue"),
+                new Keyword(170362, "fantasy world"),
+            };
+            CollectionAssert.AreEquivalent( expKeywords, show.Keywords.ToArray() );
         }
 
         [TestMethod]
