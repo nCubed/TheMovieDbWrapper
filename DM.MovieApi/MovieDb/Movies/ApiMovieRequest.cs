@@ -58,11 +58,11 @@ namespace DM.MovieApi.MovieDb.Movies
             return response;
         }
 
-        public async Task<ApiQueryResponse<Movie>> GetLatestAsync()
+        public async Task<ApiQueryResponse<Movie>> GetLatestAsync( string language = "en" )
         {
             var param = new Dictionary<string, string>
             {
-                {"language", "en"},
+                {"language", language},
                 {"append_to_response", "keywords"},
             };
 
