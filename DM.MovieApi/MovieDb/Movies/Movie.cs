@@ -104,8 +104,6 @@ namespace DM.MovieApi.MovieDb.Movies
         }
 
         public override string ToString()
-        {
-            return string.Format( "{0} ({1}) [{2}]", Title, ReleaseDate.ToString( "yyyy-MM-dd" ), Id );
-        }
+            => $"{Title} ({ReleaseDate.ToString( "yyyy-MM-dd" )}) [{Id}]";
     }
 }

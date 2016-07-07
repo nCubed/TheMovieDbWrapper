@@ -13,8 +13,6 @@ namespace DM.MovieApi.MovieDb.IndustryProfessions
         public IReadOnlyList<string> Jobs { get; set; }
 
         public override string ToString()
-        {
-            return string.Format( "{0} {1} jobs", Department, Jobs.Count );
-        }
+            => $"{Department} {Jobs.Count} jobs";
     }
 }

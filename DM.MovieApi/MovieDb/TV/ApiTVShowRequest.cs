@@ -27,7 +27,7 @@ namespace DM.MovieApi.MovieDb.TV
                 { "language", language },
             };
 
-            string command = string.Format( "tv/{0}", tvShowId );
+            string command = $"tv/{tvShowId}";
 
             ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command, param );
 

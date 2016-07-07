@@ -24,7 +24,7 @@ namespace DM.MovieApi.MovieDb.Collections
                 return "n/a";
             }
 
-            return string.Format( "{0} ({1})", Name, Id );
+            return $"{Name} ({Id})";
         }
     }
 }

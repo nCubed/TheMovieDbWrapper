@@ -88,7 +88,7 @@ namespace DM.MovieApi.MovieDb.Genres
                 {"include_adult", "false"},
             };
 
-            string command = string.Format( "genre/{0}/movies", genreId );
+            string command = $"genre/{genreId}/movies";
 
             ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 

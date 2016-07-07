@@ -36,14 +36,10 @@ namespace DM.MovieApi.MovieDb.Keywords
         }
 
         public bool Equals( Keyword x, Keyword y )
-        {
-            return x.Id == y.Id && x.Name == y.Name;
-        }
+            => x.Id == y.Id && x.Name == y.Name;
 
         public override int GetHashCode()
-        {
-            return GetHashCode( this );
-        }
+            => GetHashCode( this );
 
         public int GetHashCode( Keyword obj )
         {
@@ -57,8 +53,6 @@ namespace DM.MovieApi.MovieDb.Keywords
         }
 
         public override string ToString()
-        {
-            return string.Format( "{0} ({1})", Name, Id );
-        }
+            => $"{Name} ({Id})";
     }
 }

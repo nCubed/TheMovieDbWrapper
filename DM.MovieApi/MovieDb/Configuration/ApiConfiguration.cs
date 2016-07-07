@@ -14,7 +14,7 @@ namespace DM.MovieApi.MovieDb.Configuration
 
         public override string ToString()
         {
-            if( Images != null && !string.IsNullOrWhiteSpace( Images.RootUrl ) )
+            if( !string.IsNullOrWhiteSpace( Images?.RootUrl ) )
             {
                 return Images.RootUrl;
             }

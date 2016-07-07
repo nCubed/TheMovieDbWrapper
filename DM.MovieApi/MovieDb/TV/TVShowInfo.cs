@@ -57,8 +57,6 @@ namespace DM.MovieApi.MovieDb.TV
         }
 
         public override string ToString()
-        {
-            return string.Format( "{0} ({1} - {2:yyyy-MM-dd})", Name, Id, FirstAirDate );
-        }
+            => $"{Name} ({Id} - {FirstAirDate:yyyy-MM-dd})";
     }
 }

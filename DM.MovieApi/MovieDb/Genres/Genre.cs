@@ -30,14 +30,10 @@ namespace DM.MovieApi.MovieDb.Genres
         }
 
         public bool Equals( Genre x, Genre y )
-        {
-            return x.Id == y.Id && x.Name == y.Name;
-        }
+            => x.Id == y.Id && x.Name == y.Name;
 
         public override int GetHashCode()
-        {
-            return GetHashCode( this );
-        }
+            => GetHashCode( this );
 
         public int GetHashCode( Genre obj )
         {
@@ -51,8 +47,6 @@ namespace DM.MovieApi.MovieDb.Genres
         }
 
         public override string ToString()
-        {
-            return string.Format( "{0} ({1})", Name, Id );
-        }
+            => $"{Name} ({Id})";
     }
 }

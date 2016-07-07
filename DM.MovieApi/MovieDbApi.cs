@@ -42,18 +42,18 @@ namespace DM.MovieApi
 #pragma warning restore 0649
         #endregion
 
-        public IApiCompanyRequest Companies { get { return _companyRequest.Value; } }
+        public IApiCompanyRequest Companies => _companyRequest.Value;
 
-        public IApiConfigurationRequest Configuration { get { return _configuration.Value; } }
+        public IApiConfigurationRequest Configuration => _configuration.Value;
 
-        public IApiGenreRequest Genres { get { return _genres.Value; } }
+        public IApiGenreRequest Genres => _genres.Value;
 
-        public IApiProfessionRequest IndustryProfessions { get { return _industryProfessions.Value; } }
+        public IApiProfessionRequest IndustryProfessions => _industryProfessions.Value;
 
-        public IApiMovieRequest Movies { get { return _movies.Value; } }
+        public IApiMovieRequest Movies => _movies.Value;
 
-        public IApiMovieRatingRequest MovieRatings { get { return _movieRatings.Value; } }
+        public IApiMovieRatingRequest MovieRatings => _movieRatings.Value;
 
-        public IApiTVShowRequest Television { get { return _television.Value; } }
+        public IApiTVShowRequest Television => _television.Value;
     }
 }

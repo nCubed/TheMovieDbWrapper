@@ -28,7 +28,7 @@ namespace DM.MovieApi.MovieDb.Movies
                 {"append_to_response", "keywords"},
             };
 
-            string command = string.Format( "movie/{0}", movieId );
+            string command = $"movie/{movieId}";
 
             ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
 
@@ -152,7 +152,7 @@ namespace DM.MovieApi.MovieDb.Movies
                 {"language", language},
             };
 
-            string command = string.Format( "movie/{0}/credits", movieId );
+            string command = $"movie/{movieId}/credits";
 
             ApiQueryResponse<MovieCredit> response = await base.QueryAsync<MovieCredit>( command, param );
 

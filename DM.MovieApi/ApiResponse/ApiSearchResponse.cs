@@ -5,7 +5,8 @@ namespace DM.MovieApi.ApiResponse
 {
     /// <summary>
     /// Standard response from an API call returning a more than one result, i.e., a Search Result.
-    /// Single item based results are returned with an <see cref="ApiQueryResponse{T}"/>.
+    /// Single item based results are returned with an 
+    /// <see cref="DM.MovieApi.ApiResponse.ApiQueryResponse{T}"/>.
     /// </summary>
     [DataContract]
     public class ApiSearchResponse<T> : ApiResponseBase
@@ -35,8 +36,6 @@ namespace DM.MovieApi.ApiResponse
         public int TotalResults { get; private set; }
 
         public override string ToString()
-        {
-            return string.Format( "Page {0} of {1} ({2} total results)", PageNumber, TotalPages, TotalResults );
-        }
+            => $"Page {PageNumber} of {TotalPages} ({TotalResults} total results)";
     }
 }

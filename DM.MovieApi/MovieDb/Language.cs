@@ -30,14 +30,10 @@ namespace DM.MovieApi.MovieDb
         }
 
         public bool Equals( Language x, Language y )
-        {
-            return x.Iso639Code == y.Iso639Code && x.Name == y.Name;
-        }
+            => x.Iso639Code == y.Iso639Code && x.Name == y.Name;
 
         public override int GetHashCode()
-        {
-            return GetHashCode( this );
-        }
+            => GetHashCode( this );
 
         public int GetHashCode( Language obj )
         {
@@ -57,7 +53,7 @@ namespace DM.MovieApi.MovieDb
                 return "n/a";
             }
 
-            return string.Format( "{0} ({1})", Name, Iso639Code );
+            return $"{Name} ({Iso639Code})";
         }
     }
 }

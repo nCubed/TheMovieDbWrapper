@@ -14,9 +14,9 @@ namespace DM.MovieApi.ApiResponse
             ResetUnixSeconds = resetUnixSeconds;
         }
 
-        public int Allowed { get; private set; }
+        public int Allowed { get; }
 
-        public int Remaining { get; private set; }
+        public int Remaining { get; }
 
         public DateTime ResetDate { get; private set; }
 
@@ -31,8 +31,6 @@ namespace DM.MovieApi.ApiResponse
         }
 
         public override string ToString()
-        {
-            return string.Format( "{0} of {1}, Resets on: {2}", Remaining, Allowed, ResetDate );
-        }
+            => $"{Remaining} of {Allowed}, Resets on: {ResetDate}";
     }
 }

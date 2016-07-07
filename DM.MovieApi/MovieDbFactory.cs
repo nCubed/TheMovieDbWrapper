@@ -9,7 +9,7 @@ using DM.MovieApi.ApiRequest;
 namespace DM.MovieApi
 {
     /// <summary>
-    /// Note: <see cref="RegisterSettings"/> must be called before the Factory can Create anything.
+    /// Note: one of the RegisterSettings must be called before the Factory can Create anything.
     /// </summary>
     public static class MovieDbFactory
     {
@@ -18,7 +18,7 @@ namespace DM.MovieApi
         /// <summary>
         /// Determines if the underlying MEF factory has been created.
         /// </summary>
-        public static bool IsFactoryComposed { get { return _container != null; } }
+        public static bool IsFactoryComposed => _container != null;
 
         /// <summary>
         /// Registers themoviedb.org settings for use with the MEF container.
@@ -37,7 +37,7 @@ namespace DM.MovieApi
         /// </summary>
         /// <param name="apiKey">Private key required to query themoviedb.org API.</param>
         /// <param name="apiUrl">URL used for api calls to themoviedb.org.</param>
-        public static void RegisterSettings( string apiKey, string apiUrl )
+        public static void RegisterSettings( string apiKey, string apiUrl = "http://api.themoviedb.org/3/" )
         {
             var settings = new MovieDbSettings( apiKey, apiUrl );
 
@@ -46,7 +46,7 @@ namespace DM.MovieApi
 
         /// <summary>
         /// <para>Creates the specific API requested.</para>
-        /// <para>Note: <see cref="RegisterSettings"/> must be called before the Factory can Create anything.</para>
+        /// <para>Note: one of the RegisterSettings must be called before the Factory can Create anything.</para>
         /// </summary>
         public static Lazy<T> Create<T>() where T : IApiRequest
         {
@@ -58,7 +58,7 @@ namespace DM.MovieApi
         /// <summary>
         /// <para>Creates the global instance exposing all API interfaces against themoviedb.org
         /// that are currently available in this release.</para>
-        /// <para>Note: <see cref="RegisterSettings"/> must be called before the Factory can Create anything.</para>
+        /// <para>Note: one of the RegisterSettings must be called before the Factory can Create anything.</para>
         /// </summary>
         public static IMovieDbApi GetAllApiRequests()
         {
@@ -71,16 +71,13 @@ namespace DM.MovieApi
         }
 
         /// <summary>
-        /// Clears the MEF container; forces the next call to be <see cref="RegisterSettings"/>
+        /// Clears the MEF container; forces the next call to be one of the RegisterSettings methods
         /// before <see cref="Create{T}"/> can be called.
         /// </summary>
         public static void ResetFactory()
         {
-            if( _container != null )
-            {
-                _container.Dispose();
-                _container = null;
-            }
+            _container?.Dispose();
+            _container = null;
         }
 
         private static CompositionContainer CreateContainer()
@@ -111,8 +108,8 @@ namespace DM.MovieApi
 
         private class MovieDbSettings : IMovieDbSettings
         {
-            public string ApiKey { get; private set; }
-            public string ApiUrl { get; private set; }
+            public string ApiKey { get; }
+            public string ApiUrl { get; }
 
             public MovieDbSettings( string apiKey, string apiUrl )
             {

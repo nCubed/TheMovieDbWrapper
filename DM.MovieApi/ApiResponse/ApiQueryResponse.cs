@@ -12,8 +12,6 @@ namespace DM.MovieApi.ApiResponse
         public T Item { get; internal set; }
 
         public override string ToString()
-        {
-            return Item.ToString();
-        }
+            => Item.ToString();
     }
 }

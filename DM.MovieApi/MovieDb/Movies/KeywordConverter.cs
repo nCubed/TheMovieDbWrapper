@@ -25,8 +25,6 @@ namespace DM.MovieApi.MovieDb.Movies
         }
 
         public override bool CanConvert( Type objectType )
-        {
-            return false;
-        }
+            => false;
     }
 }

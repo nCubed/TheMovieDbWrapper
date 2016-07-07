@@ -23,7 +23,7 @@ namespace DM.MovieApi.MovieDb.Companies
 
         public async Task<ApiQueryResponse<ProductionCompany>> FindByIdAsync( int companyId )
         {
-            string command = string.Format( "company/{0}", companyId );
+            string command = $"company/{companyId}";
 
             ApiQueryResponse<ProductionCompany> response = await base.QueryAsync<ProductionCompany>( command );
 
@@ -37,7 +37,7 @@ namespace DM.MovieApi.MovieDb.Companies
                 {"language", language},
             };
 
-            string command = string.Format( "company/{0}/movies", companyId );
+            string command = $"company/{companyId}/movies";
 
             ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 

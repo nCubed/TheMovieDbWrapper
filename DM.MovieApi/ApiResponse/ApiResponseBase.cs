@@ -21,8 +21,6 @@ namespace DM.MovieApi.ApiResponse
         public string CommandText { get; internal set; }
 
         public override string ToString()
-        {
-            return CommandText;
-        }
+            => CommandText;
     }
 }

@@ -31,8 +31,6 @@ namespace DM.MovieApi.MovieDb.TV
         }
 
         public override string ToString()
-        {
-            return string.Format( "({0} - {1:yyyy-MM-dd})", SeasonNumber, AirDate );
-        }
+            => $"({SeasonNumber} - {AirDate:yyyy-MM-dd})";
     }
 }

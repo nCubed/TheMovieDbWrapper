@@ -17,7 +17,7 @@ namespace DM.MovieApi.ApiResponse
                 _statusCode = value;
 
                 TmdbStatusCode = Enum.IsDefined( typeof( TmdbStatusCode ), _statusCode )
-                    ? (TmdbStatusCode)_statusCode
+                    ? ( TmdbStatusCode )_statusCode
                     : TmdbStatusCode.Unknown;
             }
         }
@@ -28,8 +28,6 @@ namespace DM.MovieApi.ApiResponse
         public TmdbStatusCode TmdbStatusCode { get; private set; }
 
         public override string ToString()
-        {
-            return string.Format( "Status: {0}: {1}", StatusCode, Message );
-        }
+            => $"Status: {StatusCode}: {Message}";
     }
 }
