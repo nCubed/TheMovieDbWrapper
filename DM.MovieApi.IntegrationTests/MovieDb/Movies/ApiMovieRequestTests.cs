@@ -191,7 +191,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             const int id = 140607;
             const string language = "de";
-            const string expectedTitle = "Star Wars: Episode VII - Das Erwachen der Macht";
+            const string expectedTitle = "Star Wars: Das Erwachen der Macht";
 
             ApiQueryResponse<Movie> response = await _api.FindByIdAsync( id, language );
 
