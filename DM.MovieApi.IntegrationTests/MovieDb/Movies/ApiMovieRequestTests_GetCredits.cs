@@ -22,11 +22,13 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         [TestMethod]
         public async Task GetCreditsAsync_Returns_ValidResults()
         {
-            ApiQueryResponse<MovieCredit> response = await _api.GetCreditsAsync( 104 );
+            const int movieIdRunLolaRun = 104;
+
+            ApiQueryResponse<MovieCredit> response = await _api.GetCreditsAsync( movieIdRunLolaRun );
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            Assert.AreEqual( 104, response.Item.MovieId );
+            Assert.AreEqual( movieIdRunLolaRun, response.Item.MovieId );
             Assert.AreEqual( 23, response.Item.CastMembers.Count );
             Assert.AreEqual( 25, response.Item.CrewMembers.Count );
         }
@@ -34,7 +36,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         [TestMethod]
         public async Task GetCreditsAsync_ReturnsCastMembers()
         {
-            ApiQueryResponse<MovieCredit> response = await _api.GetCreditsAsync( 104 );
+            const int movieIdRunLolaRun = 104;
+
+            ApiQueryResponse<MovieCredit> response = await _api.GetCreditsAsync( movieIdRunLolaRun );
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
@@ -59,7 +63,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         [TestMethod]
         public async Task GetCreditsAsync_ReturnsCrewMembers()
         {
-            ApiQueryResponse<MovieCredit> response = await _api.GetCreditsAsync( 104 );
+            const int movieIdRunLolaRun = 104;
+
+            ApiQueryResponse<MovieCredit> response = await _api.GetCreditsAsync( movieIdRunLolaRun );
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
