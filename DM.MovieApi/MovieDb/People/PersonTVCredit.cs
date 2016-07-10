@@ -11,10 +11,10 @@ namespace DM.MovieApi.MovieDb.People
         public int PersonId { get; set; }
 
         [DataMember( Name = "cast" )]
-        public IList<PersonTVCastMember> CastRoles { get; set; }
+        public IReadOnlyList<PersonTVCastMember> CastRoles { get; set; }
 
         [DataMember( Name = "crew" )]
-        public IList<PersonTVCrewMember> CrewRoles { get; set; }
+        public IReadOnlyList<PersonTVCrewMember> CrewRoles { get; set; }
     }
 
     [DataContract]
