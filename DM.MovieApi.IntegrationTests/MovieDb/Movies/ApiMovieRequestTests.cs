@@ -59,6 +59,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
         private void AssertRunLolaRun( ApiSearchResponse<MovieInfo> response, string expectedTitle )
         {
+            ApiResponseUtil.AssertErrorIsNull( response );
+
             Assert.AreEqual( 1, response.TotalResults );
             Assert.AreEqual( 1, response.Results.Count );
 
@@ -84,9 +86,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             const string query = "Harry";
             const int minimumPageCount = 8;
-            const int minimumMovieCount = 140;
+            const int minimumTotalResultsCount = 140;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
                 ( search, pageNumber ) => _api.SearchByTitleAsync( search, pageNumber ), x => x.Id );
         }
 
@@ -241,9 +243,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             // Now Playing typically has 25+ pages.
             const int minimumPageCount = 5;
-            const int minimumMovieCount = 100; // 20 results per page x 5 pages = 100
+            const int minimumTotalResultsCount = 100; // 20 results per page x 5 pages = 100
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetNowPlayingAsync( page ), x => x.Id );
         }
 
@@ -262,9 +264,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             // Now Playing typically has 5+ pages.
             const int minimumPageCount = 3;
-            const int minimumMovieCount = 60; // 20 results per page x 3 pages = 60
+            const int minimumTotalResultsCount = 60; // 20 results per page x 3 pages = 60
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetUpcomingAsync( page ), x => x.Id );
         }
 
@@ -284,9 +286,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         public async Task GetTopRatedAsync_CanPageResults()
         {
             const int minimumPageCount = 2;
-            const int minimumMovieCount = 40;
+            const int minimumTotalResultsCount = 40;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
         }
 
@@ -306,9 +308,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         public async Task GetPopularAsync_CanPageResults()
         {
             const int minimumPageCount = 2;
-            const int minimumMovieCount = 40;
+            const int minimumTotalResultsCount = 40;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
     }

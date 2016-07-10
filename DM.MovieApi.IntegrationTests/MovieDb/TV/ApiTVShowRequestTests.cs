@@ -98,9 +98,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
         {
             const string query = "full";
             const int minimumPageCount = 4;
-            const int minimumMovieCount = 61;
+            const int minimumTotalResultsCount = 61;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
                 ( search, pageNumber ) => _api.SearchByNameAsync( search, pageNumber ), x => x.Id );
         }
 
@@ -219,9 +219,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
         public async Task GetTopRatedAsync_CanPageResults()
         {
             const int minimumPageCount = 5;
-            const int minimumMovieCount = 100;
+            const int minimumTotalResultsCount = 100;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
         }
 
@@ -241,9 +241,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
         public async Task GetPopularAsync_CanPageResults()
         {
             const int minimumPageCount = 5;
-            const int minimumMovieCount = 100;
+            const int minimumTotalResultsCount = 100;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
     }

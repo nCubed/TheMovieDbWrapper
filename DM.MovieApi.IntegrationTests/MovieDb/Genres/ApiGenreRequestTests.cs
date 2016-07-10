@@ -158,9 +158,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
             int genreId = GenreFactory.Comedy().Id;
             // Comedy has upwards of 2k pages.
             const int minimumPageCount = 5;
-            const int minimumMovieCount = 100; // 20 results per page x 5 pages = 100
+            const int minimumTotalResultsCount = 100; // 20 results per page x 5 pages = 100
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( genreId, minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( genreId, minimumPageCount, minimumTotalResultsCount,
                 ( id, page ) => _api.FindMoviesByIdAsync( id, page ), x => x.Id );
         }
     }
