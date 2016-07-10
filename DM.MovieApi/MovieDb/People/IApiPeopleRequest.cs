@@ -4,6 +4,9 @@ using DM.MovieApi.ApiResponse;
 
 namespace DM.MovieApi.MovieDb.People
 {
+    /// <summary>
+    /// Interface for retrieving information about People.
+    /// </summary>
     public interface IApiPeopleRequest : IApiRequest
     {
         /// <summary>

@@ -6,6 +6,7 @@ using DM.MovieApi.MovieDb.Configuration;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.MovieDb.IndustryProfessions;
 using DM.MovieApi.MovieDb.Movies;
+using DM.MovieApi.MovieDb.People;
 using DM.MovieApi.MovieDb.TV;
 
 namespace DM.MovieApi
@@ -39,6 +40,9 @@ namespace DM.MovieApi
         [Import]
         private Lazy<IApiTVShowRequest> _television;
 
+        [Import]
+        private Lazy<IApiPeopleRequest> _people;
+
 #pragma warning restore 0649
         #endregion
 
@@ -55,5 +59,7 @@ namespace DM.MovieApi
         public IApiMovieRatingRequest MovieRatings => _movieRatings.Value;
 
         public IApiTVShowRequest Television => _television.Value;
+
+        public IApiPeopleRequest People => _people.Value;
     }
 }
