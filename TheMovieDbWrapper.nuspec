@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>TheMovieDbWrapper</id>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
     <title>TheMovieDb.org Wrapper</title>
     <authors>Kindler Chase</authors>
     <owners>Kindler Chase</owners>
@@ -10,14 +10,11 @@
     <projectUrl>https://github.com/nCubed/TheMovieDbWrapper</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C# wrapper for common requests against themoviedb.org API.</description>
-    <releaseNotes>Added support for keywords on movies.</releaseNotes>
+    <releaseNotes>Added initial API for detailed Person information.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Movie Movies themoviedb TMDB Film TV Television</tags>
     <dependencies>
-      <dependency id="Microsoft.Bcl" version="1.1.10" />
-      <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
-      <dependency id="Microsoft.Net.Http" version="2.2.29" />
-      <dependency id="Newtonsoft.Json" version="8.0.3" />
+      <dependency id="Newtonsoft.Json" version="9.0.1" />
     </dependencies>
   </metadata>
     <files>
