@@ -91,6 +91,7 @@
     <Compile Include="MovieDb\People\Gender.cs" />
     <Compile Include="MovieDb\People\IApiPeopleRequest.cs" />
     <Compile Include="MovieDb\People\Person.cs" />
+    <Compile Include="MovieDb\People\PersonInfo.cs" />
     <Compile Include="MovieDb\People\PersonMovieCredit.cs" />
     <Compile Include="MovieDb\People\PersonTVCredit.cs" />
     <Compile Include="MovieDb\TV\ApiTVShowRequest.cs" />

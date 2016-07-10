@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
+using DM.MovieApi.MovieDb.Genres;
 
 namespace DM.MovieApi.MovieDb.People
 {
@@ -10,10 +11,14 @@ namespace DM.MovieApi.MovieDb.People
     [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiPeopleRequest : ApiRequestBase, IApiPeopleRequest
     {
+        private readonly IApiGenreRequest _genreApi;
+
         [ImportingConstructor]
-        public ApiPeopleRequest( IMovieDbSettings settings )
+        public ApiPeopleRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
             : base( settings )
-        { }
+        {
+            _genreApi = genreApi;
+        }
 
         public async Task<ApiQueryResponse<Person>> FindByIdAsync( int personId, string language = "en" )
         {
@@ -25,6 +30,29 @@ namespace DM.MovieApi.MovieDb.People
             string command = $"person/{personId}";
 
             ApiQueryResponse<Person> response = await base.QueryAsync<Person>( command, param );
+
+            return response;
+        }
+
+        public async Task<ApiSearchResponse<PersonInfo>> SearchByNameAsync( string query, int pageNumber = 1, string language = "en" )
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"query", query},
+                {"include_adult", "false"},
+                {"language", language},
+            };
+
+            const string command = "search/person";
+
+            ApiSearchResponse<PersonInfo> response = await base.SearchAsync<PersonInfo>( command, pageNumber, param );
+
+            if( response.Error != null )
+            {
+                return response;
+            }
+
+            response.Results.PopulateGenres( _genreApi.AllGenres );
 
             return response;
         }

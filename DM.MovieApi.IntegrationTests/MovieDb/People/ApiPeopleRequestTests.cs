@@ -281,5 +281,50 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
                 Assert.IsNotNull( cast );
             }
         }
+
+        [TestMethod]
+        public async Task SearchByNameAsync_Milla_Jovovich_Returns_SingleResult_WithExpectedValues()
+        {
+            const string millaJovovich = "Milla Jovovich";
+
+            ApiSearchResponse<PersonInfo> response = await _api.SearchByNameAsync( millaJovovich );
+
+            ApiResponseUtil.AssertErrorIsNull( response );
+
+            Assert.AreEqual( 1, response.TotalResults );
+            Assert.AreEqual( 1, response.Results.Count );
+
+            PersonInfo person = response.Results.Single();
+
+            Assert.AreEqual( PersonId_MillaJovovich, person.Id );
+            Assert.AreEqual( millaJovovich, person.Name );
+            Assert.IsFalse( person.IsAdultFilmStar );
+            Assert.AreEqual( 3, person.KnownFor.Count );
+
+            string[] roles =
+            {
+                "The Fifth Element",
+                "Resident Evil: Retribution",
+                "Resident Evil",
+            };
+
+            foreach( string role in roles )
+            {
+                PersonInfoRole info = person.KnownFor.SingleOrDefault( x => x.MovieTitle == role );
+                Assert.IsNotNull( info );
+                Assert.AreEqual( MediaType.Movie, info.MediaType );
+            }
+        }
+
+        [TestMethod]
+        public async Task SearchByNameAsync_CanPageResults()
+        {
+            const string query = "Cox";
+            const int minimumPageCount = 15;
+            const int minimumTotalResultsCount = 300;
+
+            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
+                ( search, pageNumber ) => _api.SearchByNameAsync( search, pageNumber ), null );
+        }
     }
 }
