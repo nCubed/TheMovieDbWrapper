@@ -73,6 +73,7 @@
     <Compile Include="MovieDb\Genres\ApiGenreRequestTests.cs" />
     <Compile Include="MovieDb\Movies\ApiMovieRequestTests.cs" />
     <Compile Include="MovieDb\Movies\ApiMovieRequestTests_GetCredits.cs" />
+    <Compile Include="MovieDb\People\ApiPeopleRequestTests.cs" />
     <Compile Include="MovieDb\Professions\ApiProfessionRequestTests.cs" />
     <Compile Include="AssemblyInit.cs" />
     <Compile Include="MovieDb\TV\ApiTVShowRequestTests.cs" />
