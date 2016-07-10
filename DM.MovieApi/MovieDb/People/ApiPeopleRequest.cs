@@ -42,5 +42,19 @@ namespace DM.MovieApi.MovieDb.People
 
             return response;
         }
+
+        public async Task<ApiQueryResponse<PersonTVCredit>> GetTVCreditsAsync( int personId, string language = "en" )
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+            };
+
+            string command = $"person/{personId}/tv_credits";
+
+            ApiQueryResponse<PersonTVCredit> response = await base.QueryAsync<PersonTVCredit>( command, param );
+
+            return response;
+        }
     }
 }
