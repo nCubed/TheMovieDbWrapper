@@ -56,8 +56,9 @@ namespace DM.MovieApi
         }
 
         /// <summary>
-        /// <para>Creates the global instance exposing all API interfaces against themoviedb.org
-        /// that are currently available in this release.</para>
+        /// <para>Creates a global instance exposing all API interfaces against themoviedb.org
+        /// that are currently available in this release. Each API is exposed via a Lazy property
+        /// ensuring no objects are created until they needed.</para>
         /// <para>Note: one of the RegisterSettings must be called before the Factory can Create anything.</para>
         /// </summary>
         public static IMovieDbApi GetAllApiRequests()

@@ -12,6 +12,7 @@ The current release supports common requests for movie and other miscellaneous i
 * Movie and TV genres
 * Movie/TV industry specific professions
 * Production company information
+* People information
 
 ## Usage - Setup
 In order to use any feature of the wrapper, a concrete implementation of the [IMovieDbSettings](DM.MovieApi/IMovieDbSettings.cs) interface must be created. The interface only contains 2 properties:
@@ -43,11 +44,12 @@ The following interfaces can be used to retrieve information:
 ### Usage - Examples
 Register your settings first:
 ```csharp
-// registration with an implementation your own IMovieDbSettings
+// registration with an implementation of IMovieDbSettings
+//, i.e., public class YourMovieDbSettings : IMoveDbSettings { // implementation }
 MovieDbFactory.RegisterSettings( new YourMovieDbSettings() )
 
 // alternative method of registration
-MovieDbFactory.RegisterSettings( "your-apiKey", "theMovieDb-apiUrl" )
+MovieDbFactory.RegisterSettings( "your-apiKey", "http://api.themoviedb.org/3/" )
 ```
 
 Retrieve an API request interface (see Usage - Interfaces above for available interfaces):
@@ -98,21 +100,22 @@ See the [MovieInfo](DM.MovieApi/MovieDb/Movies/MovieInfo.cs) class for all avail
 ```csharp
 var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
 
-int pageNumber;
+int pageNumber = 1;
+int totalPages;
 do
 {
-    ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Harry" );
+    ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Harry", pageNumber );
 
     // alternatively, just call response.ToString() which will provide the same paged information format as below:
     Console.WriteLine( "Page {0} of {1} ({2} total results)", response.PageNumber, response.TotalPages, response.TotalResults );
 
     foreach( MovieInfo info in response.Results )
     {
-        Console.WriteLine( "{0} ({1}): {2}" info.Title, info.ReleaseDate, info.Overview );
+        Console.WriteLine( "{0} ({1}): {2}", info.Title, info.ReleaseDate, info.Overview );
     }
-    
-    pageNumber++;
-} while( pageNumber <= response.TotalPages );
+
+    totalPages = response.TotalPages;
+} while( pageNumber++ < totalPages );
 ```
 
 ### Do you have a comprehensive list of examples?
