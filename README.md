@@ -38,6 +38,7 @@ The following interfaces can be used to retrieve information:
 * [`IApiGenreRequest`](DM.MovieApi/MovieDb/Genres/IApiGenreRequest.cs): Provides access for retrieving Movie and TV genres.
 * [`IApiCompanyRequest`](DM.MovieApi/MovieDb/Companies/IApiCompanyRequest.cs): Provides access for retrieving production company information.
 * [`IApiProfessionRequest`](DM.MovieApi/MovieDb/IndustryProfessions/IApiProfessionRequest.cs): Provides access for retrieving information about Movie/TV industry specific professions.
+* [`IApiPeopleRequest`](DM.MovieApi/MovieDb/People/IApiPeopleRequest.cs): Provides access for retrieving information about People.
 
 ### Usage - Examples
 Register your settings first:
