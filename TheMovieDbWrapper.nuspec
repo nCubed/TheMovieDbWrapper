@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>TheMovieDbWrapper</id>
-    <version>0.7.0</version>
+    <version>0.7.1</version>
     <title>TheMovieDb.org Wrapper</title>
     <authors>Kindler Chase</authors>
     <owners>Kindler Chase</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/nCubed/TheMovieDbWrapper</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C# wrapper for common requests against themoviedb.org API.</description>
-    <releaseNotes>Added initial API for detailed Person information.</releaseNotes>
+    <releaseNotes>Enhanced Person API to search by person.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Movie Movies themoviedb TMDB Film TV Television</tags>
     <dependencies>
