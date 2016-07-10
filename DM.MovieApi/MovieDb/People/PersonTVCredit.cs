@@ -15,6 +15,12 @@ namespace DM.MovieApi.MovieDb.People
 
         [DataMember( Name = "crew" )]
         public IReadOnlyList<PersonTVCrewMember> CrewRoles { get; set; }
+
+        public PersonTVCredit()
+        {
+            CastRoles = new PersonTVCastMember[0];
+            CrewRoles = new PersonTVCrewMember[0];
+        }
     }
 
     [DataContract]
