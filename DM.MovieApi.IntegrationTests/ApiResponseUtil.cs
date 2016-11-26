@@ -15,13 +15,16 @@ namespace DM.MovieApi.IntegrationTests
 {
     internal static class ApiResponseUtil
     {
+        internal const int TestInitThrottle = 375;
+        internal const int PagingThrottle = 225;
+
         /// <summary>
         /// Slows down the starting of tests to keep themoviedb.org api from denying the request
         /// due to too many requests. This should be placed in the [TestInitialize] method.
         /// </summary>
         public static void ThrottleTests()
         {
-            System.Threading.Thread.Sleep( 375 );
+            System.Threading.Thread.Sleep( TestInitThrottle );
         }
 
         public static void AssertErrorIsNull<T>( ApiQueryResponse<T> response )
@@ -64,11 +67,11 @@ namespace DM.MovieApi.IntegrationTests
 
                 if( typeof( T ) == typeof( Movie ) )
                 {
-                    AssertMovieStructure( ( IEnumerable<Movie> )response.Results );
+                    AssertMovieStructure( (IEnumerable<Movie>)response.Results );
                 }
                 else if( typeof( T ) == typeof( PersonInfo ) )
                 {
-                    AssertPersonInfoStructure( ( IEnumerable<PersonInfo> )response.Results );
+                    AssertPersonInfoStructure( (IEnumerable<PersonInfo>)response.Results );
                 }
 
                 allFound.AddRange( response.Results );
@@ -81,7 +84,7 @@ namespace DM.MovieApi.IntegrationTests
                 pageNumber++;
 
                 // keeps the system from being throttled
-                System.Threading.Thread.Sleep( 50 );
+                System.Threading.Thread.Sleep( PagingThrottle );
             } while( pageNumber <= minimumPageCount );
 
             // will be 1 greater than minimumPageCount in the last loop
