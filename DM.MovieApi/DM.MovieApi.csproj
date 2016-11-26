@@ -45,6 +45,7 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiRequest\IsoDateTimeConverterEx.cs" />
     <Compile Include="ApiResponse\ApiError.cs" />
     <Compile Include="ApiResponse\ApiRateLimit.cs" />
     <Compile Include="ApiRequest\ApiRequestBase.cs" />

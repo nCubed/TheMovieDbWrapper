@@ -20,6 +20,8 @@ namespace DM.MovieApi.ApiResponse
         /// </summary>
         public string CommandText { get; internal set; }
 
+        // TODO: [2016-11-25] Add readonly property for raw json
+
         public override string ToString()
             => CommandText;
     }

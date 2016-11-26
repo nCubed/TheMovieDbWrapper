@@ -24,7 +24,13 @@ namespace DM.MovieApi.ApiRequest
 
         public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command, IDictionary<string, string> parameters )
         {
-            var settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+            };
+            settings.Converters.Add( new IsoDateTimeConverterEx() );
+
             Func<string, T> deserializer = json => JsonConvert.DeserializeObject<T>( json, settings );
 
             return await QueryAsync( command, parameters, deserializer );
@@ -150,7 +156,7 @@ namespace DM.MovieApi.ApiRequest
             return client;
         }
 
-        protected string CreateCommand( string rootCommand ) 
+        protected string CreateCommand( string rootCommand )
             => CreateCommand( rootCommand, new Dictionary<string, string>() );
 
         protected string CreateCommand( string rootCommand, IDictionary<string, string> parameters )
