@@ -179,11 +179,10 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             {
                 new Keyword(803, "android"),
                 new Keyword(9831, "spaceship"),
-                new Keyword(9944, "star wars"),
                 new Keyword(10527, "jedi"),
-                new Keyword(156395, "imax"),
                 new Keyword(161176, "space opera"),
                 new Keyword(209714, "3d"),
+                new Keyword(229031, "shot on imax cameras"),
             };
             CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToList() );
         }
