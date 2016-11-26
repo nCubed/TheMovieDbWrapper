@@ -262,8 +262,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         public async Task GetUpcomingAsync_CanPageResults()
         {
             // Now Playing typically has 5+ pages.
+            // - intentionally setting minimumTotalResultsCount at 50; sometimes upcoming movies are scarce.
             const int minimumPageCount = 3;
-            const int minimumTotalResultsCount = 60; // 20 results per page x 3 pages = 60
+            const int minimumTotalResultsCount = 50; // 20 results per page x 3 pages = 60
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetUpcomingAsync( page ), x => x.Id );

@@ -21,6 +21,30 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
             _api = MovieDbFactory.Create<IApiGenreRequest>().Value;
 
             Assert.IsInstanceOfType( _api, typeof( ApiGenreRequest ) );
+
+            ( (ApiGenreRequest)_api ).ClearAllGenres();
+        }
+
+        [TestMethod]
+        public async Task FindById_Returns_Foreign_Genre_NotInGetAll()
+        {
+            const int id = 10769;
+            const string name = "Foreign";
+
+            CollectionAssert.DoesNotContain( _api.AllGenres.ToList(), new Genre( id, name ) );
+
+            // FindById will add to AllGenres when it does not exist
+            ApiQueryResponse<Genre> response = await _api.FindByIdAsync( id );
+
+            ApiResponseUtil.AssertErrorIsNull( response );
+
+            Genre genre = response.Item;
+
+            Assert.AreEqual( id, genre.Id );
+            Assert.AreEqual( name, genre.Name );
+
+            CollectionAssert.Contains( _api.AllGenres.ToList(), new Genre( id, name ) );
+            CollectionAssert.Contains( _api.AllGenres.ToList(), genre );
         }
 
         [TestMethod]

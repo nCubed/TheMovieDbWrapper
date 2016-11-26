@@ -59,6 +59,7 @@ namespace DM.MovieApi.IntegrationTests
 
             do
             {
+                System.Diagnostics.Trace.WriteLine( $"search: {search} | page: {pageNumber}", "ApiResponseUti.AssertCanPageSearchResponse" );
                 ApiSearchResponse<T> response = await apiSearch( search, pageNumber );
 
                 AssertErrorIsNull( response );
@@ -90,7 +91,7 @@ namespace DM.MovieApi.IntegrationTests
             // will be 1 greater than minimumPageCount in the last loop
             Assert.AreEqual( minimumPageCount + 1, pageNumber );
 
-            Assert.IsTrue( allFound.Count >= minimumTotalResultsCount );
+            Assert.IsTrue( allFound.Count >= minimumTotalResultsCount, $"Actual found count: {allFound.Count} | Expected min count: {minimumTotalResultsCount}" );
 
             if( keySelector == null )
             {

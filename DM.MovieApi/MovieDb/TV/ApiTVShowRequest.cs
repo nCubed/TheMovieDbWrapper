@@ -52,7 +52,7 @@ namespace DM.MovieApi.MovieDb.TV
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }
@@ -88,7 +88,7 @@ namespace DM.MovieApi.MovieDb.TV
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }
@@ -109,7 +109,7 @@ namespace DM.MovieApi.MovieDb.TV
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }

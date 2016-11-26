@@ -52,7 +52,7 @@ namespace DM.MovieApi.MovieDb.People
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }
