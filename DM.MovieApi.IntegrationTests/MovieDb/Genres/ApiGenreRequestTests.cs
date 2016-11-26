@@ -49,36 +49,19 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
         }
 
         [TestMethod]
-        public async Task GetAllAsync_Returns_Common_Genres()
+        public async Task GetAllAsync_Returns_Known_Genres()
         {
             ApiQueryResponse<IReadOnlyList<Genre>> response = await _api.GetAllAsync();
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            var commonGenres = new List<Genre>
-            {
-                GenreFactory.Action(),
-                GenreFactory.Drama(),
-                GenreFactory.Thriller(),
-                GenreFactory.Mystery(),
-                GenreFactory.ScienceFiction(),
-                GenreFactory.Comedy(),
-                GenreFactory.Horror(),
-                GenreFactory.Romance(),
-                GenreFactory.Family(),
-                GenreFactory.ActionAndAdventure(),
-                GenreFactory.WarAndPolitics(),
-                GenreFactory.Soap(),
-                GenreFactory.SciFiAndFantasy(),
-                GenreFactory.Reality(),
-                GenreFactory.News(),
-            };
+            IReadOnlyList<Genre> knownGenres = GenreFactory.GetAll();
 
-            CollectionAssert.IsSubsetOf( commonGenres, response.Item.ToList() );
+            CollectionAssert.AreEquivalent( knownGenres.ToList(), response.Item.ToList() );
         }
 
         [TestMethod]
-        public async Task GetMoviesAsync_Returns_Minimum_20_Results()
+        public async Task GetMoviesAsync_Returns_19_Results()
         {
             ApiQueryResponse<IReadOnlyList<Genre>> response = await _api.GetMoviesAsync();
 
@@ -86,11 +69,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             Assert.IsTrue( response.Item.Any() );
 
-            Assert.IsTrue( response.Item.Count >= 20 );
+            Assert.AreEqual( 19, response.Item.Count );
         }
 
         [TestMethod]
-        public async Task GetTelevisionAsync_Returns_Minimum_15_Results()
+        public async Task GetTelevisionAsync_Returns_16_Results()
         {
             ApiQueryResponse<IReadOnlyList<Genre>> response = await _api.GetTelevisionAsync();
 
@@ -98,7 +81,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             Assert.IsTrue( response.Item.Any() );
 
-            Assert.IsTrue( response.Item.Count >= 15 );
+            Assert.AreEqual( 16, response.Item.Count );
         }
 
         [TestMethod]
