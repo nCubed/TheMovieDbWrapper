@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>TheMovieDbWrapper</id>
-    <version>0.7.1</version>
+    <version>0.7.2</version>
     <title>TheMovieDb.org Wrapper</title>
     <authors>Kindler Chase</authors>
     <owners>Kindler Chase</owners>
@@ -10,9 +10,10 @@
     <projectUrl>https://github.com/nCubed/TheMovieDbWrapper</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C# wrapper for common requests against themoviedb.org API.</description>
-    <releaseNotes>Enhanced Person API to search by person.</releaseNotes>
+    <releaseNotes>Extended NewtonSoft.IsoDateTimeConverter to allow partial dates; fallback to default(DateTime) when date is malformed and supress the exception. During debug, the date value being parsed will be emitted to the Trace log.
+.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Movie Movies themoviedb TMDB Film TV Television</tags>
+    <tags>Movie Movies themoviedb themoviedb.org TMDB Film TV Television</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="9.0.1" />
     </dependencies>
