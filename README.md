@@ -1,5 +1,5 @@
 # TheMovieDb.org Wrapper
-TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API.
+TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API providing cross-platform support for Xamarin, iOS, Android, and all flavors of .NET.
 
 A nuget package is available directly through Visual Studio: https://www.nuget.org/packages/TheMovieDbWrapper/
 
