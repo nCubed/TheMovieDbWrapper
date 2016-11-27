@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using DM.MovieApi.MovieDb.Genres;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace DM.MovieApi.MovieDb.TV
 {

@@ -26,7 +26,6 @@ namespace DM.MovieApi.IntegrationTests
         {
         }
 
-
         /// <summary>
         /// Registers the <see cref="IMovieDbSettings"/> for the <see cref="MovieDbFactory"/>
         /// with the credentials from _init\ApiCreds.xml.
@@ -60,7 +59,7 @@ namespace DM.MovieApi.IntegrationTests
                 return result;
             } ).GetAwaiter().GetResult();
 
-            Assert.IsNull( response.Error, string.Format( "{0} Query: {1}", response.Error, response.CommandText ) );
+            Assert.IsNull( response.Error, $"{response.Error} Query: {response.CommandText}" );
         }
     }
 }

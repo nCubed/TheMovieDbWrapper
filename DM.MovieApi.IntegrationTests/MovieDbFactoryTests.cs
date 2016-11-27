@@ -36,7 +36,6 @@ namespace DM.MovieApi.IntegrationTests
             }
         }
 
-
         [TestMethod]
         public void Create_Throws_InvalidOperationException_When_SettingsNotRegistered()
         {
@@ -100,7 +99,7 @@ namespace DM.MovieApi.IntegrationTests
                 .Distinct()
                 .ToList();
 
-            Assert.IsTrue( dbApi.Count > 5 );
+            Assert.AreEqual( 8, dbApi.Count );
 
             foreach( PropertyInfo pi in dbApi )
             {

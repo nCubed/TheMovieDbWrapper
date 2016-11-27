@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8BB3A8DD-7BBC-426C-89FE-2AE4CA7CE7FD}</ProjectGuid>
+    <ProjectGuid>{EEA7946A-DB5A-4DD8-8059-CC28C69967C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DM.MovieApi</RootNamespace>
     <AssemblyName>DM.MovieApi</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,31 +29,24 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;RELEASE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\DM.MovieApi.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Runtime.Serialization" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiRequest\ApiRequestBase.cs" />
+    <Compile Include="ApiRequest\IApiRequest.cs" />
     <Compile Include="ApiRequest\IsoDateTimeConverterEx.cs" />
     <Compile Include="ApiResponse\ApiError.cs" />
-    <Compile Include="ApiResponse\ApiRateLimit.cs" />
-    <Compile Include="ApiRequest\ApiRequestBase.cs" />
     <Compile Include="ApiResponse\ApiQueryResponse.cs" />
+    <Compile Include="ApiResponse\ApiRateLimit.cs" />
     <Compile Include="ApiResponse\ApiResponseBase.cs" />
     <Compile Include="ApiResponse\ApiSearchResponse.cs" />
-    <Compile Include="ApiRequest\IApiRequest.cs" />
     <Compile Include="ApiResponse\TmdbStatusCode.cs" />
     <Compile Include="IMovieDbApi.cs" />
     <Compile Include="IMovieDbSettings.cs" />
@@ -66,27 +60,26 @@
     <Compile Include="MovieDb\Companies\ParentCompany.cs" />
     <Compile Include="MovieDb\Companies\ProductionCompany.cs" />
     <Compile Include="MovieDb\Companies\ProductionCompanyInfo.cs" />
+    <Compile Include="MovieDb\Configuration\ApiConfiguration.cs" />
+    <Compile Include="MovieDb\Configuration\ApiConfigurationRequest.cs" />
     <Compile Include="MovieDb\Configuration\IApiConfigurationRequest.cs" />
+    <Compile Include="MovieDb\Configuration\ImageConfiguration.cs" />
+    <Compile Include="MovieDb\Country.cs" />
+    <Compile Include="MovieDb\Genres\ApiGenreRequest.cs" />
+    <Compile Include="MovieDb\Genres\Genre.cs" />
     <Compile Include="MovieDb\Genres\GenreFactory.cs" />
     <Compile Include="MovieDb\Genres\GenreIdCollectionMappingExtensions.cs" />
     <Compile Include="MovieDb\Genres\IApiGenreRequest.cs" />
-    <Compile Include="MovieDb\Country.cs" />
     <Compile Include="MovieDb\IndustryProfessions\ApiProfessionRequest.cs" />
     <Compile Include="MovieDb\IndustryProfessions\IApiProfessionRequest.cs" />
     <Compile Include="MovieDb\IndustryProfessions\Profession.cs" />
     <Compile Include="MovieDb\Keywords\Keyword.cs" />
     <Compile Include="MovieDb\Keywords\KeywordConverter.cs" />
-    <Compile Include="MovieDb\Movies\MovieCredit.cs" />
-    <Compile Include="MovieDb\Movies\IApiMovieRequest.cs" />
-    <Compile Include="MovieDbApi.cs" />
-    <Compile Include="MovieDb\Configuration\ApiConfigurationRequest.cs" />
-    <Compile Include="MovieDb\Genres\ApiGenreRequest.cs" />
-    <Compile Include="MovieDb\Movies\ApiMovieRequest.cs" />
-    <Compile Include="MovieDb\Configuration\ApiConfiguration.cs" />
-    <Compile Include="MovieDb\Configuration\ImageConfiguration.cs" />
-    <Compile Include="MovieDb\Genres\Genre.cs" />
     <Compile Include="MovieDb\Language.cs" />
+    <Compile Include="MovieDb\Movies\ApiMovieRequest.cs" />
+    <Compile Include="MovieDb\Movies\IApiMovieRequest.cs" />
     <Compile Include="MovieDb\Movies\Movie.cs" />
+    <Compile Include="MovieDb\Movies\MovieCredit.cs" />
     <Compile Include="MovieDb\Movies\MovieInfo.cs" />
     <Compile Include="MovieDb\People\ApiPeopleRequest.cs" />
     <Compile Include="MovieDb\People\Gender.cs" />
@@ -103,11 +96,10 @@
     <Compile Include="MovieDb\TV\TVShowCreator.cs" />
     <Compile Include="MovieDb\TV\TVShowInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shims\CollectionExtensions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

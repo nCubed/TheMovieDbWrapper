@@ -167,7 +167,7 @@ namespace DM.MovieApi.ApiRequest
                 ? string.Join( "&", parameters.Select( x => x.Key + "=" + x.Value ) )
                 : string.Empty;
 
-            if( tokens.Any() )
+            if( string.IsNullOrWhiteSpace( tokens ) == false )
             {
                 command = $"{command}&{tokens}";
             }

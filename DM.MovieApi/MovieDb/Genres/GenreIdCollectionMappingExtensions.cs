@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DM.MovieApi.MovieDb.Movies;
 using DM.MovieApi.MovieDb.People;
 using DM.MovieApi.MovieDb.TV;
+using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.Genres
 {

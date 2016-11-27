@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.Genres
 {
@@ -95,7 +96,10 @@ namespace DM.MovieApi.MovieDb.Genres
         private static readonly Lazy<IReadOnlyList<Genre>> LazyAll = new Lazy<IReadOnlyList<Genre>>( () =>
         {
             var all = typeof( GenreFactory )
-                .GetMethods( BindingFlags.Static | BindingFlags.Public )
+                .GetTypeInfo()
+                .DeclaredMethods
+                .Where( x => x.IsStatic )
+                .Where( x => x.IsPublic )
                 .Where( x => x.ReturnType == typeof( Genre ) )
                 .Select( x => (Genre)x.Invoke( null, null ) )
                 .ToList();

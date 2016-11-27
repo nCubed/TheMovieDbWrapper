@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace DM.MovieApi.ApiResponse
 {

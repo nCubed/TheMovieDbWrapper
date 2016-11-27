@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
@@ -7,13 +6,10 @@ using DM.MovieApi.MovieDb.Genres;
 
 namespace DM.MovieApi.MovieDb.People
 {
-    [Export( typeof( IApiPeopleRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiPeopleRequest : ApiRequestBase, IApiPeopleRequest
     {
         private readonly IApiGenreRequest _genreApi;
 
-        [ImportingConstructor]
         public ApiPeopleRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
             : base( settings )
         {

@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Movies;
+using DM.MovieApi.Shims;
 using Newtonsoft.Json.Linq;
 
 namespace DM.MovieApi.MovieDb.Genres
 {
-    [Export( typeof( IApiGenreRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiGenreRequest : ApiRequestBase, IApiGenreRequest
     {
         // ReSharper disable once InconsistentNaming
@@ -30,7 +28,6 @@ namespace DM.MovieApi.MovieDb.Genres
             }
         }
 
-        [ImportingConstructor]
         public ApiGenreRequest( IMovieDbSettings settings )
             : base( settings )
         { }

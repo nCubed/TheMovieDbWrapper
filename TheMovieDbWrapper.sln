@@ -1,10 +1,11 @@
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.MovieApi", "DM.MovieApi\DM.MovieApi.csproj", "{8BB3A8DD-7BBC-426C-89FE-2AE4CA7CE7FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.MovieApi", "DM.MovieApi\DM.MovieApi.csproj", "{EEA7946A-DB5A-4DD8-8059-CC28C69967C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.MovieApi.IntegrationTests", "DM.MovieApi.IntegrationTests\DM.MovieApi.IntegrationTests.csproj", "{6177CF01-41E5-41B3-B936-76711E701DFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.MovieApi.IntegrationTests", "DM.MovieApi.IntegrationTests\DM.MovieApi.IntegrationTests.csproj", "{762055C1-C586-4730-A782-AA8487FE795B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8BB3A8DD-7BBC-426C-89FE-2AE4CA7CE7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BB3A8DD-7BBC-426C-89FE-2AE4CA7CE7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8BB3A8DD-7BBC-426C-89FE-2AE4CA7CE7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8BB3A8DD-7BBC-426C-89FE-2AE4CA7CE7FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6177CF01-41E5-41B3-B936-76711E701DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6177CF01-41E5-41B3-B936-76711E701DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6177CF01-41E5-41B3-B936-76711E701DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6177CF01-41E5-41B3-B936-76711E701DFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA7946A-DB5A-4DD8-8059-CC28C69967C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA7946A-DB5A-4DD8-8059-CC28C69967C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA7946A-DB5A-4DD8-8059-CC28C69967C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA7946A-DB5A-4DD8-8059-CC28C69967C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{762055C1-C586-4730-A782-AA8487FE795B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762055C1-C586-4730-A782-AA8487FE795B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762055C1-C586-4730-A782-AA8487FE795B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762055C1-C586-4730-A782-AA8487FE795B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
