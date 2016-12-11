@@ -142,7 +142,6 @@ namespace DM.MovieApi.ApiRequest
             var handler = new HttpClientHandler
             {
                 AllowAutoRedirect = false,
-                PreAuthenticate = false,
                 UseCookies = false,
                 UseDefaultCredentials = true,
                 AutomaticDecompression = DecompressionMethods.GZip,
