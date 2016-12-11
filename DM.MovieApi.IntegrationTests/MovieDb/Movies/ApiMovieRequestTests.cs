@@ -130,7 +130,6 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             ApiResponseUtil.AssertImagePath( movie.PosterPath );
 
             Assert.IsTrue( movie.Overview.StartsWith( expetedOverview ) );
-            Assert.IsTrue( movie.Popularity > 9, $"Actual: {movie.Popularity}" );
             Assert.IsTrue( movie.VoteAverage > 5 );
             Assert.IsTrue( movie.VoteCount > 1500 );
 
