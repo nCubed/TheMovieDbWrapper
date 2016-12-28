@@ -1,11 +1,13 @@
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
+using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.Configuration
 {
     internal class ApiConfigurationRequest : ApiRequestBase, IApiConfigurationRequest
     {
+        [ImportingConstructor]
         public ApiConfigurationRequest( IMovieDbSettings settings )
             : base( settings )
         { }

@@ -4,6 +4,7 @@ using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.MovieDb.Movies;
+using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.Companies
 {
@@ -11,6 +12,7 @@ namespace DM.MovieApi.MovieDb.Companies
     {
         private readonly IApiGenreRequest _genreApi;
 
+        [ImportingConstructor]
         public ApiCompanyRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
             : base( settings )
         {

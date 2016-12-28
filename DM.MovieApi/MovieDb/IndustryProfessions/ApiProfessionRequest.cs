@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
+using DM.MovieApi.Shims;
 using Newtonsoft.Json.Linq;
 
 namespace DM.MovieApi.MovieDb.IndustryProfessions
 {
     internal class ApiProfessionRequest : ApiRequestBase, IApiProfessionRequest
     {
+        [ImportingConstructor]
         public ApiProfessionRequest( IMovieDbSettings settings )
             : base( settings )
         { }

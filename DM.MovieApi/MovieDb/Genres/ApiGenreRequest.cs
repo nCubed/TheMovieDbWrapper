@@ -28,6 +28,7 @@ namespace DM.MovieApi.MovieDb.Genres
             }
         }
 
+        [ImportingConstructor]
         public ApiGenreRequest( IMovieDbSettings settings )
             : base( settings )
         { }
