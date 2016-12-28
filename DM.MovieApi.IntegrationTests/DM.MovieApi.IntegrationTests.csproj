@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6177CF01-41E5-41B3-B936-76711E701DFC}</ProjectGuid>
+    <ProjectGuid>{762055C1-C586-4730-A782-AA8487FE795B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DM.MovieApi.IntegrationTests</RootNamespace>
@@ -16,7 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,17 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -64,37 +57,37 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ApiResponseUtil.cs" />
-    <Compile Include="ApiResponse\TmdbStatusCodeTests.cs" />
     <Compile Include="ApiResponse\ApiResponseTests.cs" />
+    <Compile Include="ApiResponse\TmdbStatusCodeTests.cs" />
+    <Compile Include="AssemblyInit.cs" />
     <Compile Include="Infrastructure\IntegrationApiRequest.cs" />
     <Compile Include="Infrastructure\IntegrationMovieDbSettings.cs" />
+    <Compile Include="MovieDbApiTests.cs" />
+    <Compile Include="MovieDbFactoryTests.cs" />
     <Compile Include="MovieDb\Certifications\ApiMovieRatingRequestTests.cs" />
     <Compile Include="MovieDb\Companies\ApiCompanyRequestTests.cs" />
+    <Compile Include="MovieDb\Configuration\ApiConfigurationRequestTests.cs" />
     <Compile Include="MovieDb\Genres\ApiGenreRequestTests.cs" />
     <Compile Include="MovieDb\Movies\ApiMovieRequestTests.cs" />
     <Compile Include="MovieDb\Movies\ApiMovieRequestTests_GetCredits.cs" />
+    <Compile Include="MovieDb\People\ApiPeopleRequestTests.cs" />
     <Compile Include="MovieDb\Professions\ApiProfessionRequestTests.cs" />
-    <Compile Include="AssemblyInit.cs" />
     <Compile Include="MovieDb\TV\ApiTVShowRequestTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MovieDb\Configuration\ApiConfigurationRequestTests.cs" />
-    <Compile Include="MovieDbFactoryTests.cs" />
-    <Compile Include="MovieDbApiTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DM.MovieApi\DM.MovieApi.csproj">
-      <Project>{8bb3a8dd-7bbc-426c-89fe-2ae4ca7ce7fd}</Project>
+      <Project>{eea7946a-db5a-4dd8-8059-cc28c69967c5}</Project>
       <Name>DM.MovieApi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
     <Content Include="_init\ApiCreds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
@@ -116,7 +109,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <PropertyGroup>
     <PreBuildEvent>set apiCreds=$(ProjectDir)_init\ApiCreds.xml
 

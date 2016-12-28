@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
@@ -7,11 +6,8 @@ using Newtonsoft.Json.Linq;
 
 namespace DM.MovieApi.MovieDb.IndustryProfessions
 {
-    [Export( typeof( IApiProfessionRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiProfessionRequest : ApiRequestBase, IApiProfessionRequest
     {
-        [ImportingConstructor]
         public ApiProfessionRequest( IMovieDbSettings settings )
             : base( settings )
         { }

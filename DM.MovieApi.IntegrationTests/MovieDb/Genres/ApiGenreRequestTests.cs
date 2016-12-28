@@ -21,6 +21,30 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
             _api = MovieDbFactory.Create<IApiGenreRequest>().Value;
 
             Assert.IsInstanceOfType( _api, typeof( ApiGenreRequest ) );
+
+            ( (ApiGenreRequest)_api ).ClearAllGenres();
+        }
+
+        [TestMethod]
+        public async Task FindById_Returns_Foreign_Genre_NotInGetAll()
+        {
+            const int id = 10769;
+            const string name = "Foreign";
+
+            CollectionAssert.DoesNotContain( _api.AllGenres.ToList(), new Genre( id, name ) );
+
+            // FindById will add to AllGenres when it does not exist
+            ApiQueryResponse<Genre> response = await _api.FindByIdAsync( id );
+
+            ApiResponseUtil.AssertErrorIsNull( response );
+
+            Genre genre = response.Item;
+
+            Assert.AreEqual( id, genre.Id );
+            Assert.AreEqual( name, genre.Name );
+
+            CollectionAssert.Contains( _api.AllGenres.ToList(), new Genre( id, name ) );
+            CollectionAssert.Contains( _api.AllGenres.ToList(), genre );
         }
 
         [TestMethod]
@@ -49,36 +73,19 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
         }
 
         [TestMethod]
-        public async Task GetAllAsync_Returns_Common_Genres()
+        public async Task GetAllAsync_Returns_Known_Genres()
         {
             ApiQueryResponse<IReadOnlyList<Genre>> response = await _api.GetAllAsync();
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            var commonGenres = new List<Genre>
-            {
-                GenreFactory.Action(),
-                GenreFactory.Drama(),
-                GenreFactory.Thriller(),
-                GenreFactory.Mystery(),
-                GenreFactory.ScienceFiction(),
-                GenreFactory.Comedy(),
-                GenreFactory.Horror(),
-                GenreFactory.Romance(),
-                GenreFactory.Family(),
-                GenreFactory.ActionAndAdventure(),
-                GenreFactory.WarAndPolitics(),
-                GenreFactory.Soap(),
-                GenreFactory.SciFiAndFantasy(),
-                GenreFactory.Reality(),
-                GenreFactory.News(),
-            };
+            IReadOnlyList<Genre> knownGenres = GenreFactory.GetAll();
 
-            CollectionAssert.IsSubsetOf( commonGenres, response.Item.ToList() );
+            CollectionAssert.AreEquivalent( knownGenres.ToList(), response.Item.ToList() );
         }
 
         [TestMethod]
-        public async Task GetMoviesAsync_Returns_Minimum_20_Results()
+        public async Task GetMoviesAsync_Returns_19_Results()
         {
             ApiQueryResponse<IReadOnlyList<Genre>> response = await _api.GetMoviesAsync();
 
@@ -86,11 +93,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             Assert.IsTrue( response.Item.Any() );
 
-            Assert.IsTrue( response.Item.Count >= 20 );
+            Assert.AreEqual( 19, response.Item.Count );
         }
 
         [TestMethod]
-        public async Task GetTelevisionAsync_Returns_Minimum_15_Results()
+        public async Task GetTelevisionAsync_Returns_16_Results()
         {
             ApiQueryResponse<IReadOnlyList<Genre>> response = await _api.GetTelevisionAsync();
 
@@ -98,7 +105,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             Assert.IsTrue( response.Item.Any() );
 
-            Assert.IsTrue( response.Item.Count >= 15 );
+            Assert.AreEqual( 16, response.Item.Count );
         }
 
         [TestMethod]
@@ -158,9 +165,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
             int genreId = GenreFactory.Comedy().Id;
             // Comedy has upwards of 2k pages.
             const int minimumPageCount = 5;
-            const int minimumMovieCount = 100; // 20 results per page x 5 pages = 100
+            const int minimumTotalResultsCount = 100; // 20 results per page x 5 pages = 100
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( genreId, minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( genreId, minimumPageCount, minimumTotalResultsCount,
                 ( id, page ) => _api.FindMoviesByIdAsync( id, page ), x => x.Id );
         }
     }

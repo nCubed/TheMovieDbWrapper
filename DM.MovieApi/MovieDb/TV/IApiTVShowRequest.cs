@@ -27,7 +27,8 @@ namespace DM.MovieApi.MovieDb.TV
         /// <summary>
         /// Gets the latest TV show added to TheMovieDb.org
         /// </summary>
-        Task<ApiQueryResponse<TVShow>> GetLatestAsync();
+        /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
+        Task<ApiQueryResponse<TVShow>> GetLatestAsync( string language = "en" );
 
         /// <summary>
         /// Gets the list of top rated TV shows which is refreshed daily.

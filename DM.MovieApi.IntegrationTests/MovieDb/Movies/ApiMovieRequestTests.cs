@@ -6,6 +6,7 @@ using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Keywords;
 using DM.MovieApi.MovieDb.Movies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -58,6 +59,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
         private void AssertRunLolaRun( ApiSearchResponse<MovieInfo> response, string expectedTitle )
         {
+            ApiResponseUtil.AssertErrorIsNull( response );
+
             Assert.AreEqual( 1, response.TotalResults );
             Assert.AreEqual( 1, response.Results.Count );
 
@@ -83,9 +86,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             const string query = "Harry";
             const int minimumPageCount = 8;
-            const int minimumMovieCount = 140;
+            const int minimumTotalResultsCount = 140;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
                 ( search, pageNumber ) => _api.SearchByTitleAsync( search, pageNumber ), x => x.Id );
         }
 
@@ -127,14 +130,14 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             ApiResponseUtil.AssertImagePath( movie.PosterPath );
 
             Assert.IsTrue( movie.Overview.StartsWith( expetedOverview ) );
-            Assert.IsTrue( movie.Popularity > 10 );
+            Assert.IsTrue( movie.Popularity > 7, $"Actual: {movie.Popularity}" );
             Assert.IsTrue( movie.VoteAverage > 5 );
             Assert.IsTrue( movie.VoteCount > 1500 );
 
             // Spoken Languages
             var languages = new[]
             {
-                new Language( "en", "English" ),
+                new Language("en", "English"),
             };
             CollectionAssert.AreEqual( languages, movie.SpokenLanguages.ToArray() );
 
@@ -170,6 +173,18 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 GenreFactory.Fantasy(),
             };
             CollectionAssert.AreEquivalent( expectedGenres, movie.Genres.ToList() );
+
+            // Keywords
+            var expectedKeywords = new List<Keyword>
+            {
+                new Keyword(803, "android"),
+                new Keyword(9831, "spaceship"),
+                new Keyword(10527, "jedi"),
+                new Keyword(161176, "space opera"),
+                new Keyword(209714, "3d"),
+                new Keyword(229031, "shot on imax cameras"),
+            };
+            CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToList() );
         }
 
         [TestMethod]
@@ -177,7 +192,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             const int id = 140607;
             const string language = "de";
-            const string expectedTitle = "Star Wars: Episode VII - Das Erwachen der Macht";
+            const string expectedTitle = "Star Wars: Das Erwachen der Macht";
 
             ApiQueryResponse<Movie> response = await _api.FindByIdAsync( id, language );
 
@@ -188,13 +203,28 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         }
 
         [TestMethod]
+        public async Task MovieWithLargeRevenue_Will_Deserialize()
+        {
+            const int id = 19995;
+            const string expectedTitle = "Avatar";
+
+            ApiQueryResponse<Movie> response = await _api.FindByIdAsync( id );
+
+            ApiResponseUtil.AssertErrorIsNull( response );
+
+            Assert.AreEqual( expectedTitle, response.Item.Title );
+            Assert.IsTrue( response.Item.Revenue > int.MaxValue );
+        }
+
+
+        [TestMethod]
         public async Task GetLatestAsync_Returns_ValidResult()
         {
             ApiQueryResponse<Movie> response = await _api.GetLatestAsync();
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            ApiResponseUtil.AssertMovie( response.Item );
+            ApiResponseUtil.AssertMovieStructure( response.Item );
         }
 
         [TestMethod]
@@ -204,7 +234,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            ApiResponseUtil.AssertMovies( response.Results );
+            ApiResponseUtil.AssertMovieStructure( response.Results );
         }
 
         [TestMethod]
@@ -212,9 +242,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             // Now Playing typically has 25+ pages.
             const int minimumPageCount = 5;
-            const int minimumMovieCount = 100; // 20 results per page x 5 pages = 100
+            const int minimumTotalResultsCount = 100; // 20 results per page x 5 pages = 100
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetNowPlayingAsync( page ), x => x.Id );
         }
 
@@ -225,17 +255,18 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            ApiResponseUtil.AssertMovies( response.Results );
+            ApiResponseUtil.AssertMovieStructure( response.Results );
         }
 
         [TestMethod]
         public async Task GetUpcomingAsync_CanPageResults()
         {
             // Now Playing typically has 5+ pages.
+            // - intentionally setting minimumTotalResultsCount at 50; sometimes upcoming movies are scarce.
             const int minimumPageCount = 3;
-            const int minimumMovieCount = 60; // 20 results per page x 3 pages = 60
+            const int minimumTotalResultsCount = 50; // 20 results per page x 3 pages = 60
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetUpcomingAsync( page ), x => x.Id );
         }
 
@@ -248,16 +279,16 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             IReadOnlyList<MovieInfo> results = response.Results;
 
-            ApiResponseUtil.AssertMovieInformation( results );
+            ApiResponseUtil.AssertMovieInformationStructure( results );
         }
 
         [TestMethod]
         public async Task GetTopRatedAsync_CanPageResults()
         {
             const int minimumPageCount = 2;
-            const int minimumMovieCount = 40; 
+            const int minimumTotalResultsCount = 40;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
         }
 
@@ -270,16 +301,16 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             IReadOnlyList<MovieInfo> results = response.Results;
 
-            ApiResponseUtil.AssertMovieInformation( results );
+            ApiResponseUtil.AssertMovieInformationStructure( results );
         }
 
         [TestMethod]
         public async Task GetPopularAsync_CanPageResults()
         {
             const int minimumPageCount = 2;
-            const int minimumMovieCount = 40;
+            const int minimumTotalResultsCount = 40;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
     }

@@ -27,7 +27,8 @@ namespace DM.MovieApi.MovieDb.Movies
         /// <summary>
         /// Gets the most recent movie that has been added to TheMovieDb.org.
         /// </summary>
-        Task<ApiQueryResponse<Movie>> GetLatestAsync();
+        /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
+        Task<ApiQueryResponse<Movie>> GetLatestAsync( string language = "en" );
 
         /// <summary>
         /// Gets the list of movies playing that have been, or are being released this week.

@@ -4,6 +4,7 @@ using DM.MovieApi.MovieDb.Configuration;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.MovieDb.IndustryProfessions;
 using DM.MovieApi.MovieDb.Movies;
+using DM.MovieApi.MovieDb.People;
 using DM.MovieApi.MovieDb.TV;
 
 namespace DM.MovieApi
@@ -48,5 +49,10 @@ namespace DM.MovieApi
         /// Provides access for retrieving information about Television shows.
         /// </summary>
         IApiTVShowRequest Television { get; }
+
+        /// <summary>
+        /// Provides access for retreiving information about People.
+        /// </summary>
+        IApiPeopleRequest People { get; }
     }
 }

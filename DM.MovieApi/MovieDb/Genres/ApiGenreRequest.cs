@@ -1,35 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Movies;
+using DM.MovieApi.Shims;
 using Newtonsoft.Json.Linq;
 
 namespace DM.MovieApi.MovieDb.Genres
 {
-    [Export( typeof( IApiGenreRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiGenreRequest : ApiRequestBase, IApiGenreRequest
     {
-        private static Lazy<IReadOnlyList<Genre>> _allGenres;
+        // ReSharper disable once InconsistentNaming
+        private static readonly List<Genre> _allGenres = new List<Genre>();
 
-        public IReadOnlyList<Genre> AllGenres { get { return _allGenres.Value; } }
-
-        [ImportingConstructor]
-        public ApiGenreRequest( IMovieDbSettings settings )
-            : base( settings )
+        public IReadOnlyList<Genre> AllGenres
         {
-            if( _allGenres == null || !_allGenres.Value.Any() )
+            get
             {
-                _allGenres = new Lazy<IReadOnlyList<Genre>>( () =>
+                if( _allGenres.Any() == false )
                 {
                     var genres = Task.Run( () => GetAllAsync() ).GetAwaiter().GetResult().Item;
-                    return genres;
-                } );
+                    _allGenres.AddRange( genres );
+                }
+
+                return _allGenres.AsReadOnly();
             }
+        }
+
+        public ApiGenreRequest( IMovieDbSettings settings )
+            : base( settings )
+        { }
+
+        public async Task<ApiQueryResponse<Genre>> FindByIdAsync( int genreId, string language = "en" )
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language}
+            };
+
+            string command = $"genre/{genreId}";
+
+            ApiQueryResponse<Genre> response = await base.QueryAsync<Genre>( command, param );
+
+            EnsureAllGenres( response );
+
+            return response;
         }
 
         public async Task<ApiQueryResponse<IReadOnlyList<Genre>>> GetAllAsync( string language = "en" )
@@ -88,7 +104,7 @@ namespace DM.MovieApi.MovieDb.Genres
                 {"include_adult", "false"},
             };
 
-            string command = string.Format( "genre/{0}/movies", genreId );
+            string command = $"genre/{genreId}/movies";
 
             ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 
@@ -97,9 +113,32 @@ namespace DM.MovieApi.MovieDb.Genres
                 return response;
             }
 
-            response.Results.PopulateGenres( AllGenres );
+            response.Results.PopulateGenres( this );
 
             return response;
+        }
+
+        internal void ClearAllGenres()
+        {
+            _allGenres.Clear();
+        }
+
+        private void EnsureAllGenres( ApiQueryResponse<Genre> response )
+        {
+            if( response.Error != null )
+            {
+                return;
+            }
+
+            if( response.Item == null )
+            {
+                return;
+            }
+
+            if( _allGenres.Contains( response.Item ) == false )
+            {
+                _allGenres.Add( response.Item );
+            }
         }
 
         private IReadOnlyList<Genre> GenreDeserializer( string json )

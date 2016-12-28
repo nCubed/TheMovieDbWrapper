@@ -1,24 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Reflection;
 using DM.MovieApi.ApiRequest;
+using DM.MovieApi.MovieDb.Certifications;
+using DM.MovieApi.MovieDb.Companies;
+using DM.MovieApi.MovieDb.Configuration;
+using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.IndustryProfessions;
+using DM.MovieApi.MovieDb.Movies;
+using DM.MovieApi.MovieDb.People;
+using DM.MovieApi.MovieDb.TV;
 
 namespace DM.MovieApi
 {
     /// <summary>
-    /// Note: <see cref="RegisterSettings"/> must be called before the Factory can Create anything.
+    /// Note: one of the RegisterSettings must be called before the Factory can Create anything.
     /// </summary>
     public static class MovieDbFactory
     {
-        private static CompositionContainer _container;
+        private static IMovieDbSettings _settings;
 
         /// <summary>
-        /// Determines if the underlying MEF factory has been created.
+        /// Determines if the underlying factory has been created.
         /// </summary>
-        public static bool IsFactoryComposed { get { return _container != null; } }
+        public static bool IsFactoryComposed => _settings != null;
 
         /// <summary>
         /// Registers themoviedb.org settings for use with the MEF container.
@@ -27,9 +30,9 @@ namespace DM.MovieApi
         /// the themoviedb.org credentials to use when connecting to the service.</param>
         public static void RegisterSettings( IMovieDbSettings settings )
         {
-            _container = CreateContainer();
+            ResetFactory();
 
-            _container.ComposeExportedValue( settings );
+            _settings = settings;
         }
 
         /// <summary>
@@ -37,7 +40,7 @@ namespace DM.MovieApi
         /// </summary>
         /// <param name="apiKey">Private key required to query themoviedb.org API.</param>
         /// <param name="apiUrl">URL used for api calls to themoviedb.org.</param>
-        public static void RegisterSettings( string apiKey, string apiUrl )
+        public static void RegisterSettings( string apiKey, string apiUrl = "http://api.themoviedb.org/3/" )
         {
             var settings = new MovieDbSettings( apiKey, apiUrl );
 
@@ -46,59 +49,110 @@ namespace DM.MovieApi
 
         /// <summary>
         /// <para>Creates the specific API requested.</para>
-        /// <para>Note: <see cref="RegisterSettings"/> must be called before the Factory can Create anything.</para>
+        /// <para>Note: one of the RegisterSettings must be called before the Factory can Create anything.</para>
         /// </summary>
         public static Lazy<T> Create<T>() where T : IApiRequest
         {
             ContainerGuard();
 
-            return _container.GetExport<T>();
+            Type type = typeof( T );
+
+            if( type == typeof( IApiCompanyRequest ) )
+            {
+                return new Lazy<T>( () =>
+                 {
+                     IApiCompanyRequest api = new ApiCompanyRequest( _settings, new ApiGenreRequest( _settings ) );
+                     return (T)api;
+                 } );
+            }
+
+            if( type == typeof( IApiConfigurationRequest ) )
+            {
+                return new Lazy<T>( () =>
+                 {
+                     IApiConfigurationRequest api = new ApiConfigurationRequest( _settings );
+                     return (T)api;
+                 } );
+            }
+
+            if( type == typeof( IApiGenreRequest ) )
+            {
+                return new Lazy<T>( () =>
+                 {
+                     IApiGenreRequest api = new ApiGenreRequest( _settings );
+                     return (T)api;
+                 } );
+            }
+
+            if( type == typeof( IApiMovieRatingRequest ) )
+            {
+                return new Lazy<T>( () =>
+                 {
+                     IApiMovieRatingRequest api = new ApiMovieRatingRequest( _settings );
+                     return (T)api;
+                 } );
+            }
+
+            if( type == typeof( IApiMovieRequest ) )
+            {
+                return new Lazy<T>( () =>
+                 {
+                     IApiMovieRequest api = new ApiMovieRequest( _settings, new ApiGenreRequest( _settings ) );
+                     return (T)api;
+                 } );
+            }
+
+            if( type == typeof( IApiPeopleRequest ) )
+            {
+                return new Lazy<T>( () =>
+                 {
+                     IApiPeopleRequest api = new ApiPeopleRequest( _settings, new ApiGenreRequest( _settings ) );
+                     return (T)api;
+                 } );
+            }
+
+            if( type == typeof( IApiProfessionRequest ) )
+            {
+                return new Lazy<T>( () =>
+                 {
+                     IApiProfessionRequest api = new ApiProfessionRequest( _settings );
+                     return (T)api;
+                 } );
+            }
+
+            if( type == typeof( IApiTVShowRequest ) )
+            {
+                return new Lazy<T>( () =>
+                 {
+                     IApiTVShowRequest api = new ApiTVShowRequest( _settings, new ApiGenreRequest( _settings ) );
+                     return (T)api;
+                 } );
+            }
+
+
+            throw new NotImplementedException( $"Factory has not registered for {type.FullName}" );
         }
 
         /// <summary>
-        /// <para>Creates the global instance exposing all API interfaces against themoviedb.org
-        /// that are currently available in this release.</para>
-        /// <para>Note: <see cref="RegisterSettings"/> must be called before the Factory can Create anything.</para>
+        /// <para>Creates a global instance exposing all API interfaces against themoviedb.org
+        /// that are currently available in this release. Each API is exposed via a Lazy property
+        /// ensuring no objects are created until they are needed.</para>
+        /// <para>Note: RegisterSettings must be called before the Factory can Create anything.</para>
         /// </summary>
         public static IMovieDbApi GetAllApiRequests()
         {
             ContainerGuard();
 
-            Lazy<IMovieDbApi> api = _container.GetExport<IMovieDbApi>();
-
-            // ReSharper disable once PossibleNullReferenceException
-            return api.Value;
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Clears the MEF container; forces the next call to be <see cref="RegisterSettings"/>
+        /// Clears all factory settings; forces the next call to be RegisterSettings.
         /// before <see cref="Create{T}"/> can be called.
         /// </summary>
         public static void ResetFactory()
         {
-            if( _container != null )
-            {
-                _container.Dispose();
-                _container = null;
-            }
-        }
-
-        private static CompositionContainer CreateContainer()
-        {
-            Assembly exe = Assembly.GetExecutingAssembly();
-
-            var referenced = exe.GetReferencedAssemblies()
-                .Where( x => x.FullName.StartsWith( "DM.", StringComparison.OrdinalIgnoreCase ) );
-
-            var assemblies = new List<Assembly>( referenced.Select( Assembly.Load ) ) { exe };
-
-            var parts = assemblies.Select( x => new AssemblyCatalog( x ) );
-
-            var catalog = new AggregateCatalog( parts );
-
-            var container = new CompositionContainer( catalog );
-
-            return container;
+            _settings = null;
         }
 
         private static void ContainerGuard()
@@ -111,8 +165,8 @@ namespace DM.MovieApi
 
         private class MovieDbSettings : IMovieDbSettings
         {
-            public string ApiKey { get; private set; }
-            public string ApiUrl { get; private set; }
+            public string ApiKey { get; }
+            public string ApiUrl { get; }
 
             public MovieDbSettings( string apiKey, string apiUrl )
             {

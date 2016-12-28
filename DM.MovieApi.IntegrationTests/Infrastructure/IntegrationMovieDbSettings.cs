@@ -51,8 +51,8 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
         private static readonly Lazy<string> _rootDirectory = new Lazy<string>( GetRootDirectory );
         private static readonly Lazy<string> _initDirectory = new Lazy<string>( GetInitDirectory );
 
-        internal static string RootDirectory { get { return _rootDirectory.Value; } }
-        internal static string InitDirectory { get { return _initDirectory.Value; } }
+        internal static string RootDirectory => _rootDirectory.Value;
+        internal static string InitDirectory => _initDirectory.Value;
 
 
         private static string GetRootDirectory()

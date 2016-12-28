@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
@@ -8,13 +7,10 @@ using DM.MovieApi.MovieDb.Movies;
 
 namespace DM.MovieApi.MovieDb.Companies
 {
-    [Export( typeof( IApiCompanyRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiCompanyRequest : ApiRequestBase, IApiCompanyRequest
     {
         private readonly IApiGenreRequest _genreApi;
 
-        [ImportingConstructor]
         public ApiCompanyRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
             : base( settings )
         {
@@ -23,7 +19,7 @@ namespace DM.MovieApi.MovieDb.Companies
 
         public async Task<ApiQueryResponse<ProductionCompany>> FindByIdAsync( int companyId )
         {
-            string command = string.Format( "company/{0}", companyId );
+            string command = $"company/{companyId}";
 
             ApiQueryResponse<ProductionCompany> response = await base.QueryAsync<ProductionCompany>( command );
 
@@ -37,7 +33,7 @@ namespace DM.MovieApi.MovieDb.Companies
                 {"language", language},
             };
 
-            string command = string.Format( "company/{0}/movies", companyId );
+            string command = $"company/{companyId}/movies";
 
             ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 
@@ -46,7 +42,7 @@ namespace DM.MovieApi.MovieDb.Companies
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }

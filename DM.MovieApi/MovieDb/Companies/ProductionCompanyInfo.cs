@@ -30,14 +30,10 @@ namespace DM.MovieApi.MovieDb.Companies
         }
 
         public bool Equals( ProductionCompanyInfo x, ProductionCompanyInfo y )
-        {
-            return x.Id == y.Id && x.Name == y.Name;
-        }
+            => x.Id == y.Id && x.Name == y.Name;
 
         public override int GetHashCode()
-        {
-            return GetHashCode( this );
-        }
+            => GetHashCode( this );
 
         public int GetHashCode( ProductionCompanyInfo obj )
         {
@@ -57,7 +53,7 @@ namespace DM.MovieApi.MovieDb.Companies
                 return "n/a";
             }
 
-            return string.Format( "{0} ({1})", Name, Id );
+            return $"{Name} ({Id})";
         }
     }
 }

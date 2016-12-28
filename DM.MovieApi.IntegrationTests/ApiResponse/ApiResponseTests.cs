@@ -30,7 +30,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            string actualCommandText = string.Format( "Actual: {0}", response.CommandText );
+            string actualCommandText = $"Actual: {response.CommandText}";
 
             Assert.IsTrue( response.CommandText.Contains( command ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( _settings.ApiKey ), actualCommandText );
@@ -46,7 +46,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             Assert.IsNotNull( response.Error );
 
-            string actualCommandText = string.Format( "Actual: {0}", response.CommandText );
+            string actualCommandText = $"Actual: {response.CommandText}";
 
             Assert.IsTrue( response.CommandText.Contains( command ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( _settings.ApiKey ), actualCommandText );
@@ -67,7 +67,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            string actualCommandText = string.Format( "Actual: {0}", response.CommandText );
+            string actualCommandText = $"Actual: {response.CommandText}";
 
             Assert.IsTrue( response.CommandText.Contains( command ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( "&page=" ), actualCommandText );
@@ -90,7 +90,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             Assert.IsNotNull( response.Error );
 
-            string actualCommandText = string.Format( "Actual: {0}", response.CommandText );
+            string actualCommandText = $"Actual: {response.CommandText}";
 
             Assert.IsTrue( response.CommandText.Contains( command ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( "&page=" ), actualCommandText );

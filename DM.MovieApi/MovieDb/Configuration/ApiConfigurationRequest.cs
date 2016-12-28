@@ -1,15 +1,11 @@
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
 
 namespace DM.MovieApi.MovieDb.Configuration
 {
-    [Export( typeof( IApiConfigurationRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiConfigurationRequest : ApiRequestBase, IApiConfigurationRequest
     {
-        [ImportingConstructor]
         public ApiConfigurationRequest( IMovieDbSettings settings )
             : base( settings )
         { }

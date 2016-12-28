@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
@@ -8,13 +6,10 @@ using DM.MovieApi.MovieDb.Genres;
 
 namespace DM.MovieApi.MovieDb.Movies
 {
-    [Export( typeof( IApiMovieRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiMovieRequest : ApiRequestBase, IApiMovieRequest
     {
         private readonly IApiGenreRequest _genreApi;
 
-        [ImportingConstructor]
         public ApiMovieRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
             : base( settings )
         {
@@ -26,9 +21,10 @@ namespace DM.MovieApi.MovieDb.Movies
             var param = new Dictionary<string, string>
             {
                 {"language", language},
+                {"append_to_response", "keywords"},
             };
 
-            string command = string.Format( "movie/{0}", movieId );
+            string command = $"movie/{movieId}";
 
             ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
 
@@ -53,16 +49,22 @@ namespace DM.MovieApi.MovieDb.Movies
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }
 
-        public async Task<ApiQueryResponse<Movie>> GetLatestAsync()
+        public async Task<ApiQueryResponse<Movie>> GetLatestAsync( string language = "en" )
         {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+                {"append_to_response", "keywords"},
+            };
+
             const string command = "movie/latest";
 
-            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command );
+            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
 
             return response;
         }
@@ -72,6 +74,7 @@ namespace DM.MovieApi.MovieDb.Movies
             var param = new Dictionary<string, string>
             {
                 {"language", language},
+                {"append_to_response", "keywords"},
             };
 
             const string command = "movie/now_playing";
@@ -86,6 +89,7 @@ namespace DM.MovieApi.MovieDb.Movies
             var param = new Dictionary<string, string>
             {
                 {"language", language},
+                {"append_to_response", "keywords"},
             };
 
             const string command = "movie/upcoming";
@@ -111,7 +115,7 @@ namespace DM.MovieApi.MovieDb.Movies
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }
@@ -132,7 +136,7 @@ namespace DM.MovieApi.MovieDb.Movies
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }
@@ -144,7 +148,7 @@ namespace DM.MovieApi.MovieDb.Movies
                 {"language", language},
             };
 
-            string command = string.Format( "movie/{0}/credits", movieId );
+            string command = $"movie/{movieId}/credits";
 
             ApiQueryResponse<MovieCredit> response = await base.QueryAsync<MovieCredit>( command, param );
 

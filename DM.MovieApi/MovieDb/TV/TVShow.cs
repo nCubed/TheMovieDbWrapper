@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Keywords;
+using Newtonsoft.Json;
 
 namespace DM.MovieApi.MovieDb.TV
 {
@@ -75,6 +77,10 @@ namespace DM.MovieApi.MovieDb.TV
         [DataMember( Name = "seasons" )]
         public IReadOnlyList<Season> Seasons { get; set; }
 
+        [DataMember( Name = "keywords" )]
+        [JsonConverter( typeof( KeywordConverter ), "results" )]
+        public IReadOnlyList<Keyword> Keywords { get; set; }
+
         public TVShow()
         {
             CreatedBy = new TVShowCreator[0];
@@ -85,11 +91,10 @@ namespace DM.MovieApi.MovieDb.TV
             OriginCountry = new string[0];
             ProductionCompanies = new ProductionCompanyInfo[0];
             Seasons = new Season[0];
+            Keywords = new Keyword[0];
         }
 
         public override string ToString()
-        {
-            return string.Format( "{0} ({1:yyyy-MM-dd}) [{2}]", Name, FirstAirDate, Id );
-        }
+            => $"{Name} ({FirstAirDate:yyyy-MM-dd}) [{Id}]";
     }
 }

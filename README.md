@@ -1,5 +1,5 @@
 # TheMovieDb.org Wrapper
-TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API.
+TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API providing cross-platform support for Xamarin, iOS, Android, and all flavors of .NET.
 
 A nuget package is available directly through Visual Studio: https://www.nuget.org/packages/TheMovieDbWrapper/
 
@@ -12,6 +12,7 @@ The current release supports common requests for movie and other miscellaneous i
 * Movie and TV genres
 * Movie/TV industry specific professions
 * Production company information
+* People information
 
 ## Usage - Setup
 In order to use any feature of the wrapper, a concrete implementation of the [IMovieDbSettings](DM.MovieApi/IMovieDbSettings.cs) interface must be created. The interface only contains 2 properties:
@@ -19,10 +20,15 @@ In order to use any feature of the wrapper, a concrete implementation of the [IM
 1. ApiKey: a private key required to query [themoviedb.org API](https://www.themoviedb.org/documentation/api).
 2. ApiUrl: the URL used for api calls to themoviedb.org. This URL should be static, but is included in case an alternative URL is ever provided. The current URL is `http://api.themoviedb.org/3/`
 
+Once the `IMovieDbSettings` interface has been implemented, it can be used to register your settings with the `MovieDbFactory`.
+
+_Note_: There is an overloaded method on the `MovieDbFactory` which allows you to register your settings as parameters to the method.
+
 ### Usage - MovieDbFactory
 The `MovieDbFactory` provides access to all exposed operations for retrieving information from themoviedb.org. The factory exposes the following methods (other methods may be exposed, but these are the important ones):
-* `void MovieDbFactory.RegisterSettings( IMovieDbSettings settings )`: Registers your themoviedb.org specific API key with the factory; this method must be called prior to any other operations.
-* `Lazy<T> MovieDbFactory.Create<T>() where T : IApiRequest`: Creates the specific API requested. See below (Usages - Interfaces) for all exposed interfaces.
+* `void MovieDbFactory.RegisterSettings( IMovieDbSettings settings )`: Registers your themoviedb.org specific API key with the factory.
+* `void MovieDbFactory.RegisterSettings( string apiKey, string apiUrl = "http://api.themoviedb.org/3/" )`: Registers your themoviedb.org specific API key with the factory.
+* `Lazy<T> MovieDbFactory.Create<T>() where T : IApiRequest`: Creates the specific API requested. See below (Usages - Interfaces) for all exposed interfaces. One of the `RegisterSettings` methods must be called prior to creating anything from the factory.
 
 ### Usage - Interfaces
 The following interfaces can be used to retrieve information:
@@ -33,15 +39,17 @@ The following interfaces can be used to retrieve information:
 * [`IApiGenreRequest`](DM.MovieApi/MovieDb/Genres/IApiGenreRequest.cs): Provides access for retrieving Movie and TV genres.
 * [`IApiCompanyRequest`](DM.MovieApi/MovieDb/Companies/IApiCompanyRequest.cs): Provides access for retrieving production company information.
 * [`IApiProfessionRequest`](DM.MovieApi/MovieDb/IndustryProfessions/IApiProfessionRequest.cs): Provides access for retrieving information about Movie/TV industry specific professions.
+* [`IApiPeopleRequest`](DM.MovieApi/MovieDb/People/IApiPeopleRequest.cs): Provides access for retrieving information about People.
 
 ### Usage - Examples
 Register your settings first:
 ```csharp
-// registration with an implementation your own IMovieDbSettings
+// registration with an implementation of IMovieDbSettings
+//, i.e., public class YourMovieDbSettings : IMoveDbSettings { // implementation }
 MovieDbFactory.RegisterSettings( new YourMovieDbSettings() )
 
 // alternative method of registration
-MovieDbFactory.RegisterSettings( "apiKey", "apiUrl" )
+MovieDbFactory.RegisterSettings( "your-apiKey", "http://api.themoviedb.org/3/" )
 ```
 
 Retrieve an API request interface (see Usage - Interfaces above for available interfaces):
@@ -92,21 +100,22 @@ See the [MovieInfo](DM.MovieApi/MovieDb/Movies/MovieInfo.cs) class for all avail
 ```csharp
 var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
 
-int pageNumber;
+int pageNumber = 1;
+int totalPages;
 do
 {
-    ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Harry" );
+    ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Harry", pageNumber );
 
     // alternatively, just call response.ToString() which will provide the same paged information format as below:
     Console.WriteLine( "Page {0} of {1} ({2} total results)", response.PageNumber, response.TotalPages, response.TotalResults );
 
     foreach( MovieInfo info in response.Results )
     {
-        Console.WriteLine( "{0} ({1}): {2}" info.Title, info.ReleaseDate, info.Overview );
+        Console.WriteLine( "{0} ({1}): {2}", info.Title, info.ReleaseDate, info.Overview );
     }
-    
-    pageNumber++;
-} while( pageNumber <= response.TotalPages );
+
+    totalPages = response.TotalPages;
+} while( pageNumber++ < totalPages );
 ```
 
 ### Do you have a comprehensive list of examples?

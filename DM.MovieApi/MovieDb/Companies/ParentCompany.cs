@@ -21,7 +21,7 @@ namespace DM.MovieApi.MovieDb.Companies
                 return "n/a";
             }
 
-            return string.Format( "{0} ({1})", Name, Id );
+            return $"{Name} ({Id})";
         }
     }
 }

@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
+using DM.MovieApi.Shims;
 using Newtonsoft.Json.Linq;
 
 namespace DM.MovieApi.MovieDb.Certifications
 {
-    [Export( typeof( IApiMovieRatingRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiMovieRatingRequest : ApiRequestBase, IApiMovieRatingRequest
     {
-        [ImportingConstructor]
         public ApiMovieRatingRequest( IMovieDbSettings settings )
             : base( settings )
         { }

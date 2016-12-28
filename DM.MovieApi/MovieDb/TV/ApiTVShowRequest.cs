@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
@@ -7,14 +6,12 @@ using DM.MovieApi.MovieDb.Genres;
 
 namespace DM.MovieApi.MovieDb.TV
 {
-    [Export( typeof( IApiTVShowRequest ) )]
-    [PartCreationPolicy( CreationPolicy.NonShared )]
     internal class ApiTVShowRequest : ApiRequestBase, IApiTVShowRequest
     {
         private readonly IApiGenreRequest _genreApi;
 
-        [ImportingConstructor]
-        public ApiTVShowRequest( IMovieDbSettings settings, IApiGenreRequest genreApi ) : base( settings )
+        public ApiTVShowRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
+            : base( settings )
         {
             _genreApi = genreApi;
         }
@@ -23,10 +20,11 @@ namespace DM.MovieApi.MovieDb.TV
         {
             var param = new Dictionary<string, string>
             {
-                {"language", language},
+                { "language", language },
+                { "append_to_response", "keywords" },
             };
 
-            string command = string.Format( "tv/{0}", tvShowId );
+            string command = $"tv/{tvShowId}";
 
             ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command, param );
 
@@ -50,16 +48,22 @@ namespace DM.MovieApi.MovieDb.TV
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }
 
-        public async Task<ApiQueryResponse<TVShow>> GetLatestAsync()
+        public async Task<ApiQueryResponse<TVShow>> GetLatestAsync( string language = "en" )
         {
+            var param = new Dictionary<string, string>
+            {
+                { "language", language },
+                { "append_to_response", "keywords" },
+            };
+
             const string command = "tv/latest";
 
-            ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command );
+            ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command, param );
 
             return response;
         }
@@ -80,7 +84,7 @@ namespace DM.MovieApi.MovieDb.TV
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
+            response.Results.PopulateGenres( _genreApi );
 
             return response;
         }
@@ -101,8 +105,8 @@ namespace DM.MovieApi.MovieDb.TV
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi.AllGenres );
-
+            response.Results.PopulateGenres( _genreApi );
+            
             return response;
         }
     }

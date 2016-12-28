@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Keywords;
 using DM.MovieApi.MovieDb.TV;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -97,9 +98,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
         {
             const string query = "full";
             const int minimumPageCount = 4;
-            const int minimumMovieCount = 61;
+            const int minimumTotalResultsCount = 61;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
                 ( search, pageNumber ) => _api.SearchByNameAsync( search, pageNumber ), x => x.Id );
         }
 
@@ -118,7 +119,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             TVShow show = response.Item;
 
             TVShowCreator[] expCreatedBy =
-                {
+            {
                 new TVShowCreator(9813, "David Benioff", "/8CuuNIKMzMUL1NKOPv9AqEwM7og.jpg"),
                 new TVShowCreator(228068, "D. B. Weiss", "/caUAtilEe06OwOjoQY3B7BgpARi.jpg"),
             };
@@ -172,9 +173,19 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 new ProductionCompanyInfo( 12526, "Bighead Littlehead" ),
                 new ProductionCompanyInfo( 76043, "Revolution Sun Studios" )
             };
-
             CollectionAssert.AreEquivalent( expProductionCompanies, show.ProductionCompanies.ToArray() );
 
+            Keyword[] expKeywords =
+            {
+                new Keyword(6091, "war"),
+                new Keyword(818, "based on novel"),
+                new Keyword(4152, "kingdom"),
+                new Keyword(12554, "dragon"),
+                new Keyword(13084, "king"),
+                new Keyword(34038, "intrigue"),
+                new Keyword(170362, "fantasy world"),
+            };
+            CollectionAssert.AreEquivalent( expKeywords, show.Keywords.ToArray() );
         }
 
         [TestMethod]
@@ -201,16 +212,16 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             IReadOnlyList<TVShowInfo> results = response.Results;
 
-            ApiResponseUtil.AssertTVShowInformation( results );
+            ApiResponseUtil.AssertTVShowInformationStructure( results );
         }
 
         [TestMethod]
         public async Task GetTopRatedAsync_CanPageResults()
         {
             const int minimumPageCount = 5;
-            const int minimumMovieCount = 100;
+            const int minimumTotalResultsCount = 100;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
         }
 
@@ -223,16 +234,16 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             IReadOnlyList<TVShowInfo> results = response.Results;
 
-            ApiResponseUtil.AssertTVShowInformation( results );
+            ApiResponseUtil.AssertTVShowInformationStructure( results );
         }
 
         [TestMethod]
         public async Task GetPopularAsync_CanPageResults()
         {
             const int minimumPageCount = 5;
-            const int minimumMovieCount = 100;
+            const int minimumTotalResultsCount = 100;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumMovieCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
     }

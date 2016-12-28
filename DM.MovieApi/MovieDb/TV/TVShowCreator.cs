@@ -23,9 +23,7 @@ namespace DM.MovieApi.MovieDb.TV
         }
 
         public bool Equals( TVShowCreator x, TVShowCreator y )
-        {
-            return x.Id == y.Id && x.Name == y.Name;
-        }
+            => x.Id == y.Id && x.Name == y.Name;
 
         public int GetHashCode( TVShowCreator obj )
         {
@@ -50,13 +48,9 @@ namespace DM.MovieApi.MovieDb.TV
         }
 
         public override int GetHashCode()
-        {
-            return GetHashCode( this );
-        }
+            => GetHashCode( this );
 
         public override string ToString()
-        {
-            return string.Format( "{0} ({1})", Name, Id );
-        }
+            => $"{Name} ({Id})";
     }
 }

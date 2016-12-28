@@ -20,22 +20,24 @@ namespace DM.MovieApi.ApiRequest
         }
 
         public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command )
-        {
-            return await QueryAsync<T>( command, new Dictionary<string, string>() );
-        }
+            => await QueryAsync<T>( command, new Dictionary<string, string>() );
 
         public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command, IDictionary<string, string> parameters )
         {
-            var settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+            };
+            settings.Converters.Add( new IsoDateTimeConverterEx() );
+
             Func<string, T> deserializer = json => JsonConvert.DeserializeObject<T>( json, settings );
 
             return await QueryAsync( command, parameters, deserializer );
         }
 
         public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command, Func<string, T> deserializer )
-        {
-            return await QueryAsync( command, new Dictionary<string, string>(), deserializer );
-        }
+            => await QueryAsync( command, new Dictionary<string, string>(), deserializer );
 
         public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command, IDictionary<string, string> parameters, Func<string, T> deserializer )
         {
@@ -72,19 +74,13 @@ namespace DM.MovieApi.ApiRequest
         }
 
         public async Task<ApiSearchResponse<T>> SearchAsync<T>( string command )
-        {
-            return await SearchAsync<T>( command, 1 );
-        }
+            => await SearchAsync<T>( command, 1 );
 
         public async Task<ApiSearchResponse<T>> SearchAsync<T>( string command, int pageNumber )
-        {
-            return await SearchAsync<T>( command, pageNumber, new Dictionary<string, string>() );
-        }
+            => await SearchAsync<T>( command, pageNumber, new Dictionary<string, string>() );
 
         public async Task<ApiSearchResponse<T>> SearchAsync<T>( string command, IDictionary<string, string> parameters )
-        {
-            return await SearchAsync<T>( command, 1, parameters );
-        }
+            => await SearchAsync<T>( command, 1, parameters );
 
         public async Task<ApiSearchResponse<T>> SearchAsync<T>( string command, int pageNumber, IDictionary<string, string> parameters )
         {
@@ -146,7 +142,6 @@ namespace DM.MovieApi.ApiRequest
             var handler = new HttpClientHandler
             {
                 AllowAutoRedirect = false,
-                PreAuthenticate = false,
                 UseCookies = false,
                 UseDefaultCredentials = true,
                 AutomaticDecompression = DecompressionMethods.GZip,
@@ -161,21 +156,19 @@ namespace DM.MovieApi.ApiRequest
         }
 
         protected string CreateCommand( string rootCommand )
-        {
-            return CreateCommand( rootCommand, new Dictionary<string, string>() );
-        }
+            => CreateCommand( rootCommand, new Dictionary<string, string>() );
 
         protected string CreateCommand( string rootCommand, IDictionary<string, string> parameters )
         {
-            string command = string.Format( "{0}?api_key={1}", rootCommand, _settings.ApiKey );
+            string command = $"{rootCommand}?api_key={_settings.ApiKey}";
 
             string tokens = parameters.Any()
                 ? string.Join( "&", parameters.Select( x => x.Key + "=" + x.Value ) )
                 : string.Empty;
 
-            if( tokens.Any() )
+            if( string.IsNullOrWhiteSpace( tokens ) == false )
             {
-                command = string.Format( "{0}&{1}", command, tokens );
+                command = $"{command}&{tokens}";
             }
 
             return command;

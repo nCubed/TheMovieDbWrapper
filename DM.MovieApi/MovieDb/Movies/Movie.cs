@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 using DM.MovieApi.MovieDb.Collections;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Keywords;
+using Newtonsoft.Json;
 
 namespace DM.MovieApi.MovieDb.Movies
 {
@@ -65,7 +67,7 @@ namespace DM.MovieApi.MovieDb.Movies
         public DateTime ReleaseDate { get; set; }
 
         [DataMember( Name = "revenue" )]
-        public int Revenue { get; set; }
+        public decimal Revenue { get; set; }
 
         [DataMember( Name = "runtime" )]
         public int Runtime { get; set; }
@@ -88,17 +90,20 @@ namespace DM.MovieApi.MovieDb.Movies
         [DataMember( Name = "vote_count" )]
         public int VoteCount { get; set; }
 
+        [DataMember( Name = "keywords" )]
+        [JsonConverter( typeof( KeywordConverter ), "keywords" )]
+        public IReadOnlyList<Keyword> Keywords { get; set; }
+
         public Movie()
         {
             Genres = new Genre[0];
+            Keywords = new Keyword[0];
             ProductionCompanies = new ProductionCompanyInfo[0];
             ProductionCountries = new Country[0];
             SpokenLanguages = new Language[0];
         }
 
         public override string ToString()
-        {
-            return string.Format( "{0} ({1}) [{2}]", Title, ReleaseDate.ToString( "yyyy-MM-dd" ), Id );
-        }
+            => $"{Title} ({ReleaseDate:yyyy-MM-dd}) [{Id}]";
     }
 }

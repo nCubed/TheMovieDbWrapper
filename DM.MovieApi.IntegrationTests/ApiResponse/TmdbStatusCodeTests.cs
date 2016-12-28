@@ -50,14 +50,14 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             // Step 1: Ensure there is a valid result
 
-            ApiQueryResponse<Movie> validResult = await _api.QueryAsync<Movie>( string.Format( "movie/{0}", validId ) );
+            ApiQueryResponse<Movie> validResult = await _api.QueryAsync<Movie>( $"movie/{validId}" );
             Assert.IsNull( validResult.Error );
             Assert.AreEqual( validId, validResult.Item.Id );
             Assert.AreEqual( "Run Lola Run", validResult.Item.Title );
 
             // Step 2: Ensure there is an invalid result
 
-            ApiQueryResponse<Movie> invalidResult = await _api.QueryAsync<Movie>( string.Format( "movie/{0}", invalidId ) );
+            ApiQueryResponse<Movie> invalidResult = await _api.QueryAsync<Movie>( $"movie/{invalidId}" );
             AssertErrorCode( invalidResult, TmdbStatusCode.ResourceNotFound );
         }
 
@@ -128,7 +128,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
                 {"page", invalidPage},
             };
 
-            string command = string.Format( "genre/{0}/movies", GenreFactory.Comedy().Id );
+            string command = $"genre/{GenreFactory.Comedy().Id}/movies";
 
             ApiSearchResponse<MovieInfo> result = await _api.SearchAsync<MovieInfo>( command, param );
 
@@ -145,7 +145,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
                 {"page", invalidPage},
             };
 
-            string command = string.Format( "genre/{0}/movies", GenreFactory.Comedy().Id );
+            string command = $"genre/{GenreFactory.Comedy().Id}/movies";
 
             ApiSearchResponse<MovieInfo> result = await _api.SearchAsync<MovieInfo>( command, param );
 
@@ -162,7 +162,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
                 {"page", invalidPage},
             };
 
-            string command = string.Format( "genre/{0}/movies", GenreFactory.Comedy().Id );
+            string command = $"genre/{GenreFactory.Comedy().Id}/movies";
 
             ApiSearchResponse<MovieInfo> result = await _api.SearchAsync<MovieInfo>( command, param );
 

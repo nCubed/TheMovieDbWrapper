@@ -9,45 +9,45 @@ namespace DM.MovieApi.MovieDb.Movies
     public class MovieInfo
     {
         [DataMember( Name = "id" )]
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         [DataMember( Name = "title" )]
-        public string Title { get; private set; }
+        public string Title { get; set; }
 
         [DataMember( Name = "adult" )]
-        public bool IsAdultThemed { get; private set; }
+        public bool IsAdultThemed { get; set; }
 
         [DataMember( Name = "backdrop_path" )]
-        public string BackdropPath { get; private set; }
+        public string BackdropPath { get; set; }
 
         [DataMember( Name = "genre_ids" )]
         internal IReadOnlyList<int> GenreIds { get; set; }
 
-        public IReadOnlyList<Genre> Genres { get; internal set; }
+        public IReadOnlyList<Genre> Genres { get; set; }
 
         [DataMember( Name = "original_title" )]
-        public string OriginalTitle { get; private set; }
+        public string OriginalTitle { get; set; }
 
         [DataMember( Name = "overview" )]
-        public string Overview { get; private set; }
+        public string Overview { get; set; }
 
         [DataMember( Name = "release_date" )]
-        public DateTime ReleaseDate { get; private set; }
+        public DateTime ReleaseDate { get; set; }
 
         [DataMember( Name = "poster_path" )]
         public string PosterPath { get; set; }
 
         [DataMember( Name = "popularity" )]
-        public double Popularity { get; private set; }
+        public double Popularity { get; set; }
 
         [DataMember( Name = "video" )]
-        public bool Video { get; private set; }
+        public bool Video { get; set; }
 
         [DataMember( Name = "vote_average" )]
-        public double VoteAverage { get; private set; }
+        public double VoteAverage { get; set; }
 
         [DataMember( Name = "vote_count" )]
-        public int VoteCount { get; private set; }
+        public int VoteCount { get; set; }
 
         public MovieInfo()
         {
@@ -56,8 +56,6 @@ namespace DM.MovieApi.MovieDb.Movies
         }
 
         public override string ToString()
-        {
-            return string.Format( "{0} ({1} - {2:yyyy-MM-dd})", Title, Id, ReleaseDate );
-        }
+            => $"{Title} ({Id} - {ReleaseDate:yyyy-MM-dd})";
     }
 }

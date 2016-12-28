@@ -30,14 +30,10 @@ namespace DM.MovieApi.MovieDb
         }
 
         public bool Equals( Country x, Country y )
-        {
-            return x.Iso3166Code == y.Iso3166Code && x.Name == y.Name;
-        }
+            => x.Iso3166Code == y.Iso3166Code && x.Name == y.Name;
 
-        public override int GetHashCode()
-        {
-            return GetHashCode( this );
-        }
+        public override int GetHashCode() =>
+            GetHashCode( this );
 
         public int GetHashCode( Country obj )
         {
@@ -57,7 +53,7 @@ namespace DM.MovieApi.MovieDb
                 return "n/a";
             }
 
-            return string.Format( "{0} ({1})", Name, Iso3166Code );
+            return $"{Name} ({Iso3166Code})";
         }
     }
 }
