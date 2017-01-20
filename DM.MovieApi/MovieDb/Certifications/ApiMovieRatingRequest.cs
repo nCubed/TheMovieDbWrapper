@@ -11,6 +11,7 @@ namespace DM.MovieApi.MovieDb.Certifications
 {
     internal class ApiMovieRatingRequest : ApiRequestBase, IApiMovieRatingRequest
     {
+        [ImportingConstructor]
         public ApiMovieRatingRequest( IMovieDbSettings settings )
             : base( settings )
         { }

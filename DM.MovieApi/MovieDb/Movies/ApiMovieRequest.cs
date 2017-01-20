@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.Movies
 {
@@ -10,6 +11,7 @@ namespace DM.MovieApi.MovieDb.Movies
     {
         private readonly IApiGenreRequest _genreApi;
 
+        [ImportingConstructor]
         public ApiMovieRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
             : base( settings )
         {

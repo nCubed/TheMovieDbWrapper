@@ -1,13 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using DM.MovieApi.ApiRequest;
-using DM.MovieApi.MovieDb.Certifications;
-using DM.MovieApi.MovieDb.Companies;
-using DM.MovieApi.MovieDb.Configuration;
 using DM.MovieApi.MovieDb.Genres;
-using DM.MovieApi.MovieDb.IndustryProfessions;
-using DM.MovieApi.MovieDb.Movies;
-using DM.MovieApi.MovieDb.People;
-using DM.MovieApi.MovieDb.TV;
+using DM.MovieApi.Shims;
 
 namespace DM.MovieApi
 {
@@ -22,6 +20,8 @@ namespace DM.MovieApi
         /// Determines if the underlying factory has been created.
         /// </summary>
         public static bool IsFactoryComposed => _settings != null;
+
+        internal static IMovieDbSettings Settings => _settings;
 
         /// <summary>
         /// Registers themoviedb.org settings for use with the MEF container.
@@ -55,82 +55,9 @@ namespace DM.MovieApi
         {
             ContainerGuard();
 
-            Type type = typeof( T );
+            var requestResolver = new ApiRequestResolver();
 
-            if( type == typeof( IApiCompanyRequest ) )
-            {
-                return new Lazy<T>( () =>
-                 {
-                     IApiCompanyRequest api = new ApiCompanyRequest( _settings, new ApiGenreRequest( _settings ) );
-                     return (T)api;
-                 } );
-            }
-
-            if( type == typeof( IApiConfigurationRequest ) )
-            {
-                return new Lazy<T>( () =>
-                 {
-                     IApiConfigurationRequest api = new ApiConfigurationRequest( _settings );
-                     return (T)api;
-                 } );
-            }
-
-            if( type == typeof( IApiGenreRequest ) )
-            {
-                return new Lazy<T>( () =>
-                 {
-                     IApiGenreRequest api = new ApiGenreRequest( _settings );
-                     return (T)api;
-                 } );
-            }
-
-            if( type == typeof( IApiMovieRatingRequest ) )
-            {
-                return new Lazy<T>( () =>
-                 {
-                     IApiMovieRatingRequest api = new ApiMovieRatingRequest( _settings );
-                     return (T)api;
-                 } );
-            }
-
-            if( type == typeof( IApiMovieRequest ) )
-            {
-                return new Lazy<T>( () =>
-                 {
-                     IApiMovieRequest api = new ApiMovieRequest( _settings, new ApiGenreRequest( _settings ) );
-                     return (T)api;
-                 } );
-            }
-
-            if( type == typeof( IApiPeopleRequest ) )
-            {
-                return new Lazy<T>( () =>
-                 {
-                     IApiPeopleRequest api = new ApiPeopleRequest( _settings, new ApiGenreRequest( _settings ) );
-                     return (T)api;
-                 } );
-            }
-
-            if( type == typeof( IApiProfessionRequest ) )
-            {
-                return new Lazy<T>( () =>
-                 {
-                     IApiProfessionRequest api = new ApiProfessionRequest( _settings );
-                     return (T)api;
-                 } );
-            }
-
-            if( type == typeof( IApiTVShowRequest ) )
-            {
-                return new Lazy<T>( () =>
-                 {
-                     IApiTVShowRequest api = new ApiTVShowRequest( _settings, new ApiGenreRequest( _settings ) );
-                     return (T)api;
-                 } );
-            }
-
-
-            throw new NotImplementedException( $"Factory has not registered for {type.FullName}" );
+            return new Lazy<T>( requestResolver.Get<T> );
         }
 
         /// <summary>
@@ -172,6 +99,92 @@ namespace DM.MovieApi
             {
                 ApiKey = apiKey;
                 ApiUrl = apiUrl;
+            }
+        }
+
+        private class ApiRequestResolver
+        {
+            private static IReadOnlyDictionary<Type, Func<object>> _supportedDependencyTypeMap;
+            private static ConcurrentDictionary<Type, ConstructorInfo> _typeCtorMap;
+
+            static ApiRequestResolver()
+            {
+                _supportedDependencyTypeMap = new Dictionary<Type, Func<object>>
+                {
+                    {typeof(IMovieDbSettings), () => Settings},
+                    {typeof(IApiGenreRequest), () => new ApiGenreRequest( Settings )}
+                };
+
+                _typeCtorMap = new ConcurrentDictionary<Type, ConstructorInfo>();
+            }
+
+            public T Get<T>() where T : IApiRequest
+            {
+                ConstructorInfo ctor = _typeCtorMap.GetOrAdd( typeof( T ), GetConstructor );
+
+                ParameterInfo[] param = ctor.GetParameters();
+
+                if( param.Length == 0 )
+                {
+                    return (T)ctor.Invoke( null );
+                }
+
+                var paramObjects = new List<object>( param.Length );
+                foreach( ParameterInfo p in param )
+                {
+                    if( _supportedDependencyTypeMap.ContainsKey( p.ParameterType ) == false )
+                    {
+                        throw new InvalidOperationException( $"{p.ParameterType.FullName} is not a supported dependency type for {typeof( T ).FullName}." );
+                    }
+
+                    Func<object> typeResolver = _supportedDependencyTypeMap[p.ParameterType];
+
+                    paramObjects.Add( typeResolver() );
+                }
+
+                return (T)ctor.Invoke( paramObjects.ToArray() );
+            }
+
+            private ConstructorInfo GetConstructor( Type t )
+            {
+                ConstructorInfo[] ctors = GetAvailableConstructors( t.GetTypeInfo() );
+
+                if( ctors.Length == 0 )
+                {
+                    throw new InvalidOperationException( $"No public constructors found for {t.FullName}." );
+                }
+
+                if( ctors.Length == 1 )
+                {
+                    return ctors[0];
+                }
+
+                var markedCtors = ctors
+                    .Where( x => x.IsDefined( typeof( ImportingConstructorAttribute ) ) )
+                    .ToArray();
+
+                if( markedCtors.Length != 1 )
+                {
+                    throw new InvalidOperationException( "Multiple public constructors found.  Please mark the one to use with the FactoryConstructorAttribute." );
+                }
+
+                return markedCtors[0];
+            }
+
+            private ConstructorInfo[] GetAvailableConstructors( TypeInfo typeInfo )
+            {
+                TypeInfo[] implementingTypes = typeInfo.Assembly.DefinedTypes
+                    .Where( x => x.IsAbstract == false )
+                    .Where( x => x.IsInterface == false )
+                    .Where( x => typeInfo.IsAssignableFrom( x ) )
+                    .ToArray();
+
+                if( implementingTypes.Length != 1 )
+                {
+                    throw new NotSupportedException( "Multiple implementing requests per request interface is not currently supported." );
+                }
+
+                return implementingTypes[0].DeclaredConstructors.ToArray();
             }
         }
     }

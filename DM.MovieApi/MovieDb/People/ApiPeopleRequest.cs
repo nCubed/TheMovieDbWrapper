@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.People
 {
@@ -10,6 +11,7 @@ namespace DM.MovieApi.MovieDb.People
     {
         private readonly IApiGenreRequest _genreApi;
 
+        [ImportingConstructor]
         public ApiPeopleRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
             : base( settings )
         {
