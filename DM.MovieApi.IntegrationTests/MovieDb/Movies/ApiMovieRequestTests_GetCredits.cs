@@ -30,7 +30,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             Assert.AreEqual( movieIdRunLolaRun, response.Item.MovieId );
             Assert.AreEqual( 23, response.Item.CastMembers.Count );
-            Assert.AreEqual( 25, response.Item.CrewMembers.Count );
+            Assert.AreEqual( 37, response.Item.CrewMembers.Count );
         }
 
         [TestMethod]

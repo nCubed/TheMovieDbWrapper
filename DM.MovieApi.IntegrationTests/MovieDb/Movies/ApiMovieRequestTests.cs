@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiResponse;
+using DM.MovieApi.IntegrationTests.Infrastructure;
 using DM.MovieApi.MovieDb;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
@@ -30,10 +31,45 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         [TestMethod]
         public async Task SearchByTitleAsync_Excludes_AdultFilms()
         {
-            // There is at least one movie in the MovieDb with this name.
-            ApiSearchResponse<MovieInfo> search = await _api.SearchByTitleAsync( "Debbie Does Dallas" );
+            // 2 parts to test:
+            // 1. manual search to verify adult films
+            // 2. api search to verify no adult films
 
-            Assert.AreEqual( 0, search.Results.Count );
+            const string adultFilmTitle = "Debbie Does Dallas";
+
+            var param = new Dictionary<string, string>
+            {
+                {"query", adultFilmTitle},
+                {"include_adult", "true"},
+                {"language", "en"},
+            };
+
+            string[] expectedAdultTitles =
+            {
+                "Debbie Does Dallas",
+                "Debbie Does Dallas... Again",
+                "Debbie Does Dallas: The Revenge",
+                "Debbie Does Dallas Part II",
+                "Debbie Does Dallas III: The Final Chapter",
+            };
+
+            var integrationApi = new IntegrationApiRequest( AssemblyInit.Settings );
+
+            var adult = await integrationApi.SearchAsync<MovieInfo>( "search/movie", param );
+
+            foreach( string title in expectedAdultTitles )
+            {
+                var adultMovie = adult.Results.SingleOrDefault( x => x.Title == title );
+                Assert.IsNotNull( adultMovie );
+            }
+
+            ApiSearchResponse<MovieInfo> search = await _api.SearchByTitleAsync( adultFilmTitle );
+
+            // if any results are returned, ensure they are not marked as an adult film
+            foreach( MovieInfo movie in search.Results )
+            {
+                Assert.IsFalse( movie.IsAdultThemed );
+            }
         }
 
         [TestMethod]

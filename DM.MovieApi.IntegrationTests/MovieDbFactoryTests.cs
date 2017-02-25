@@ -86,6 +86,7 @@ namespace DM.MovieApi.IntegrationTests
             Assert.IsNotNull( api );
         }
 
+        [ExpectedException( typeof( NotImplementedException ) )]
         [TestMethod]
         public void GetAllApiRequests_CanCreate_IMovieApi()
         {

@@ -64,10 +64,10 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
         public async Task FindByIdAsync_KevinBacon_Returns_ExpectedValues()
         {
             const string expectedName = "Kevin Bacon";
-            const string expectedBiography = "Kevin Norwood Bacon (born July 8, 1958, height 5' 10\" (1,78 m)) is an American film and theater actor"; // truncated
+            const string expectedBiography = "Kevin Norwood Bacon (born July 8, 1958) is an American film and theater actor"; // truncated
             DateTime expectedBirthday = DateTime.Parse( "1958-07-08" );
             const Gender expectedGender = Gender.Male;
-            const string expectedHomepage = "http://baconbros.com/";
+            const string expectedHomepage = "http://www.baconbros.com";
             const string expectedImdbId = "nm0000102";
             const string expectedPlaceOfBirth = "Philadelphia, Pennsylvania, USA";
 
@@ -83,7 +83,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Person person = response.Item;
 
             Assert.AreEqual( expectedName, person.Name );
-            Assert.IsTrue( person.Biography.StartsWith( expectedBiography ) );
+            Assert.IsTrue( person.Biography.StartsWith( expectedBiography ), $"Actual Biography: {person.Biography}" );
             Assert.IsFalse( person.IsAdultFilmStar );
             Assert.AreEqual( expectedBirthday, person.Birthday );
             Assert.AreEqual( expectedGender, person.Gender );
