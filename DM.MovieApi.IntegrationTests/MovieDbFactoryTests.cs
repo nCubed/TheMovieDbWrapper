@@ -110,6 +110,7 @@ namespace DM.MovieApi.IntegrationTests
 
             Assert.Fail( $"{nameof( MovieDbFactory.GetAllApiRequests )} is not implemented." );
 
+            // ReSharper disable HeuristicUnreachableCode
             Assert.IsNotNull( api );
 
             foreach( PropertyInfo pi in dbApi )
@@ -117,6 +118,7 @@ namespace DM.MovieApi.IntegrationTests
                 var val = pi.GetValue( api ) as IApiRequest;
                 Assert.IsNotNull( val );
             }
+            // ReSharper restore HeuristicUnreachableCode
         }
 
         [TestMethod]
