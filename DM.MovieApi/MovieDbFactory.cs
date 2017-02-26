@@ -70,6 +70,8 @@ namespace DM.MovieApi
         {
             ContainerGuard();
 
+            // Note: the concrete implementation is currently excluded from the .csproj, but is still included in source control.
+
             string msg = $"{nameof( GetAllApiRequests )} has been temporarily disabled due to porting the code base to Asp.Net Core to provide support for portable library projects.";
             throw new NotImplementedException( msg );
         }

@@ -86,14 +86,9 @@ namespace DM.MovieApi.IntegrationTests
             Assert.IsNotNull( api );
         }
 
-        [ExpectedException( typeof( NotImplementedException ) )]
         [TestMethod]
         public void GetAllApiRequests_CanCreate_IMovieApi()
         {
-            IMovieDbApi api = MovieDbFactory.GetAllApiRequests();
-
-            Assert.IsNotNull( api );
-
             List<PropertyInfo> dbApi = typeof( IMovieDbApi )
                 .GetProperties()
                 .Where( x => typeof( IApiRequest ).IsAssignableFrom( x.PropertyType ) )
@@ -101,6 +96,21 @@ namespace DM.MovieApi.IntegrationTests
                 .ToList();
 
             Assert.AreEqual( 8, dbApi.Count );
+
+            IMovieDbApi api;
+
+            try
+            {
+                api = MovieDbFactory.GetAllApiRequests();
+            }
+            catch( NotImplementedException )
+            {
+                return;
+            }
+
+            Assert.Fail( $"{nameof( MovieDbFactory.GetAllApiRequests )} is not implemented." );
+
+            Assert.IsNotNull( api );
 
             foreach( PropertyInfo pi in dbApi )
             {
