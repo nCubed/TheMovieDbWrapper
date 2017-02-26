@@ -2,17 +2,17 @@
 <package >
   <metadata>
     <id>TheMovieDbWrapper</id>
-    <version>0.8.1</version>
+    <version>0.8.2</version>
     <title>TheMovieDb.org Wrapper</title>
     <authors>Kindler Chase</authors>
     <owners>Kindler Chase</owners>
     <licenseUrl>https://github.com/nCubed/TheMovieDbWrapper/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/nCubed/TheMovieDbWrapper</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>C# wrapper for common requests against themoviedb.org API.</description>
-    <releaseNotes>v0.8.1: Minor update to resolve Runtime error in a Xamarin.UWP project. v0.8.0: Migrated project to .netstandard to support Cross-Platform Applications, i.e., Android, IOS, and all flavors of .NET. Minor breaking change, re: IMovieDbApi is currently not supported, but will support in the future.</releaseNotes>
+    <description>C# wrapper for common requests against themoviedb.org API will full support for standard and portable libraries.</description>
+    <releaseNotes>v0.8.2: Minor update to include the raw JSON returned from themoviedb.org query.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Movie Movies themoviedb themoviedb.org TMDB Film TV Television</tags>
+    <tags>Movies Movie themoviedb themoviedb.org TMDB Film TV Television</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="9.0.1" />
     </dependencies>
