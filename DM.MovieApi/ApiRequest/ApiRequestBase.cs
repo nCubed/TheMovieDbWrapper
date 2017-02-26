@@ -56,6 +56,7 @@ namespace DM.MovieApi.ApiRequest
                     {
                         Error = JsonConvert.DeserializeObject<ApiError>( json ),
                         CommandText = response.RequestMessage.RequestUri.ToString(),
+                        Json = json,
                     };
 
                     return error;
@@ -65,6 +66,7 @@ namespace DM.MovieApi.ApiRequest
                 {
                     RateLimit = GetRateLimit( response ),
                     CommandText = response.RequestMessage.RequestUri.ToString(),
+                    Json = json,
                 };
 
                 T item = deserializer( json );
@@ -110,6 +112,7 @@ namespace DM.MovieApi.ApiRequest
                         // What to do? Nothing really, the page guard at the top of the method will keep the page number > 0.
                         Error = JsonConvert.DeserializeObject<ApiError>( json ),
                         CommandText = response.RequestMessage.RequestUri.ToString(),
+                        Json = json,
                     };
 
                     return error;
@@ -121,6 +124,7 @@ namespace DM.MovieApi.ApiRequest
 
                 result.RateLimit = rateLimit;
                 result.CommandText = response.RequestMessage.RequestUri.ToString();
+                result.Json = json;
 
                 return result;
             }

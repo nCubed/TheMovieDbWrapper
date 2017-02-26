@@ -20,7 +20,10 @@ namespace DM.MovieApi.ApiResponse
         /// </summary>
         public string CommandText { get; internal set; }
 
-        // TODO: [2016-11-25] Add readonly property for raw json
+        /// <summary>
+        /// The JSON returned from themoviedb.org based on the <see cref="CommandText"/> query.
+        /// </summary>
+        public string Json { get; internal set; }
 
         public override string ToString()
             => CommandText;

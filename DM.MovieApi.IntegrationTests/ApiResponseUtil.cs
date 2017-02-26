@@ -27,12 +27,7 @@ namespace DM.MovieApi.IntegrationTests
             System.Threading.Thread.Sleep( TestInitThrottle );
         }
 
-        public static void AssertErrorIsNull<T>( ApiQueryResponse<T> response )
-        {
-            Assert.IsNull( response.Error, response.Error?.ToString() ?? "Makes Complier Happy" );
-        }
-
-        public static void AssertErrorIsNull<T>( ApiSearchResponse<T> response )
+        public static void AssertErrorIsNull( ApiResponseBase response )
         {
             Assert.IsNull( response.Error, response.Error?.ToString() ?? "Makes Complier Happy" );
         }
