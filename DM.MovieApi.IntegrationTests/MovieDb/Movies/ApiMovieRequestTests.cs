@@ -9,6 +9,7 @@ using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.MovieDb.Keywords;
 using DM.MovieApi.MovieDb.Movies;
+using DM.MovieApi.MovieDb.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
@@ -348,6 +349,27 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
+        }
+
+        [TestMethod]
+        public async Task GetImagesAsync_StarWarsTheForceAwakens()
+        {
+            const int id = 140607;
+            ApiQueryResponse<Images> response = await _api.GetImagesAsync(id);
+
+            ApiResponseUtil.AssertErrorIsNull(response);
+            Images images = response.Item;
+
+            Assert.AreEqual(id,images.Id);
+            Assert.AreNotEqual(0,images.Backdrops.Count);
+            Assert.AreNotEqual(0,images.Posters);
+
+            var backdrop = images.Backdrops[0];
+            Assert.AreNotEqual(0,backdrop.AspectRatio);
+            ApiResponseUtil.AssertImagePath(backdrop.FilePath);
+            Assert.AreNotEqual(0, backdrop.Height);
+            Assert.AreNotEqual(0, backdrop.Width);
+            
         }
     }
 }

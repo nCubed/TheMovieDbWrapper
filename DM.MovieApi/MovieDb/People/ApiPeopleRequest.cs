@@ -82,5 +82,19 @@ namespace DM.MovieApi.MovieDb.People
 
             return response;
         }
+
+        public async Task<ApiQueryResponse<Images>> GetImagesAsync(int personId, string language = "en")
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language}
+            };
+
+            string command = $"person/{personId}/images";
+
+            ApiQueryResponse<Images> response = await base.QueryAsync<Images>(command, param);
+
+            return response;
+        }
     }
 }

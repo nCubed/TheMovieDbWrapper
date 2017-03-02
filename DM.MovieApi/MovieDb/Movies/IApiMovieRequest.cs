@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
+using DM.MovieApi.MovieDb.Shared;
 
 namespace DM.MovieApi.MovieDb.Movies
 {
@@ -64,5 +65,13 @@ namespace DM.MovieApi.MovieDb.Movies
         /// <param name="movieId">The movie Id is typically found from a more generic Movie query.</param>
         /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
         Task<ApiQueryResponse<MovieCredit>> GetCreditsAsync( int movieId, string language = "en" );
+
+        /// <summary>
+        /// Get the images for a specific movie id.
+        /// </summary>
+        /// <param name="movieId">The movie Id is typically found from a more generic Movie query.</param>
+        /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
+        /// <returns></returns>
+        Task<ApiQueryResponse<Images>> GetImagesAsync(int movieId, string language = "en");
     }
 }

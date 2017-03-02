@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Shared;
 using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.TV
@@ -109,6 +110,20 @@ namespace DM.MovieApi.MovieDb.TV
 
             response.Results.PopulateGenres( _genreApi );
             
+            return response;
+        }
+
+        public async Task<ApiQueryResponse<Images>> GetImagesAsync(int tvShowId, string language = "en")
+        {
+            var param = new Dictionary<string, string>
+            {
+                { "language", language }
+            };
+
+            string command = $"tv/{tvShowId}/images";
+
+            ApiQueryResponse<Images> response = await base.QueryAsync<Images>(command, param);
+
             return response;
         }
     }

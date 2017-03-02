@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Shared;
 using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.Movies
@@ -153,6 +154,20 @@ namespace DM.MovieApi.MovieDb.Movies
             string command = $"movie/{movieId}/credits";
 
             ApiQueryResponse<MovieCredit> response = await base.QueryAsync<MovieCredit>( command, param );
+
+            return response;
+        }
+
+        public async Task<ApiQueryResponse<Images>> GetImagesAsync(int movieId, string language = "en")
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+            };
+
+            string command = $"movie/{movieId}/images";
+
+            ApiQueryResponse<Images> response = await base.QueryAsync<Images>(command, param);
 
             return response;
         }

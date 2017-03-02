@@ -326,5 +326,24 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
                 ( search, pageNumber ) => _api.SearchByNameAsync( search, pageNumber ), null );
         }
+
+        [TestMethod]
+        public async Task GetImagesAsync_MillaJovovich()
+        {
+            ApiQueryResponse<Images> response = await _api.GetImagesAsync(PersonId_MillaJovovich);
+
+            ApiResponseUtil.AssertErrorIsNull(response);
+            Images images = response.Item;
+
+            Assert.AreEqual(PersonId_MillaJovovich, images.Id);
+            Assert.AreNotEqual(0, images.Profiles.Count);
+
+            var profile = images.Profiles[0];
+            Assert.AreNotEqual(0, profile.AspectRatio);
+            ApiResponseUtil.AssertImagePath(profile.FilePath);
+            Assert.AreNotEqual(0, profile.Height);
+            Assert.AreNotEqual(0, profile.Width);
+
+        }
     }
 }

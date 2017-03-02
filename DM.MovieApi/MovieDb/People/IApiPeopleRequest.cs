@@ -37,5 +37,12 @@ namespace DM.MovieApi.MovieDb.People
         /// <param name="personId">The person Id is typically found from a more generic query such as movie or television or search.</param>
         /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
         Task<ApiQueryResponse<PersonTVCredit>> GetTVCreditsAsync( int personId, string language = "en" );
+
+        /// <summary>
+        /// Gets all images for a specific Person.
+        /// </summary>
+        /// <param name="personId">The person Id is typically found from a more generic query such as movie or television or search.</param>
+        /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
+        Task<ApiQueryResponse<Images>> GetImagesAsync(int personId, string language = "en");
     }
 }

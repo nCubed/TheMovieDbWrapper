@@ -85,10 +85,13 @@
     <Compile Include="MovieDb\People\ApiPeopleRequest.cs" />
     <Compile Include="MovieDb\People\Gender.cs" />
     <Compile Include="MovieDb\People\IApiPeopleRequest.cs" />
+    <Compile Include="MovieDb\People\Images.cs" />
     <Compile Include="MovieDb\People\Person.cs" />
     <Compile Include="MovieDb\People\PersonInfo.cs" />
     <Compile Include="MovieDb\People\PersonMovieCredit.cs" />
     <Compile Include="MovieDb\People\PersonTVCredit.cs" />
+    <Compile Include="MovieDb\Shared\Image.cs" />
+    <Compile Include="MovieDb\Shared\Images.cs" />
     <Compile Include="MovieDb\TV\ApiTVShowRequest.cs" />
     <Compile Include="MovieDb\TV\IApiTVShowRequest.cs" />
     <Compile Include="MovieDb\TV\Network.cs" />
