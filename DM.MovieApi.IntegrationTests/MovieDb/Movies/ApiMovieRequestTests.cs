@@ -9,7 +9,6 @@ using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.MovieDb.Keywords;
 using DM.MovieApi.MovieDb.Movies;
-using DM.MovieApi.MovieDb.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
@@ -222,6 +221,116 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 new Keyword(229031, "shot on imax cameras"),
             };
             CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToList() );
+
+            Assert.IsNull(movie.Backdrops);
+            Assert.IsNull(movie.Posters);
+        }
+
+        [TestMethod]
+        public async Task FindByIdAsync_StarWarsTheForceAwakens_Returns_AllValuesIncludingImages()
+        {
+            const int id = 140607;
+            const string expectedImdbId = "tt2488496";
+            const string expectedTitle = "Star Wars: The Force Awakens";
+            const string expectedOriginalTitle = "Star Wars: The Force Awakens";
+            const string expectedTagline = "Every generation has a story.";
+            const string expetedOverview = "Thirty years after defeating the Galactic Empire"; // truncated
+            const string expectedOriginalLanguage = "en";
+            const string expectedHomepage = "http://www.starwars.com/films/star-wars-episode-vii";
+            const string expectedStatus = "Released";
+            const int expectedBudget = 200000000;
+            const int expectedRuntime = 136;
+            var expectedReleaseDate = new DateTime(2015, 12, 15);
+
+            ApiQueryResponse<Movie> response = await _api.FindByIdAsync(id,includeImages:true);
+
+            ApiResponseUtil.AssertErrorIsNull(response);
+
+            Movie movie = response.Item;
+
+            Assert.AreEqual(id, movie.Id);
+            Assert.AreEqual(expectedImdbId, movie.ImdbId);
+            Assert.AreEqual(expectedTitle, movie.Title);
+            Assert.AreEqual(expectedOriginalTitle, movie.OriginalTitle);
+            Assert.AreEqual(expectedTagline, movie.Tagline);
+            Assert.AreEqual(expectedOriginalLanguage, movie.OriginalLanguage);
+            Assert.AreEqual(expectedHomepage, movie.Homepage);
+            Assert.AreEqual(expectedStatus, movie.Status);
+            Assert.AreEqual(expectedBudget, movie.Budget);
+            Assert.AreEqual(expectedRuntime, movie.Runtime);
+            Assert.AreEqual(expectedReleaseDate, movie.ReleaseDate);
+
+            ApiResponseUtil.AssertImagePath(movie.BackdropPath);
+            ApiResponseUtil.AssertImagePath(movie.PosterPath);
+
+            Assert.IsTrue(movie.Overview.StartsWith(expetedOverview));
+            Assert.IsTrue(movie.Popularity > 7, $"Actual: {movie.Popularity}");
+            Assert.IsTrue(movie.VoteAverage > 5);
+            Assert.IsTrue(movie.VoteCount > 1500);
+
+            // Spoken Languages
+            var languages = new[]
+            {
+                new Language("en", "English"),
+            };
+            CollectionAssert.AreEqual(languages, movie.SpokenLanguages.ToArray());
+
+            // Production Companies
+            var companies = new[]
+            {
+                new ProductionCompanyInfo(1, "Lucasfilm"),
+                new ProductionCompanyInfo(1634, "Truenorth Productions"),
+                new ProductionCompanyInfo(11461, "Bad Robot"),
+            };
+            CollectionAssert.AreEquivalent(companies, movie.ProductionCompanies.ToArray());
+
+            // Production Countries
+            var countries = new[]
+            {
+                new Country("US", "United States of America"),
+            };
+            CollectionAssert.AreEqual(countries, movie.ProductionCountries.ToArray());
+
+            // Movie Collection
+            Assert.IsNotNull(movie.MovieCollectionInfo);
+            Assert.AreEqual(10, movie.MovieCollectionInfo.Id);
+            Assert.AreEqual("Star Wars Collection", movie.MovieCollectionInfo.Name);
+            ApiResponseUtil.AssertImagePath(movie.MovieCollectionInfo.BackdropPath);
+            ApiResponseUtil.AssertImagePath(movie.MovieCollectionInfo.PosterPath);
+
+            // Genres
+            var expectedGenres = new List<Genre>
+            {
+                GenreFactory.Action(),
+                GenreFactory.Adventure(),
+                GenreFactory.ScienceFiction(),
+                GenreFactory.Fantasy(),
+            };
+            CollectionAssert.AreEquivalent(expectedGenres, movie.Genres.ToList());
+
+            // Keywords
+            var expectedKeywords = new List<Keyword>
+            {
+                new Keyword(803, "android"),
+                new Keyword(9831, "spaceship"),
+                new Keyword(10527, "jedi"),
+                new Keyword(161176, "space opera"),
+                new Keyword(209714, "3d"),
+                new Keyword(229031, "shot on imax cameras"),
+            };
+            CollectionAssert.AreEquivalent(expectedKeywords, movie.Keywords.ToList());
+            
+            Assert.IsNotNull(movie.Backdrops);
+            Assert.IsNotNull(movie.Posters);
+
+            Assert.AreNotEqual(0, movie.Backdrops.Count);
+            Assert.AreNotEqual(0, movie.Posters);
+
+            var backdrop = movie.Backdrops[0];
+            Assert.AreNotEqual(0, backdrop.AspectRatio);
+            ApiResponseUtil.AssertImagePath(backdrop.FilePath);
+            Assert.AreNotEqual(0, backdrop.Height);
+            Assert.AreNotEqual(0, backdrop.Width);
         }
 
         [TestMethod]
@@ -351,25 +460,25 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
 
-        [TestMethod]
-        public async Task GetImagesAsync_StarWarsTheForceAwakens()
-        {
-            const int id = 140607;
-            ApiQueryResponse<Images> response = await _api.GetImagesAsync(id);
+        //[TestMethod]
+        //public async Task GetImagesAsync_StarWarsTheForceAwakens()
+        //{
+        //    const int id = 140607;
+        //    ApiQueryResponse<Images> response = await _api.GetImagesAsync(id);
 
-            ApiResponseUtil.AssertErrorIsNull(response);
-            Images images = response.Item;
+        //    ApiResponseUtil.AssertErrorIsNull(response);
+        //    Images images = response.Item;
 
-            Assert.AreEqual(id,images.Id);
-            Assert.AreNotEqual(0,images.Backdrops.Count);
-            Assert.AreNotEqual(0,images.Posters);
+        //    Assert.AreEqual(id,images.Id);
+        //    Assert.AreNotEqual(0,images.Backdrops.Count);
+        //    Assert.AreNotEqual(0,images.Posters);
 
-            var backdrop = images.Backdrops[0];
-            Assert.AreNotEqual(0,backdrop.AspectRatio);
-            ApiResponseUtil.AssertImagePath(backdrop.FilePath);
-            Assert.AreNotEqual(0, backdrop.Height);
-            Assert.AreNotEqual(0, backdrop.Width);
+        //    var backdrop = images.Backdrops[0];
+        //    Assert.AreNotEqual(0,backdrop.AspectRatio);
+        //    ApiResponseUtil.AssertImagePath(backdrop.FilePath);
+        //    Assert.AreNotEqual(0, backdrop.Height);
+        //    Assert.AreNotEqual(0, backdrop.Width);
             
-        }
+        //}
     }
 }

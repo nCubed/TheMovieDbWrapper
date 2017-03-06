@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DM.MovieApi.MovieDb.Shared
+namespace DM.MovieApi.MovieDb
 {
     [DataContract]
     public class Image

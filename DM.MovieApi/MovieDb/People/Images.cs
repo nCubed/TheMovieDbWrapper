@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using DM.MovieApi.MovieDb.Shared;
 
 namespace DM.MovieApi.MovieDb.People
 {

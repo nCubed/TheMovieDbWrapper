@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using DM.MovieApi.MovieDb.Images;
+using Newtonsoft.Json;
 
 namespace DM.MovieApi.MovieDb.People
 {
     [DataContract]
+    [JsonConverter(typeof(ImagesConverter))]
     public class Person
     {
         [DataMember( Name = "id" )]
@@ -45,6 +48,9 @@ namespace DM.MovieApi.MovieDb.People
 
         [DataMember( Name = "profile_path" )]
         public string ProfilePath { get; set; }
+
+        [DataMember(Name = "profiles")]
+        public IReadOnlyList<Image> Profiles { get; set; }
 
         public Person()
         {

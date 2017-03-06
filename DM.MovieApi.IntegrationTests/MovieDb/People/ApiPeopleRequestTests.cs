@@ -91,10 +91,59 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.AreEqual( expectedHomepage, person.Homepage );
             Assert.AreEqual( expectedImdbId, person.ImdbId );
             Assert.AreEqual( expectedPlaceOfBirth, person.PlaceOfBirth );
-            Assert.IsTrue( person.Popularity > 3 );
+            Assert.IsTrue( person.Popularity > 2 );
             Assert.IsNotNull( person.ProfilePath );
 
             CollectionAssert.AreEquivalent( alsoKnownAs, person.AlsoKnownAs.ToArray() );
+
+            Assert.IsNull(person.Profiles);
+        }
+
+        [TestMethod]
+        public async Task FindByIdAsync_KevinBacon_Returns_ExpectedValuesIncludingImages()
+        {
+            const string expectedName = "Kevin Bacon";
+            const string expectedBiography = "Kevin Norwood Bacon (born July 8, 1958) is an American film and theater actor"; // truncated
+            DateTime expectedBirthday = DateTime.Parse("1958-07-08");
+            const Gender expectedGender = Gender.Male;
+            const string expectedHomepage = "http://www.baconbros.com";
+            const string expectedImdbId = "nm0000102";
+            const string expectedPlaceOfBirth = "Philadelphia, Pennsylvania, USA";
+
+            string[] alsoKnownAs =
+            {
+                "Kevin Norwood Bacon",
+            };
+
+            ApiQueryResponse<Person> response = await _api.FindByIdAsync(PersonId_KevinBacon,includeImages:true);
+
+            ApiResponseUtil.AssertErrorIsNull(response);
+
+            Person person = response.Item;
+
+            Assert.AreEqual(expectedName, person.Name);
+            Assert.IsTrue(person.Biography.StartsWith(expectedBiography), $"Actual Biography: {person.Biography}");
+            Assert.IsFalse(person.IsAdultFilmStar);
+            Assert.AreEqual(expectedBirthday, person.Birthday);
+            Assert.AreEqual(expectedGender, person.Gender);
+            Assert.AreEqual(null, person.Deathday);
+            Assert.AreEqual(expectedHomepage, person.Homepage);
+            Assert.AreEqual(expectedImdbId, person.ImdbId);
+            Assert.AreEqual(expectedPlaceOfBirth, person.PlaceOfBirth);
+            Assert.IsTrue(person.Popularity > 2);
+            Assert.IsNotNull(person.ProfilePath);
+
+            CollectionAssert.AreEquivalent(alsoKnownAs, person.AlsoKnownAs.ToArray());
+
+            Assert.IsNotNull(person.Profiles);
+
+            Assert.AreNotEqual(0, person.Profiles);
+
+            var profile = person.Profiles[0];
+            Assert.AreNotEqual(0, profile.AspectRatio);
+            ApiResponseUtil.AssertImagePath(profile.FilePath);
+            Assert.AreNotEqual(0, profile.Height);
+            Assert.AreNotEqual(0, profile.Width);
         }
 
         [TestMethod]
@@ -327,23 +376,23 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
                 ( search, pageNumber ) => _api.SearchByNameAsync( search, pageNumber ), null );
         }
 
-        [TestMethod]
-        public async Task GetImagesAsync_MillaJovovich()
-        {
-            ApiQueryResponse<Images> response = await _api.GetImagesAsync(PersonId_MillaJovovich);
+        //[TestMethod]
+        //public async Task GetImagesAsync_MillaJovovich()
+        //{
+        //    ApiQueryResponse<Images> response = await _api.GetImagesAsync(PersonId_MillaJovovich);
 
-            ApiResponseUtil.AssertErrorIsNull(response);
-            Images images = response.Item;
+        //    ApiResponseUtil.AssertErrorIsNull(response);
+        //    Images images = response.Item;
 
-            Assert.AreEqual(PersonId_MillaJovovich, images.Id);
-            Assert.AreNotEqual(0, images.Profiles.Count);
+        //    Assert.AreEqual(PersonId_MillaJovovich, images.Id);
+        //    Assert.AreNotEqual(0, images.Profiles.Count);
 
-            var profile = images.Profiles[0];
-            Assert.AreNotEqual(0, profile.AspectRatio);
-            ApiResponseUtil.AssertImagePath(profile.FilePath);
-            Assert.AreNotEqual(0, profile.Height);
-            Assert.AreNotEqual(0, profile.Width);
+        //    var profile = images.Profiles[0];
+        //    Assert.AreNotEqual(0, profile.AspectRatio);
+        //    ApiResponseUtil.AssertImagePath(profile.FilePath);
+        //    Assert.AreNotEqual(0, profile.Height);
+        //    Assert.AreNotEqual(0, profile.Width);
 
-        }
+        //}
     }
 }

@@ -6,7 +6,6 @@ using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.MovieDb.Keywords;
-using DM.MovieApi.MovieDb.Shared;
 using DM.MovieApi.MovieDb.TV;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -187,6 +186,105 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 new Keyword(170362, "fantasy world"),
             };
             CollectionAssert.AreEquivalent( expKeywords, show.Keywords.ToArray() );
+
+            Assert.IsNull(show.Backdrops);
+            Assert.IsNull(show.Posters);
+        }
+
+        [TestMethod]
+        public async Task FindById_GameOfThrones_ReturnsAllValuesIncludingImages()
+        {
+            var expFirstAirDate = new DateTime(2011, 04, 17);
+            const string expHomepage = "http://www.hbo.com/game-of-thrones";
+            const string expName = "Game of Thrones";
+            const string expOriginalLanguage = "en";
+
+            ApiQueryResponse<TVShow> response = await _api.FindByIdAsync(1399,includeImages:true);
+
+            ApiResponseUtil.AssertErrorIsNull(response);
+
+            TVShow show = response.Item;
+
+            TVShowCreator[] expCreatedBy =
+            {
+                new TVShowCreator(9813, "David Benioff", "/8CuuNIKMzMUL1NKOPv9AqEwM7og.jpg"),
+                new TVShowCreator(228068, "D. B. Weiss", "/caUAtilEe06OwOjoQY3B7BgpARi.jpg"),
+            };
+
+            CollectionAssert.AreEquivalent(expCreatedBy, show.CreatedBy.ToArray());
+
+            var expRunTime = new[] { 60 };
+
+            CollectionAssert.AreEquivalent(expRunTime, show.EpisodeRunTime.ToArray());
+
+            Assert.AreEqual(expFirstAirDate.Date, show.FirstAirDate.Date);
+
+            Genre[] expGenres =
+            {
+                GenreFactory.SciFiAndFantasy(),
+                GenreFactory.ActionAndAdventure(),
+                GenreFactory.Drama(),
+            };
+
+            CollectionAssert.AreEquivalent(expGenres, show.Genres.ToArray());
+
+            Assert.AreEqual(expHomepage, show.Homepage);
+
+            var expLanguages = new[] { "es", "en", "de" };
+
+            CollectionAssert.AreEquivalent(expLanguages, show.Languages.ToArray());
+
+            Assert.AreEqual(expName, show.Name);
+
+            Network[] expNetworks =
+            {
+                new Network(49, "HBO")
+            };
+
+            CollectionAssert.AreEquivalent(expNetworks, show.Networks.ToArray());
+
+            var expCountryCodes = new[] { "US" };
+
+            CollectionAssert.AreEquivalent(expCountryCodes, show.OriginCountry.ToArray());
+
+            Assert.AreEqual(expOriginalLanguage, show.OriginalLanguage);
+
+            ApiResponseUtil.AssertImagePath(show.BackdropPath);
+            ApiResponseUtil.AssertImagePath(show.PosterPath);
+
+            ProductionCompanyInfo[] expProductionCompanies =
+            {
+                new ProductionCompanyInfo( 3268, "Home Box Office (HBO)" ),
+                new ProductionCompanyInfo( 5820, "Generator Entertainment" ),
+                new ProductionCompanyInfo( 12525, "Television 360" ),
+                new ProductionCompanyInfo( 12526, "Bighead Littlehead" ),
+                new ProductionCompanyInfo( 76043, "Revolution Sun Studios" )
+            };
+            CollectionAssert.AreEquivalent(expProductionCompanies, show.ProductionCompanies.ToArray());
+
+            Keyword[] expKeywords =
+            {
+                new Keyword(6091, "war"),
+                new Keyword(818, "based on novel"),
+                new Keyword(4152, "kingdom"),
+                new Keyword(12554, "dragon"),
+                new Keyword(13084, "king"),
+                new Keyword(34038, "intrigue"),
+                new Keyword(170362, "fantasy world"),
+            };
+            CollectionAssert.AreEquivalent(expKeywords, show.Keywords.ToArray());
+
+            Assert.IsNotNull(show.Backdrops);
+            Assert.IsNotNull(show.Posters);
+
+            Assert.AreNotEqual(0, show.Backdrops.Count);
+            Assert.AreNotEqual(0, show.Posters);
+
+            var backdrop = show.Backdrops[0];
+            Assert.AreNotEqual(0, backdrop.AspectRatio);
+            ApiResponseUtil.AssertImagePath(backdrop.FilePath);
+            Assert.AreNotEqual(0, backdrop.Height);
+            Assert.AreNotEqual(0, backdrop.Width);
         }
 
         [TestMethod]
@@ -248,25 +346,25 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
 
-        [TestMethod]
-        public async Task GetImagesAsync_GameOfThrones()
-        {
-            const int id = 1399;
-            ApiQueryResponse<Images> response = await _api.GetImagesAsync(id);
+        //[TestMethod]
+        //public async Task GetImagesAsync_GameOfThrones()
+        //{
+        //    const int id = 1399;
+        //    ApiQueryResponse<Images> response = await _api.GetImagesAsync(id);
 
-            ApiResponseUtil.AssertErrorIsNull(response);
-            Images images = response.Item;
+        //    ApiResponseUtil.AssertErrorIsNull(response);
+        //    Images images = response.Item;
 
-            Assert.AreEqual(id, images.Id);
-            Assert.AreNotEqual(0, images.Backdrops.Count);
-            Assert.AreNotEqual(0, images.Posters);
+        //    Assert.AreEqual(id, images.Id);
+        //    Assert.AreNotEqual(0, images.Backdrops.Count);
+        //    Assert.AreNotEqual(0, images.Posters);
 
-            var backdrop = images.Backdrops[0];
-            Assert.AreNotEqual(0, backdrop.AspectRatio);
-            ApiResponseUtil.AssertImagePath(backdrop.FilePath);
-            Assert.AreNotEqual(0, backdrop.Height);
-            Assert.AreNotEqual(0, backdrop.Width);
+        //    var backdrop = images.Backdrops[0];
+        //    Assert.AreNotEqual(0, backdrop.AspectRatio);
+        //    ApiResponseUtil.AssertImagePath(backdrop.FilePath);
+        //    Assert.AreNotEqual(0, backdrop.Height);
+        //    Assert.AreNotEqual(0, backdrop.Width);
 
-        }
+        //}
     }
 }
