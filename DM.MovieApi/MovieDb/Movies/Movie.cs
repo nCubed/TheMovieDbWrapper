@@ -4,12 +4,14 @@ using System.Runtime.Serialization;
 using DM.MovieApi.MovieDb.Collections;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Genres;
+using DM.MovieApi.MovieDb.Images;
 using DM.MovieApi.MovieDb.Keywords;
 using Newtonsoft.Json;
 
 namespace DM.MovieApi.MovieDb.Movies
 {
     [DataContract]
+    [JsonConverter(typeof(ImagesConverter))]
     public class Movie
     {
         [DataMember( Name = "id" )]
@@ -93,6 +95,11 @@ namespace DM.MovieApi.MovieDb.Movies
         [DataMember( Name = "keywords" )]
         [JsonConverter( typeof( KeywordConverter ), "keywords" )]
         public IReadOnlyList<Keyword> Keywords { get; set; }
+
+        [DataMember(Name = "backdrops")]
+        public IReadOnlyList<Image> Backdrops { get; set; }
+        [DataMember(Name = "posters")]
+        public IReadOnlyList<Image> Posters { get; set; }
 
         public Movie()
         {

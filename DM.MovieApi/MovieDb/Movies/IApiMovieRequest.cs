@@ -14,7 +14,8 @@ namespace DM.MovieApi.MovieDb.Movies
         /// </summary>
         /// <param name="movieId">The movie Id is typically found from a more generic Movie query.</param>
         /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
-        Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en" );
+        /// <param name="includeImages">Default is false. Set to true to retrive all backdrop and poster images</param>
+        Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en", bool includeImages = false);
 
         /// <summary>
         /// Searches for Movies by title.
@@ -64,5 +65,6 @@ namespace DM.MovieApi.MovieDb.Movies
         /// <param name="movieId">The movie Id is typically found from a more generic Movie query.</param>
         /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
         Task<ApiQueryResponse<MovieCredit>> GetCreditsAsync( int movieId, string language = "en" );
+        
     }
 }

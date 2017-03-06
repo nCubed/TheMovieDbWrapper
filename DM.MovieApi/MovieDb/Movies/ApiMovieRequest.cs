@@ -18,13 +18,15 @@ namespace DM.MovieApi.MovieDb.Movies
             _genreApi = genreApi;
         }
 
-        public async Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en" )
+        public async Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en", bool includeImages = false)
         {
             var param = new Dictionary<string, string>
             {
                 {"language", language},
                 {"append_to_response", "keywords"},
             };
+            if (includeImages)
+                param["append_to_response"] += ",images";
 
             string command = $"movie/{movieId}";
 
@@ -156,5 +158,6 @@ namespace DM.MovieApi.MovieDb.Movies
 
             return response;
         }
+        
     }
 }

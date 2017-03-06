@@ -18,12 +18,14 @@ namespace DM.MovieApi.MovieDb.People
             _genreApi = genreApi;
         }
 
-        public async Task<ApiQueryResponse<Person>> FindByIdAsync( int personId, string language = "en" )
+        public async Task<ApiQueryResponse<Person>> FindByIdAsync( int personId, string language = "en", bool includeImages = false)
         {
             var param = new Dictionary<string, string>
             {
                 {"language", language}
             };
+            if (includeImages)
+                param.Add("append_to_response","images");
 
             string command = $"person/{personId}";
 
@@ -82,5 +84,6 @@ namespace DM.MovieApi.MovieDb.People
 
             return response;
         }
+        
     }
 }
