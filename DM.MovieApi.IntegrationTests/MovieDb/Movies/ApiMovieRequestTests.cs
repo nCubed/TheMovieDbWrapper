@@ -140,7 +140,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             const string expectedOriginalLanguage = "en";
             const string expectedHomepage = "http://www.starwars.com/films/star-wars-episode-vii";
             const string expectedStatus = "Released";
-            const int expectedBudget = 200000000;
+            const int expectedBudget = 245000000;
             const int expectedRuntime = 136;
             var expectedReleaseDate = new DateTime( 2015, 12, 15 );
 
@@ -218,9 +218,112 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 new Keyword(10527, "jedi"),
                 new Keyword(161176, "space opera"),
                 new Keyword(209714, "3d"),
-                new Keyword(229031, "shot on imax cameras"),
+                new Keyword(156395, "imax")
             };
             CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToList() );
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task FindByIMDBIdAsync_Invalid_Id_Throws_Error()
+        {
+            ApiQueryResponse<Movie> response = await _api.FindByIMDBIdAsync("2488496");
+        }
+
+        [TestMethod]
+        public async Task FindByIMDBIdAsync_StarWarsTheForceAwakens_Returns_AllValues()
+        {
+            const string ImdbId = "tt2488496";
+
+            const int expectedid = 140607;            
+            const string expectedTitle = "Star Wars: The Force Awakens";
+            const string expectedOriginalTitle = "Star Wars: The Force Awakens";
+            const string expectedTagline = "Every generation has a story.";
+            const string expetedOverview = "Thirty years after defeating the Galactic Empire"; // truncated
+            const string expectedOriginalLanguage = "en";
+            const string expectedHomepage = "http://www.starwars.com/films/star-wars-episode-vii";
+            const string expectedStatus = "Released";
+            const int expectedBudget = 245000000;
+            const int expectedRuntime = 136;
+            var expectedReleaseDate = new DateTime(2015, 12, 15);
+
+            ApiQueryResponse<Movie> response = await _api.FindByIMDBIdAsync(ImdbId);
+
+            ApiResponseUtil.AssertErrorIsNull(response);
+
+            Movie movie = response.Item;
+
+            Assert.AreEqual(expectedid, movie.Id);
+            Assert.AreEqual(ImdbId, movie.ImdbId);
+            Assert.AreEqual(expectedTitle, movie.Title);
+            Assert.AreEqual(expectedOriginalTitle, movie.OriginalTitle);
+            Assert.AreEqual(expectedTagline, movie.Tagline);
+            Assert.AreEqual(expectedOriginalLanguage, movie.OriginalLanguage);
+            Assert.AreEqual(expectedHomepage, movie.Homepage);
+            Assert.AreEqual(expectedStatus, movie.Status);
+            Assert.AreEqual(expectedBudget, movie.Budget);
+            Assert.AreEqual(expectedRuntime, movie.Runtime);
+            Assert.AreEqual(expectedReleaseDate, movie.ReleaseDate);
+
+            ApiResponseUtil.AssertImagePath(movie.BackdropPath);
+            ApiResponseUtil.AssertImagePath(movie.PosterPath);
+
+            Assert.IsTrue(movie.Overview.StartsWith(expetedOverview));
+            Assert.IsTrue(movie.Popularity > 7, $"Actual: {movie.Popularity}");
+            Assert.IsTrue(movie.VoteAverage > 5);
+            Assert.IsTrue(movie.VoteCount > 1500);
+
+            // Spoken Languages
+            var languages = new[]
+            {
+                new Language("en", "English"),
+            };
+            CollectionAssert.AreEqual(languages, movie.SpokenLanguages.ToArray());
+
+            // Production Companies
+            var companies = new[]
+            {
+                new ProductionCompanyInfo(1, "Lucasfilm"),
+                new ProductionCompanyInfo(1634, "Truenorth Productions"),
+                new ProductionCompanyInfo(11461, "Bad Robot"),
+            };
+            CollectionAssert.AreEquivalent(companies, movie.ProductionCompanies.ToArray());
+
+            // Production Countries
+            var countries = new[]
+            {
+                new Country("US", "United States of America"),
+            };
+            CollectionAssert.AreEqual(countries, movie.ProductionCountries.ToArray());
+
+            // Movie Collection
+            Assert.IsNotNull(movie.MovieCollectionInfo);
+            Assert.AreEqual(10, movie.MovieCollectionInfo.Id);
+            Assert.AreEqual("Star Wars Collection", movie.MovieCollectionInfo.Name);
+            ApiResponseUtil.AssertImagePath(movie.MovieCollectionInfo.BackdropPath);
+            ApiResponseUtil.AssertImagePath(movie.MovieCollectionInfo.PosterPath);
+
+            // Genres
+            var expectedGenres = new List<Genre>
+            {
+                GenreFactory.Action(),
+                GenreFactory.Adventure(),
+                GenreFactory.ScienceFiction(),
+                GenreFactory.Fantasy(),
+            };
+            CollectionAssert.AreEquivalent(expectedGenres, movie.Genres.ToList());
+
+            // Keywords
+            var expectedKeywords = new List<Keyword>
+            {
+                new Keyword(803, "android"),
+                new Keyword(9831, "spaceship"),
+                new Keyword(10527, "jedi"),
+                new Keyword(161176, "space opera"),
+                new Keyword(209714, "3d"),
+                new Keyword(156395, "imax")
+            };
+            CollectionAssert.AreEquivalent(expectedKeywords, movie.Keywords.ToList());
         }
 
         [TestMethod]

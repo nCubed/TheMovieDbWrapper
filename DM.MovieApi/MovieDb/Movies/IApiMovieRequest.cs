@@ -17,6 +17,13 @@ namespace DM.MovieApi.MovieDb.Movies
         Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en" );
 
         /// <summary>
+        /// Gets all the information about a specific Movie.
+        /// </summary>
+        /// <param name="imdbID">The IMDB Id, example 'tt2488496'.</param>
+        /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
+        Task<ApiQueryResponse<Movie>> FindByIMDBIdAsync(string imdbID, string language = "en");
+
+        /// <summary>
         /// Searches for Movies by title.
         /// </summary>
         /// <param name="query">The query to search for Movies.</param>

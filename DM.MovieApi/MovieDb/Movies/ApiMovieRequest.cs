@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.ApiResponse;
@@ -29,6 +31,25 @@ namespace DM.MovieApi.MovieDb.Movies
             string command = $"movie/{movieId}";
 
             ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
+
+            return response;
+        }
+
+        private static Regex _regexImdbId = new Regex("tt[0-9]{3,}", RegexOptions.Singleline);
+
+        public async Task<ApiQueryResponse<Movie>> FindByIMDBIdAsync(string imbdbId, string language = "en")
+        {
+            if (!_regexImdbId.IsMatch(imbdbId)) throw new ArgumentException("'" + imbdbId + "' is not a valid IMDB id, example of correct id='tt2488496'", imbdbId);
+
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+                {"append_to_response", "keywords"},
+            };
+
+            string command = $"movie/{imbdbId}";
+
+            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>(command, param);
 
             return response;
         }
