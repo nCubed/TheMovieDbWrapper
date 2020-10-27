@@ -84,13 +84,15 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             TVShowInfo gameOfThrones = response.Results.Single();
             Genre[] expGenres =
-           {
+            {
                 GenreFactory.SciFiAndFantasy(),
                 GenreFactory.ActionAndAdventure(),
                 GenreFactory.Drama(),
-           };
+                GenreFactory.Mystery()
+            };
 
-            CollectionAssert.AreEquivalent( expGenres, gameOfThrones.Genres.ToArray() );
+            CollectionAssert.AreEquivalent( expGenres, gameOfThrones.Genres.ToArray(), 
+                string.Join(", ", gameOfThrones.Genres.Select(x => x.Name)) );
         }
 
         [TestMethod]
