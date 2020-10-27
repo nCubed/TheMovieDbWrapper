@@ -35,8 +35,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Professions
             foreach( Profession pro in response.Item )
             {
                 Assert.IsTrue( pro.Department.Length >= 3, pro.Department ); // Art
-                Assert.IsNotNull( pro.Jobs );
-                Assert.IsTrue( pro.Jobs.Count >= 5, string.Format( "Actual Count: {0}", pro.Jobs.Count ) );
+                Assert.IsNotNull( pro.Jobs, $"Job Dept: {pro.Department}" );
+                Assert.IsTrue( pro.Jobs.Count >= 5, $"Actual Count: {pro.Jobs.Count}" );
 
                 foreach( string job in pro.Jobs )
                 {
