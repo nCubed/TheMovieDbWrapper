@@ -11,11 +11,6 @@ namespace DM.MovieApi.ApiResponse
         public ApiError Error { get; internal set; }
 
         /// <summary>
-        /// Contains the current rate limits from your most recent API call to themoviedb.org.
-        /// </summary>
-        public ApiRateLimit RateLimit { get; internal set; }
-
-        /// <summary>
         /// The API command text used for the API call to themoviedb.org.
         /// </summary>
         public string CommandText { get; internal set; }

@@ -45,7 +45,6 @@
     <Compile Include="ApiRequest\IsoDateTimeConverterEx.cs" />
     <Compile Include="ApiResponse\ApiError.cs" />
     <Compile Include="ApiResponse\ApiQueryResponse.cs" />
-    <Compile Include="ApiResponse\ApiRateLimit.cs" />
     <Compile Include="ApiResponse\ApiResponseBase.cs" />
     <Compile Include="ApiResponse\ApiSearchResponse.cs" />
     <Compile Include="ApiResponse\TmdbStatusCode.cs" />
