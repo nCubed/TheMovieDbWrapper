@@ -139,15 +139,18 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 GenreFactory.SciFiAndFantasy(),
                 GenreFactory.ActionAndAdventure(),
                 GenreFactory.Drama(),
+                GenreFactory.Mystery()
             };
 
-            CollectionAssert.AreEquivalent( expGenres, show.Genres.ToArray() );
+            CollectionAssert.AreEquivalent( expGenres, show.Genres.ToArray(),
+                string.Join(", ", show.Genres.Select(x => x.Name)));
 
             Assert.AreEqual( expHomepage, show.Homepage );
 
-            var expLanguages = new[] { "es", "en", "de" };
+            var expLanguages = new[] { "en" };
 
-            CollectionAssert.AreEquivalent( expLanguages, show.Languages.ToArray() );
+            CollectionAssert.AreEquivalent( expLanguages, show.Languages.ToArray(),
+                string.Join(", ", show.Languages));
 
             Assert.AreEqual( expName, show.Name );
 
@@ -169,25 +172,26 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             ProductionCompanyInfo[] expProductionCompanies =
             {
-                new ProductionCompanyInfo( 3268, "Home Box Office (HBO)" ),
                 new ProductionCompanyInfo( 5820, "Generator Entertainment" ),
                 new ProductionCompanyInfo( 12525, "Television 360" ),
                 new ProductionCompanyInfo( 12526, "Bighead Littlehead" ),
                 new ProductionCompanyInfo( 76043, "Revolution Sun Studios" )
             };
-            CollectionAssert.AreEquivalent( expProductionCompanies, show.ProductionCompanies.ToArray() );
+            CollectionAssert.AreEquivalent( expProductionCompanies, show.ProductionCompanies.ToArray(),
+                string.Join(", ", show.ProductionCompanies));
 
             Keyword[] expKeywords =
             {
                 new Keyword(6091, "war"),
-                new Keyword(818, "based on novel"),
+                new Keyword(818, "based on novel or book"),
                 new Keyword(4152, "kingdom"),
                 new Keyword(12554, "dragon"),
                 new Keyword(13084, "king"),
                 new Keyword(34038, "intrigue"),
                 new Keyword(170362, "fantasy world"),
             };
-            CollectionAssert.AreEquivalent( expKeywords, show.Keywords.ToArray() );
+            CollectionAssert.AreEquivalent( expKeywords, show.Keywords.ToArray(),
+                string.Join(", ", show.Keywords));
         }
 
         [TestMethod]
