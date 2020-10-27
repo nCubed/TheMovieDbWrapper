@@ -6,7 +6,7 @@ using Newtonsoft.Json.Converters;
 namespace DM.MovieApi.ApiRequest
 {
     /// <summary>
-    /// Extends the native Newtonsoft IsoDateTimeConverter to allow deserializing parital dates.
+    /// Extends the native Newtonsoft IsoDateTimeConverter to allow deserializing partial dates.
     /// </summary>
     public class IsoDateTimeConverterEx : IsoDateTimeConverter
     {
@@ -26,12 +26,13 @@ namespace DM.MovieApi.ApiRequest
             {
                 return base.ReadJson( reader, objectType, existingValue, serializer );
             }
-            catch( FormatException )
+            catch( Exception ex) when ( ex is FormatException 
+                                       || ex is JsonSerializationException jse 
+                                       && jse.Message.Contains( "System.DateTime" ) )
             {
                 string val = reader.Value?.ToString();
 
-                int year;
-                if( val?.Length == 4 && int.TryParse( val, out year ) )
+                if( val?.Length == 4 && int.TryParse( val, out int year ) )
                 {
                     return new DateTime( year, 1, 1 );
                 }
@@ -43,7 +44,7 @@ namespace DM.MovieApi.ApiRequest
         [Conditional( "DEBUG" )]
         private void ConditionalTraceReaderValue( JsonReader reader )
         {
-            string val = reader.Value.ToString();
+            string val = reader.Value?.ToString();
             if( string.IsNullOrWhiteSpace( val ) )
             {
                 val = "<empty>";
