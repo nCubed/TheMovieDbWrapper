@@ -33,7 +33,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
         public async Task FindByIdAync_MillaJovovich_Returns_ExpectedValues()
         {
             const string expectedName = "Milla Jovovich";
-            const string expectedBiography = "Milla Jovovich, born as Milica Natasha Jovovich, is an Ukrainian-born actress, an American supermodel, musician, and fashion designer."; // truncated
+            const string expectedBiography = "Milla Jovovich (born December 17, 1975) is an Ukrainian-born American actress, supermodel, musician, and fashion designer."; // truncated
             DateTime expectedBirthday = DateTime.Parse( "1975-12-17" );
             const Gender expectedGender = Gender.Female;
             const string expectedHomepage = "http://www.millaj.com";
@@ -47,9 +47,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Person person = response.Item;
 
             Assert.AreEqual( expectedName, person.Name );
-            Assert.IsTrue( person.Biography.StartsWith( expectedBiography ) );
+            Assert.IsTrue( person.Biography.StartsWith( expectedBiography ), $"actual: {person.Biography}" );
             Assert.IsFalse( person.IsAdultFilmStar );
-            Assert.AreEqual( 0, person.AlsoKnownAs.Count );
+            Assert.IsTrue( person.AlsoKnownAs.Count > 10, "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
             Assert.AreEqual( expectedBirthday, person.Birthday );
             Assert.AreEqual( expectedGender, person.Gender );
             Assert.AreEqual( null, person.Deathday );
@@ -94,7 +94,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.IsTrue( person.Popularity > 3 );
             Assert.IsNotNull( person.ProfilePath );
 
-            CollectionAssert.AreEquivalent( alsoKnownAs, person.AlsoKnownAs.ToArray() );
+            CollectionAssert.IsSubsetOf( alsoKnownAs, person.AlsoKnownAs.ToArray(),
+                "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
         }
 
         [TestMethod]
@@ -104,7 +105,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             const string expectedBiography = "Courteney Bass Cox (born June 15, 1964) is an American actress"; // truncated
             DateTime expectedBirthday = DateTime.Parse( "1964-06-15" );
             const Gender expectedGender = Gender.Female;
-            const string expectedHomepage = "";
+            const string expectedHomepage = null;
             const string expectedImdbId = "nm0001073";
             const string expectedPlaceOfBirth = "Birmingham, Alabama, USA";
 
@@ -133,7 +134,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.IsTrue( person.Popularity > 3 );
             Assert.IsNotNull( person.ProfilePath );
 
-            CollectionAssert.AreEquivalent( alsoKnownAs, person.AlsoKnownAs.ToArray() );
+            CollectionAssert.IsSubsetOf( alsoKnownAs, person.AlsoKnownAs.ToArray(),
+                "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
         }
 
         [TestMethod]
@@ -180,8 +182,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             {
                 {"Footloose", "Ren McCormack"},
                 {"Animal House", "Chip Diller"},
-                {"Hollow Man", "Sebastian Caine"},
+                {"Flatliners", "David Labraccio"},
                 {"Wild Things", "Sergeant Ray Duquette"},
+                {"Tremors", "Valentine McKee"}
             };
             foreach( KeyValuePair<string, string> role in expectedCastRoles )
             {
@@ -189,7 +192,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
                     .CastRoles
                     .SingleOrDefault( x => x.Title == role.Key && x.Character == role.Value );
 
-                Assert.IsNotNull( cast );
+                Assert.IsNotNull( cast, $"missing: {role.Key} : {role.Value} \r\nactual:\r\n" +
+                    string.Join("\r\n", credits.CastRoles.Select(x => $"{x.Title} : {x.Character}")) );
             }
 
             var expectedCrewRoles = new Dictionary<string, string>
@@ -304,14 +308,14 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             string[] roles =
             {
                 "The Fifth Element",
-                "Resident Evil: Retribution",
                 "Resident Evil",
+                "Zoolander"
             };
 
             foreach( string role in roles )
             {
                 PersonInfoRole info = person.KnownFor.SingleOrDefault( x => x.MovieTitle == role );
-                Assert.IsNotNull( info );
+                Assert.IsNotNull( info, string.Join( ", ", person.KnownFor ) );
                 Assert.AreEqual( MediaType.Movie, info.MediaType );
             }
         }

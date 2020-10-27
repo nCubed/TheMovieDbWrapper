@@ -29,6 +29,7 @@ namespace DM.MovieApi.IntegrationTests
 
         public static void AssertErrorIsNull( ApiResponseBase response )
         {
+            Console.WriteLine( response.CommandText );
             Assert.IsNull( response.Error, response.Error?.ToString() ?? "Makes Complier Happy" );
         }
 
@@ -101,7 +102,7 @@ namespace DM.MovieApi.IntegrationTests
 
             List<string> dups = groupById
                 .Where( x => x.Skip( 1 ).Any() )
-                .Select( x => $"({x.Count()}) {x.First().ToString()}" )
+                .Select( x => $"({x.Count()}) {x.First()}" )
                 .ToList();
 
             const string note = "Note: Every now and then themoviedb.org API returns a duplicate; not to be alarmed, just re-run the test until it passes.\r\n\r\n";

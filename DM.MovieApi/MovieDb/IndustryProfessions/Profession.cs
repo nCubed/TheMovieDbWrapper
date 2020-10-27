@@ -9,7 +9,7 @@ namespace DM.MovieApi.MovieDb.IndustryProfessions
         [DataMember( Name = "department" )]
         public string Department { get; set; }
 
-        [DataMember( Name = "job_list" )]
+        [DataMember( Name = "jobs" )]
         public IReadOnlyList<string> Jobs { get; set; }
 
         public override string ToString()

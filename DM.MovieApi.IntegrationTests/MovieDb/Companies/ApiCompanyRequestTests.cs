@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Companies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,9 +25,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Companies
         public async Task FindByIdAsync_Lucasfilm_WithResults_NoParentCompany()
         {
             const int id = 1;
-            const string expectedName = "Lucasfilm";
+            const string expectedName = "Lucasfilm Ltd.";
             const string expectedHeadquarters = "San Francisco, California";
-            const string expectedHomepage = "http://www.lucasfilm.com";
+            const string expectedHomepage = "https://www.lucasfilm.com";
 
             ApiQueryResponse<ProductionCompany> response = await _api.FindByIdAsync( id );
 
@@ -35,7 +36,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Companies
             Assert.AreEqual( id, response.Item.Id );
             Assert.AreEqual( expectedName, response.Item.Name );
             Assert.AreEqual( expectedHeadquarters, response.Item.Headquarters );
-            Assert.AreEqual( expectedHomepage, response.Item.Homepage );
+            Assert.AreEqual( new Uri(expectedHomepage), new Uri(response.Item.Homepage) );
             ApiResponseUtil.AssertImagePath( response.Item.LogoPath );
 
             Assert.IsNull( response.Item.ParentCompany );
@@ -45,7 +46,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Companies
         public async Task FindByIdAsync_Pixar_IncludesParentCompany()
         {
             const int id = 3;
-            const string expectedName = "Pixar Animation Studios";
+            const string expectedName = "Pixar";
             const string expectedParentName = "Walt Disney Pictures";
             const int expectedParentId = 2;
 

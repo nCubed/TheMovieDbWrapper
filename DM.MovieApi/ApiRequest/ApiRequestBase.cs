@@ -64,7 +64,6 @@ namespace DM.MovieApi.ApiRequest
 
                 var result = new ApiQueryResponse<T>
                 {
-                    RateLimit = GetRateLimit( response ),
                     CommandText = response.RequestMessage.RequestUri.ToString(),
                     Json = json,
                 };
@@ -118,27 +117,13 @@ namespace DM.MovieApi.ApiRequest
                     return error;
                 }
 
-                ApiRateLimit rateLimit = GetRateLimit( response );
-
                 var result = JsonConvert.DeserializeObject<ApiSearchResponse<T>>( json, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } );
 
-                result.RateLimit = rateLimit;
                 result.CommandText = response.RequestMessage.RequestUri.ToString();
                 result.Json = json;
 
                 return result;
             }
-        }
-
-        protected ApiRateLimit GetRateLimit( HttpResponseMessage response )
-        {
-            int allowed = int.Parse( response.Headers.GetValues( "X-RateLimit-Limit" ).First() );
-            int remaining = int.Parse( response.Headers.GetValues( "X-RateLimit-Remaining" ).First() );
-            long reset = long.Parse( response.Headers.GetValues( "X-RateLimit-Reset" ).First() );
-
-            var rateLimit = new ApiRateLimit( allowed, remaining, reset );
-
-            return rateLimit;
         }
 
         protected HttpClient CreateClient()

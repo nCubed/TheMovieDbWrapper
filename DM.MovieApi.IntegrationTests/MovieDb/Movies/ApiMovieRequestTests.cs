@@ -114,7 +114,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 GenreFactory.Drama(),
                 GenreFactory.Thriller(),
             };
-            CollectionAssert.AreEquivalent( expectedGenres, movie.Genres.ToList() );
+            CollectionAssert.AreEquivalent( expectedGenres, movie.Genres.ToArray() );
         }
 
         [TestMethod]
@@ -140,7 +140,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             const string expectedOriginalLanguage = "en";
             const string expectedHomepage = "http://www.starwars.com/films/star-wars-episode-vii";
             const string expectedStatus = "Released";
-            const int expectedBudget = 200000000;
+            const int expectedBudget = 245000000;
             const int expectedRuntime = 136;
             var expectedReleaseDate = new DateTime( 2015, 12, 15 );
 
@@ -180,11 +180,12 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             // Production Companies
             var companies = new[]
             {
-                new ProductionCompanyInfo(1, "Lucasfilm"),
+                new ProductionCompanyInfo(1, "Lucasfilm Ltd."),
                 new ProductionCompanyInfo(1634, "Truenorth Productions"),
                 new ProductionCompanyInfo(11461, "Bad Robot"),
             };
-            CollectionAssert.AreEquivalent( companies, movie.ProductionCompanies.ToArray() );
+            CollectionAssert.AreEquivalent( companies, movie.ProductionCompanies.ToArray(),
+                "actual:\r\n" + string.Join("\r\n", movie.ProductionCompanies) );
 
             // Production Countries
             var countries = new[]
@@ -208,19 +209,20 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 GenreFactory.ScienceFiction(),
                 GenreFactory.Fantasy(),
             };
-            CollectionAssert.AreEquivalent( expectedGenres, movie.Genres.ToList() );
+            CollectionAssert.AreEquivalent( expectedGenres, movie.Genres.ToArray(),
+                "actual:\r\n" + string.Join("\r\n", movie.Genres) );
 
             // Keywords
             var expectedKeywords = new List<Keyword>
             {
                 new Keyword(803, "android"),
-                new Keyword(9831, "spaceship"),
+                new Keyword(1612, "spacecraft"),
                 new Keyword(10527, "jedi"),
                 new Keyword(161176, "space opera"),
-                new Keyword(209714, "3d"),
-                new Keyword(229031, "shot on imax cameras"),
+                new Keyword(156395, "imax"),
             };
-            CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToList() );
+            CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToArray(),
+                "actual:\r\n" + string.Join("\r\n", movie.Keywords) );
         }
 
         [TestMethod]
