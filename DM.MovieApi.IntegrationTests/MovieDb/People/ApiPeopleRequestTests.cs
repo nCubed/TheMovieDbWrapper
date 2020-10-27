@@ -33,7 +33,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
         public async Task FindByIdAync_MillaJovovich_Returns_ExpectedValues()
         {
             const string expectedName = "Milla Jovovich";
-            const string expectedBiography = "Milla Jovovich, born as Milica Natasha Jovovich, is an Ukrainian-born actress, an American supermodel, musician, and fashion designer."; // truncated
+            const string expectedBiography = "Milla Jovovich (born December 17, 1975) is an Ukrainian-born American actress, supermodel, musician, and fashion designer."; // truncated
             DateTime expectedBirthday = DateTime.Parse( "1975-12-17" );
             const Gender expectedGender = Gender.Female;
             const string expectedHomepage = "http://www.millaj.com";
@@ -47,9 +47,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Person person = response.Item;
 
             Assert.AreEqual( expectedName, person.Name );
-            Assert.IsTrue( person.Biography.StartsWith( expectedBiography ) );
+            Assert.IsTrue( person.Biography.StartsWith( expectedBiography ), $"actual: {person.Biography}" );
             Assert.IsFalse( person.IsAdultFilmStar );
-            Assert.AreEqual( 0, person.AlsoKnownAs.Count );
+            Assert.IsTrue( person.AlsoKnownAs.Count > 10, "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
             Assert.AreEqual( expectedBirthday, person.Birthday );
             Assert.AreEqual( expectedGender, person.Gender );
             Assert.AreEqual( null, person.Deathday );
