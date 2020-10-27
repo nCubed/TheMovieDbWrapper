@@ -94,7 +94,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.IsTrue( person.Popularity > 3 );
             Assert.IsNotNull( person.ProfilePath );
 
-            CollectionAssert.AreEquivalent( alsoKnownAs, person.AlsoKnownAs.ToArray() );
+            CollectionAssert.IsSubsetOf( alsoKnownAs, person.AlsoKnownAs.ToArray(),
+                "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
         }
 
         [TestMethod]
