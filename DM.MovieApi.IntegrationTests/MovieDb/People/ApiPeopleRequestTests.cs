@@ -304,14 +304,14 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             string[] roles =
             {
                 "The Fifth Element",
-                "Resident Evil: Retribution",
                 "Resident Evil",
+                "Zoolander"
             };
 
             foreach( string role in roles )
             {
                 PersonInfoRole info = person.KnownFor.SingleOrDefault( x => x.MovieTitle == role );
-                Assert.IsNotNull( info );
+                Assert.IsNotNull( info, string.Join( ", ", person.KnownFor ) );
                 Assert.AreEqual( MediaType.Movie, info.MediaType );
             }
         }
