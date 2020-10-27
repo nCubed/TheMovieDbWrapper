@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Companies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,7 +45,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Companies
         public async Task FindByIdAsync_Pixar_IncludesParentCompany()
         {
             const int id = 3;
-            const string expectedName = "Pixar Animation Studios";
+            const string expectedName = "Pixar";
             const string expectedParentName = "Walt Disney Pictures";
             const int expectedParentId = 2;
 
