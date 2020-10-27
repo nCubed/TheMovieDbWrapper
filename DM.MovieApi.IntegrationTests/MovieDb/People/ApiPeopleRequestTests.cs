@@ -105,7 +105,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             const string expectedBiography = "Courteney Bass Cox (born June 15, 1964) is an American actress"; // truncated
             DateTime expectedBirthday = DateTime.Parse( "1964-06-15" );
             const Gender expectedGender = Gender.Female;
-            const string expectedHomepage = "";
+            const string expectedHomepage = null;
             const string expectedImdbId = "nm0001073";
             const string expectedPlaceOfBirth = "Birmingham, Alabama, USA";
 
@@ -134,7 +134,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.IsTrue( person.Popularity > 3 );
             Assert.IsNotNull( person.ProfilePath );
 
-            CollectionAssert.AreEquivalent( alsoKnownAs, person.AlsoKnownAs.ToArray() );
+            CollectionAssert.IsSubsetOf( alsoKnownAs, person.AlsoKnownAs.ToArray(),
+                "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
         }
 
         [TestMethod]
