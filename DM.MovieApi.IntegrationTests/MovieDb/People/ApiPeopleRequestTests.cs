@@ -180,8 +180,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             {
                 {"Footloose", "Ren McCormack"},
                 {"Animal House", "Chip Diller"},
-                {"Hollow Man", "Sebastian Caine"},
+                {"Flatliners", "David Labraccio"},
                 {"Wild Things", "Sergeant Ray Duquette"},
+                {"Tremors", "Valentine McKee"}
             };
             foreach( KeyValuePair<string, string> role in expectedCastRoles )
             {
@@ -189,7 +190,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
                     .CastRoles
                     .SingleOrDefault( x => x.Title == role.Key && x.Character == role.Value );
 
-                Assert.IsNotNull( cast );
+                Assert.IsNotNull( cast, $"missing: {role.Key} : {role.Value} \r\nactual:\r\n" +
+                    string.Join("\r\n", credits.CastRoles.Select(x => $"{x.Title} : {x.Character}")) );
             }
 
             var expectedCrewRoles = new Dictionary<string, string>
