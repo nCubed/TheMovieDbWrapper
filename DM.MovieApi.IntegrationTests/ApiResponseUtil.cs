@@ -29,6 +29,7 @@ namespace DM.MovieApi.IntegrationTests
 
         public static void AssertErrorIsNull( ApiResponseBase response )
         {
+            Console.WriteLine( response.CommandText );
             Assert.IsNull( response.Error, response.Error?.ToString() ?? "Makes Complier Happy" );
         }
 
