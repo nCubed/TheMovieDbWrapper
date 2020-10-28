@@ -374,5 +374,5 @@ MigrationBackup/
 
 
 ## TheMoveDbWrapper Specific ignore
-DM.MovieApi.IntegrationTests/_init/
+DM.MovieApi.IntegrationTests/api.creds.json
 

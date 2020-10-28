@@ -28,7 +28,7 @@ namespace DM.MovieApi.IntegrationTests
 
         /// <summary>
         /// Registers the <see cref="IMovieDbSettings"/> for the <see cref="MovieDbFactory"/>
-        /// with the credentials from _init\ApiCreds.xml.
+        /// with the credentials from api.creds.json.
         /// </summary>
         public static void RegisterFactorySettings()
         {
@@ -44,7 +44,7 @@ namespace DM.MovieApi.IntegrationTests
         {
             if( Environment.GetEnvironmentVariable( "NCrunch" ) == "1" )
             {
-                throw new NotSupportedException( "NCrunch is not supported for intergration testing. Use the R# or MS test runner." );
+                throw new NotSupportedException( "NCrunch is not supported for integration testing. Use the R# or MS test runner." );
             }
         }
 

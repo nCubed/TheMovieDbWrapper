@@ -9,14 +9,14 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
     internal class IntegrationMovieDbSettings : IMovieDbSettings
     {
         public const string FileName = "api.creds.json";
-        public readonly string FilePath = Path.Combine( InitDirectory, FileName );
+        public readonly string FilePath = Path.Combine( RootDirectory, FileName );
 
         public string ApiKey { get; private set; }
 
         public string ApiUrl { get; private set; }
 
         /// <summary>
-        /// Loads the API credentials from the _init\ApiCreds.xml.
+        /// Loads the API credentials from api.creds.json in the root of the test project.
         /// </summary>
         public IntegrationMovieDbSettings()
         {
@@ -34,14 +34,21 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
 
         private void Hydrate()
         {
-            Assert.IsTrue(File.Exists(FilePath),
-                $"{FileName} does not exist. Expected to find it here:\r\n{FilePath}\r\n\r\n" +
-                "Did you forget to set the file to be copied to the output directory?");
-
             var anon = new
             {
-                ApiKey = "", ApiUrl = ""
+                ApiKey = "your-key-here",
+                ApiUrl = "https://api.themoviedb.org/3/"
             };
+
+            if (File.Exists(FilePath) == false)
+            {
+                string structure = JsonConvert.SerializeObject(anon, Formatting.Indented);
+
+                Assert.Fail($"The file {FileName} does not exist. Expected to find it here:\r\n{FilePath}\r\n\r\n" +
+                            $"{FileName} must exist in the root of the integration project with your API Key " +
+                            "from themoviedb.org. When the project is built, the json file will be output to " +
+                            $"the directory listed above. Use the following json structure:\r\n{structure}\r\n");
+            }
 
             var json = File.ReadAllText(FilePath);
             var api = JsonConvert.DeserializeAnonymousType(json, anon);
@@ -52,14 +59,9 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
 
 
         // ReSharper disable InconsistentNaming
-        private const string _initDirectoryName = "_init";
-
         private static readonly Lazy<string> _rootDirectory = new Lazy<string>( GetRootDirectory );
-        private static readonly Lazy<string> _initDirectory = new Lazy<string>( GetInitDirectory );
 
         internal static string RootDirectory => _rootDirectory.Value;
-        internal static string InitDirectory => _initDirectory.Value;
-
 
         private static string GetRootDirectory()
         {
@@ -71,16 +73,5 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
 
             return dir;
         }
-
-        private static string GetInitDirectory()
-        {
-            string dir = Path.Combine( RootDirectory, _initDirectoryName );
-
-            Assert.IsFalse( string.IsNullOrEmpty( dir ) );
-            Assert.IsTrue( Directory.Exists( dir ), $"\r\nExpected Directory: {dir}\r\n\r\n" );
-
-            return dir;
-        }
-
     }
 }

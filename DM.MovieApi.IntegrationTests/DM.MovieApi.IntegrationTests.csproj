@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="_init\api.creds.json">
+    <None Update="api.creds.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
