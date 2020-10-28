@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace DM.MovieApi.IntegrationTests.Infrastructure
 {
     internal class IntegrationMovieDbSettings : IMovieDbSettings
     {
-        public const string FileName = "ApiCreds.xml";
+        public const string FileName = "api.creds.json";
         public readonly string FilePath = Path.Combine( InitDirectory, FileName );
 
         public string ApiKey { get; private set; }
@@ -34,14 +34,20 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
 
         private void Hydrate()
         {
-            Assert.IsTrue( File.Exists( FilePath ), FileName + " does not exist. Did you forget to set the xml file to be copied to the output directory?" );
+            Assert.IsTrue(File.Exists(FilePath),
+                $"{FileName} does not exist. Expected to find it here:\r\n{FilePath}\r\n\r\n" +
+                "Did you forget to set the file to be copied to the output directory?");
 
-            var doc = XDocument.Load( FilePath );
+            var anon = new
+            {
+                ApiKey = "", ApiUrl = ""
+            };
 
-            // ReSharper disable PossibleNullReferenceException
-            ApiKey = doc.Root.Element( "ApiKey" ).Value;
-            ApiUrl = doc.Root.Element( "ApiUrl" ).Value;
-            // ReSharper restore PossibleNullReferenceException
+            var json = File.ReadAllText(FilePath);
+            var api = JsonConvert.DeserializeAnonymousType(json, anon);
+
+            ApiKey = api.ApiKey;
+            ApiUrl = api.ApiUrl;
         }
 
 
@@ -71,7 +77,7 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
             string dir = Path.Combine( RootDirectory, _initDirectoryName );
 
             Assert.IsFalse( string.IsNullOrEmpty( dir ) );
-            Assert.IsTrue( Directory.Exists( dir ) );
+            Assert.IsTrue( Directory.Exists( dir ), $"\r\nExpected Directory: {dir}\r\n\r\n" );
 
             return dir;
         }

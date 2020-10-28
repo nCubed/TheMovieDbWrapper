@@ -3,9 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using DM.MovieApi.ApiRequest;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.Shims;
+
+[assembly:InternalsVisibleTo("DM.MovieApi.IntegrationTests")]
 
 namespace DM.MovieApi
 {
