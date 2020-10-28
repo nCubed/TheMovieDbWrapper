@@ -136,7 +136,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             const string expectedTitle = "Star Wars: The Force Awakens";
             const string expectedOriginalTitle = "Star Wars: The Force Awakens";
             const string expectedTagline = "Every generation has a story.";
-            const string expetedOverview = "Thirty years after defeating the Galactic Empire"; // truncated
+            const string expectedOverview = "Thirty years after defeating the Galactic Empire"; // truncated
             const string expectedOriginalLanguage = "en";
             const string expectedHomepage = "http://www.starwars.com/films/star-wars-episode-vii";
             const string expectedStatus = "Released";
@@ -165,7 +165,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             ApiResponseUtil.AssertImagePath( movie.BackdropPath );
             ApiResponseUtil.AssertImagePath( movie.PosterPath );
 
-            Assert.IsTrue( movie.Overview.StartsWith( expetedOverview ) );
+            Assert.IsTrue( movie.Overview.StartsWith( expectedOverview ) );
             Assert.IsTrue( movie.Popularity > 7, $"Actual: {movie.Popularity}" );
             Assert.IsTrue( movie.VoteAverage > 5 );
             Assert.IsTrue( movie.VoteCount > 1500 );

@@ -100,7 +100,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            AssertReponseIncludesJson( response );
+            AssertResponseIncludesJson( response );
         }
 
         [TestMethod]
@@ -111,7 +111,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             ApiQueryResponse<Movie> response = await _api.QueryAsync<Movie>( command );
 
-            AssertReponseIncludesJson( response );
+            AssertResponseIncludesJson( response );
         }
 
         // ReSharper disable once UnusedParameter.Local
@@ -126,7 +126,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
             Assert.IsTrue( response.CommandText.Contains( AssemblyInit.Settings.ApiUrl ), actualCommandText );
         }
 
-        private void AssertReponseIncludesJson( ApiResponseBase response )
+        private void AssertResponseIncludesJson( ApiResponseBase response )
         {
             string actualJson = $"Actual: {response.Json}";
 

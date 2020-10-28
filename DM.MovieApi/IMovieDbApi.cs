@@ -51,7 +51,7 @@ namespace DM.MovieApi
         IApiTVShowRequest Television { get; }
 
         /// <summary>
-        /// Provides access for retreiving information about People.
+        /// Provides access for retrieving information about People.
         /// </summary>
         IApiPeopleRequest People { get; }
     }

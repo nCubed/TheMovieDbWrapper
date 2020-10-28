@@ -1,8 +1,11 @@
-﻿namespace DM.MovieApi.ApiResponse
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DM.MovieApi.ApiResponse
 {
     /// <summary>
     /// themoviedb.org Status Codes as defined by: https://www.themoviedb.org/documentation/api/status-codes
     /// </summary>
+    [SuppressMessage( "ReSharper", "UnusedMember.Global" )]
     public enum TmdbStatusCode
     {
         Unknown = 0,

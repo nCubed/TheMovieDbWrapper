@@ -11,7 +11,7 @@ namespace DM.MovieApi.ApiResponse
         [DataMember( Name = "status_code" )]
         public int StatusCode
         {
-            get { return _statusCode; }
+            get => _statusCode;
             private set
             {
                 _statusCode = value;

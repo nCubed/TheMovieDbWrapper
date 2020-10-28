@@ -179,7 +179,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
         private void AssertInvalidPage( ApiSearchResponse<MovieInfo> result )
         {
             const string note =
-                "InvalidPage status codes are expected to fail for now. TheMovieDb.org api is currenlty being updated. See: https://plus.google.com/u/0/+KindlerChase/posts/5CqrtakFTGS";
+                "InvalidPage status codes are expected to fail for now. TheMovieDb.org api is currently being updated. See: https://plus.google.com/u/0/+KindlerChase/posts/5CqrtakFTGS";
 
             if( result.Error == null || result.Error.TmdbStatusCode == TmdbStatusCode.Unknown )
             {

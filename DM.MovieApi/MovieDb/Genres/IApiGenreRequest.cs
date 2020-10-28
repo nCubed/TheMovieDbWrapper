@@ -54,7 +54,7 @@ namespace DM.MovieApi.MovieDb.Genres
         Task<ApiQueryResponse<IReadOnlyList<Genre>>> GetTelevisionAsync( string language = "en" );
 
         /// <summary>
-        /// Finds all movies related to a genre, where the Id passed to this method is a genere Id, not a movie Id.
+        /// Finds all movies related to a genre, where the Id passed to this method is a genre Id, not a movie Id.
         /// </summary>
         /// <param name="genreId">The genre Id is typically found through from a related Movie request or from any of the Genre API methods.</param>
         /// <param name="pageNumber">Default is page 1. The page number to retrieve; the <see cref="ApiSearchResponse{T}"/> will contain the current page returned and the total number of pages available.</param>

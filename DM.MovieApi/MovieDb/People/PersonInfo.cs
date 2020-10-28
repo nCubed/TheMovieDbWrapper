@@ -15,7 +15,7 @@ namespace DM.MovieApi.MovieDb.People
     [DataContract]
     public class PersonInfo
     {
-        // TODO: (K. Chase) [2016-07-10] Update all POCO's to explicity name the Id property, i.e,. PersonId, MovieId, TVShowId.
+        // TODO: (K. Chase) [2016-07-10] Update all POCO's to explicitly name the Id property, i.e,. PersonId, MovieId, TVShowId.
         [DataMember( Name = "id" )]
         public int Id { get; set; }
 

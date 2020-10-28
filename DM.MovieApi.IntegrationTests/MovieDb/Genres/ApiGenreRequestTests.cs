@@ -141,7 +141,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
         }
 
         [TestMethod]
-        public async Task FindMoviesByIdAsync_Returns_VaidResult()
+        public async Task FindMoviesByIdAsync_Returns_ValidResult()
         {
             int genreId = GenreFactory.Comedy().Id;
 

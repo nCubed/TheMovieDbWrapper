@@ -30,7 +30,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
         }
 
         [TestMethod]
-        public async Task FindByIdAync_MillaJovovich_Returns_ExpectedValues()
+        public async Task FindByIdAsync_MillaJovovich_Returns_ExpectedValues()
         {
             const string expectedName = "Milla Jovovich";
             const string expectedBiography = "Milla Jovovich (born December 17, 1975) is an Ukrainian-born American actress, supermodel, musician, and fashion designer."; // truncated

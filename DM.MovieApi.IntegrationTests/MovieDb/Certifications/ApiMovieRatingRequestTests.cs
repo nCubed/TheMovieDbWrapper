@@ -47,7 +47,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Certifications
             foreach( Certification item in items )
             {
                 Assert.IsTrue( item.Order > previousOrder,
-                    string.Format( "{0} item.Order: {1} previousOrder: {2}", item.Rating, item.Order, previousOrder ) );
+                    $"{item.Rating} item.Order: {item.Order} previousOrder: {previousOrder}");
 
                 previousOrder = item.Order;
             }
