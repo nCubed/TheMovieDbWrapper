@@ -18,7 +18,7 @@ The current release supports common requests for movie and other miscellaneous i
 In order to use any feature of the wrapper, a concrete implementation of the [IMovieDbSettings](DM.MovieApi/IMovieDbSettings.cs) interface must be created. The interface only contains 2 properties:
 
 1. ApiKey: a private key required to query [themoviedb.org API](https://www.themoviedb.org/documentation/api).
-2. ApiUrl: the URL used for api calls to themoviedb.org. This URL should be static, but is included in case an alternative URL is ever provided. The current URL is `http://api.themoviedb.org/3/`
+2. ApiUrl: the URL used for api calls to themoviedb.org. This URL should be static, but is included in case an alternative URL is ever provided. The current URL is `https://api.themoviedb.org/3/`
 
 Once the `IMovieDbSettings` interface has been implemented, it can be used to register your settings with the `MovieDbFactory`.
 
@@ -27,7 +27,7 @@ _Note_: There is an overloaded method on the `MovieDbFactory` which allows you t
 ### Usage - MovieDbFactory
 The `MovieDbFactory` provides access to all exposed operations for retrieving information from themoviedb.org. The factory exposes the following methods (other methods may be exposed, but these are the important ones):
 * `void MovieDbFactory.RegisterSettings( IMovieDbSettings settings )`: Registers your themoviedb.org specific API key with the factory.
-* `void MovieDbFactory.RegisterSettings( string apiKey, string apiUrl = "http://api.themoviedb.org/3/" )`: Registers your themoviedb.org specific API key with the factory.
+* `void MovieDbFactory.RegisterSettings( string apiKey, string apiUrl = "https://api.themoviedb.org/3/" )`: Registers your themoviedb.org specific API key with the factory.
 * `Lazy<T> MovieDbFactory.Create<T>() where T : IApiRequest`: Creates the specific API requested. See below (Usages - Interfaces) for all exposed interfaces. One of the `RegisterSettings` methods must be called prior to creating anything from the factory.
 
 ### Usage - Interfaces
@@ -49,7 +49,7 @@ Register your settings first:
 MovieDbFactory.RegisterSettings( new YourMovieDbSettings() )
 
 // alternative method of registration
-MovieDbFactory.RegisterSettings( "your-apiKey", "http://api.themoviedb.org/3/" )
+MovieDbFactory.RegisterSettings( "your-apiKey", "https://api.themoviedb.org/3/" )
 ```
 
 Retrieve an API request interface (see Usage - Interfaces above for available interfaces):
