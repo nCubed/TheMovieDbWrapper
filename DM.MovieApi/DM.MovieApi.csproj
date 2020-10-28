@@ -2,6 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>TheMovieDbWrapper</PackageId>
+    <Version>0.9.0</Version>
+    <Authors>Kindler Chase</Authors>
+    <Company>nCubed</Company>
+    <Product>TheMovieDb.org Wrapper</Product>
+    <Description>A C# wrapper for themoviedb.org API providing cross-platform support for Xamarin, iOS, Android, and all flavors of .NET.</Description>
+    <Copyright>Copyright 2016</Copyright>
+    <PackageProjectUrl>https://github.com/nCubed/TheMovieDbWrapper</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>Movies Movie themoviedb themoviedb.org TMDB Film TV Television Actor Acress Director</PackageTags>
+    <PackageReleaseNotes>v0.9.0 is a full upgrade from Visual Studio PCL class library to the now recommeneded .netstandard class library.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/nCubed/TheMovieDbWrapper</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
