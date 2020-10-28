@@ -138,7 +138,7 @@ namespace DM.MovieApi.ApiRequest
 
             var client = new HttpClient( handler );
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "appliction/json" ) );
+            client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
             client.BaseAddress = new Uri( _settings.ApiUrl );
 
             return client;
