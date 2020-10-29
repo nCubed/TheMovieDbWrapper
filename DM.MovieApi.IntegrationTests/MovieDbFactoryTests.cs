@@ -60,9 +60,10 @@ namespace DM.MovieApi.IntegrationTests
         [TestMethod]
         public void Create_ConstrainedBy_IApiRequest()
         {
-            Type t1 = typeof( MovieDbFactory )
-                .GetMethod( "Create" )
-                .GetGenericArguments()
+            MethodInfo mi = typeof( MovieDbFactory ).GetMethod( "Create" );
+            Assert.IsNotNull( mi );
+
+            Type t1 = mi.GetGenericArguments()
                 .Single()
                 .GetGenericParameterConstraints()
                 .Single();

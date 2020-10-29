@@ -19,7 +19,7 @@ namespace DM.MovieApi.MovieDb.TV
         }
 
         public bool Equals( Network x, Network y )
-            => x.Id == y.Id && x.Name == y.Name;
+            => x != null && y != null && x.Id == y.Id && x.Name == y.Name;
 
         public int GetHashCode( Network obj )
         {
@@ -34,8 +34,7 @@ namespace DM.MovieApi.MovieDb.TV
 
         public override bool Equals( object obj )
         {
-            var network = obj as Network;
-            if( network == null )
+            if( !(obj is Network network) )
             {
                 return false;
             }

@@ -20,8 +20,7 @@ namespace DM.MovieApi.MovieDb
 
         public override bool Equals( object obj )
         {
-            var country = obj as Country;
-            if( country == null )
+            if( !(obj is Country country) )
             {
                 return false;
             }
@@ -30,7 +29,7 @@ namespace DM.MovieApi.MovieDb
         }
 
         public bool Equals( Country x, Country y )
-            => x.Iso3166Code == y.Iso3166Code && x.Name == y.Name;
+            => x != null && y != null && x.Iso3166Code == y.Iso3166Code && x.Name == y.Name;
 
         public override int GetHashCode() =>
             GetHashCode( this );

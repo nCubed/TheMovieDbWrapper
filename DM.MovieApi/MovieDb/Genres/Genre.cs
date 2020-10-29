@@ -20,8 +20,7 @@ namespace DM.MovieApi.MovieDb.Genres
 
         public override bool Equals( object obj )
         {
-            var genre = obj as Genre;
-            if( genre == null )
+            if( !(obj is Genre genre) )
             {
                 return false;
             }
@@ -30,7 +29,7 @@ namespace DM.MovieApi.MovieDb.Genres
         }
 
         public bool Equals( Genre x, Genre y )
-            => x.Id == y.Id && x.Name == y.Name;
+            => x != null && y != null && x.Id == y.Id && x.Name == y.Name;
 
         public override int GetHashCode()
             => GetHashCode( this );

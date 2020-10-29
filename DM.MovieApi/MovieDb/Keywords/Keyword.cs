@@ -26,8 +26,7 @@ namespace DM.MovieApi.MovieDb.Keywords
 
         public override bool Equals( object obj )
         {
-            var genre = obj as Keyword;
-            if( genre == null )
+            if( !(obj is Keyword genre) )
             {
                 return false;
             }
@@ -36,7 +35,7 @@ namespace DM.MovieApi.MovieDb.Keywords
         }
 
         public bool Equals( Keyword x, Keyword y )
-            => x.Id == y.Id && x.Name == y.Name;
+            => x != null && y != null && x.Id == y.Id && x.Name == y.Name;
 
         public override int GetHashCode()
             => GetHashCode( this );

@@ -23,7 +23,7 @@ namespace DM.MovieApi.MovieDb.TV
         }
 
         public bool Equals( TVShowCreator x, TVShowCreator y )
-            => x.Id == y.Id && x.Name == y.Name;
+            => x != null && y != null && x.Id == y.Id && x.Name == y.Name;
 
         public int GetHashCode( TVShowCreator obj )
         {
@@ -38,8 +38,7 @@ namespace DM.MovieApi.MovieDb.TV
 
         public override bool Equals( object obj )
         {
-            var showCreator = obj as TVShowCreator;
-            if( showCreator == null )
+            if( !(obj is TVShowCreator showCreator) )
             {
                 return false;
             }

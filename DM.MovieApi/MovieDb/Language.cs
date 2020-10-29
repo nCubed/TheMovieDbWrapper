@@ -20,8 +20,7 @@ namespace DM.MovieApi.MovieDb
 
         public override bool Equals( object obj )
         {
-            var language = obj as Language;
-            if( language == null )
+            if( !(obj is Language language) )
             {
                 return false;
             }
@@ -30,7 +29,7 @@ namespace DM.MovieApi.MovieDb
         }
 
         public bool Equals( Language x, Language y )
-            => x.Iso639Code == y.Iso639Code && x.Name == y.Name;
+            => x != null && y != null && x.Iso639Code == y.Iso639Code && x.Name == y.Name;
 
         public override int GetHashCode()
             => GetHashCode( this );

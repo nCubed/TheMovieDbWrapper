@@ -20,8 +20,7 @@ namespace DM.MovieApi.MovieDb.Companies
 
         public override bool Equals( object obj )
         {
-            var info = obj as ProductionCompanyInfo;
-            if( info == null )
+            if( !(obj is ProductionCompanyInfo info) )
             {
                 return false;
             }
@@ -30,7 +29,7 @@ namespace DM.MovieApi.MovieDb.Companies
         }
 
         public bool Equals( ProductionCompanyInfo x, ProductionCompanyInfo y )
-            => x.Id == y.Id && x.Name == y.Name;
+            => x != null && y != null && x.Id == y.Id && x.Name == y.Name;
 
         public override int GetHashCode()
             => GetHashCode( this );
