@@ -8,7 +8,7 @@ using DM.MovieApi.ApiRequest;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.Shims;
 
-[assembly:InternalsVisibleTo("DM.MovieApi.IntegrationTests")]
+[assembly: InternalsVisibleTo( "DM.MovieApi.IntegrationTests" )]
 
 namespace DM.MovieApi
 {
@@ -132,7 +132,7 @@ namespace DM.MovieApi
 
                 if( param.Length == 0 )
                 {
-                    return (T)ctor.Invoke( null );
+                    return ( T )ctor.Invoke( null );
                 }
 
                 var paramObjects = new List<object>( param.Length );
@@ -148,7 +148,7 @@ namespace DM.MovieApi
                     paramObjects.Add( typeResolver() );
                 }
 
-                return (T)ctor.Invoke( paramObjects.ToArray() );
+                return ( T )ctor.Invoke( paramObjects.ToArray() );
             }
 
             private ConstructorInfo GetConstructor( Type t )

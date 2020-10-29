@@ -146,7 +146,7 @@ namespace DM.MovieApi.MovieDb.Genres
         {
             var obj = JObject.Parse( json );
 
-            var arr = (JArray)obj["genres"];
+            var arr = ( JArray )obj["genres"];
 
             var genres = arr.ToObject<IReadOnlyList<Genre>>();
 

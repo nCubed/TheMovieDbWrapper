@@ -49,7 +49,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.AreEqual( expectedName, person.Name );
             Assert.IsTrue( person.Biography.StartsWith( expectedBiography ), $"actual: {person.Biography}" );
             Assert.IsFalse( person.IsAdultFilmStar );
-            Assert.IsTrue( person.AlsoKnownAs.Count > 10, "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
+            Assert.IsTrue( person.AlsoKnownAs.Count > 10, "actual:\r\n" + string.Join( "\r\n", person.AlsoKnownAs ) );
             Assert.AreEqual( expectedBirthday, person.Birthday );
             Assert.AreEqual( expectedGender, person.Gender );
             Assert.AreEqual( null, person.Deathday );
@@ -95,7 +95,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.IsNotNull( person.ProfilePath );
 
             CollectionAssert.IsSubsetOf( alsoKnownAs, person.AlsoKnownAs.ToArray(),
-                "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
+                "actual:\r\n" + string.Join( "\r\n", person.AlsoKnownAs ) );
         }
 
         [TestMethod]
@@ -135,7 +135,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.IsNotNull( person.ProfilePath );
 
             CollectionAssert.IsSubsetOf( alsoKnownAs, person.AlsoKnownAs.ToArray(),
-                "actual:\r\n" + string.Join("\r\n", person.AlsoKnownAs) );
+                "actual:\r\n" + string.Join( "\r\n", person.AlsoKnownAs ) );
         }
 
         [TestMethod]
@@ -193,7 +193,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
                     .SingleOrDefault( x => x.Title == role.Key && x.Character == role.Value );
 
                 Assert.IsNotNull( cast, $"missing: {role.Key} : {role.Value} \r\nactual:\r\n" +
-                    string.Join("\r\n", credits.CastRoles.Select(x => $"{x.Title} : {x.Character}")) );
+                    string.Join( "\r\n", credits.CastRoles.Select( x => $"{x.Title} : {x.Character}" ) ) );
             }
 
             var expectedCrewRoles = new Dictionary<string, string>

@@ -64,11 +64,11 @@ namespace DM.MovieApi.IntegrationTests
 
                 if( typeof( T ) == typeof( Movie ) )
                 {
-                    AssertMovieStructure( (IEnumerable<Movie>)response.Results );
+                    AssertMovieStructure( ( IEnumerable<Movie> )response.Results );
                 }
                 else if( typeof( T ) == typeof( PersonInfo ) )
                 {
-                    AssertPersonInfoStructure( (IEnumerable<PersonInfo>)response.Results );
+                    AssertPersonInfoStructure( ( IEnumerable<PersonInfo> )response.Results );
                 }
 
                 allFound.AddRange( response.Results );

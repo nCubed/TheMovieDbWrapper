@@ -27,7 +27,7 @@ namespace DM.MovieApi.MovieDb.IndustryProfessions
         {
             var obj = JObject.Parse( json );
 
-            var arr = (JArray)obj["jobs"];
+            var arr = ( JArray )obj["jobs"];
 
             var professions = arr.ToObject<IReadOnlyList<Profession>>();
 

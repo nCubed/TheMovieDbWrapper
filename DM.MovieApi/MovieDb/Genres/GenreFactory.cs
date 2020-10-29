@@ -100,7 +100,7 @@ namespace DM.MovieApi.MovieDb.Genres
                 .Where( x => x.IsStatic )
                 .Where( x => x.IsPublic )
                 .Where( x => x.ReturnType == typeof( Genre ) )
-                .Select( x => (Genre)x.Invoke( null, null ) )
+                .Select( x => ( Genre )x.Invoke( null, null ) )
                 .ToList();
 
             return all.AsReadOnly();

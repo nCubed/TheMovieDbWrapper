@@ -185,7 +185,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 new ProductionCompanyInfo(11461, "Bad Robot"),
             };
             CollectionAssert.AreEquivalent( companies, movie.ProductionCompanies.ToArray(),
-                "actual:\r\n" + string.Join("\r\n", movie.ProductionCompanies) );
+                "actual:\r\n" + string.Join( "\r\n", movie.ProductionCompanies ) );
 
             // Production Countries
             var countries = new[]
@@ -210,7 +210,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 GenreFactory.Fantasy(),
             };
             CollectionAssert.AreEquivalent( expectedGenres, movie.Genres.ToArray(),
-                "actual:\r\n" + string.Join("\r\n", movie.Genres) );
+                "actual:\r\n" + string.Join( "\r\n", movie.Genres ) );
 
             // Keywords
             var expectedKeywords = new List<Keyword>
@@ -222,7 +222,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 new Keyword(156395, "imax"),
             };
             CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToArray(),
-                "actual:\r\n" + string.Join("\r\n", movie.Keywords) );
+                "actual:\r\n" + string.Join( "\r\n", movie.Keywords ) );
         }
 
         [TestMethod]

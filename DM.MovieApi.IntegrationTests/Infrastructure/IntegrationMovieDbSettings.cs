@@ -40,18 +40,18 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
                 ApiUrl = "https://api.themoviedb.org/3/"
             };
 
-            if (File.Exists(FilePath) == false)
+            if( File.Exists( FilePath ) == false )
             {
-                string structure = JsonConvert.SerializeObject(anon, Formatting.Indented);
+                string structure = JsonConvert.SerializeObject( anon, Formatting.Indented );
 
-                Assert.Fail($"The file {FileName} does not exist. Expected to find it here:\r\n{FilePath}\r\n\r\n" +
+                Assert.Fail( $"The file {FileName} does not exist. Expected to find it here:\r\n{FilePath}\r\n\r\n" +
                             $"{FileName} must exist in the root of the integration project with your API Key " +
                             "from themoviedb.org. When the project is built, the json file will be output to " +
-                            $"the directory listed above. Use the following json structure:\r\n{structure}\r\n");
+                            $"the directory listed above. Use the following json structure:\r\n{structure}\r\n" );
             }
 
-            var json = File.ReadAllText(FilePath);
-            var api = JsonConvert.DeserializeAnonymousType(json, anon);
+            var json = File.ReadAllText( FilePath );
+            var api = JsonConvert.DeserializeAnonymousType( json, anon );
 
             ApiKey = api.ApiKey;
             ApiUrl = api.ApiUrl;

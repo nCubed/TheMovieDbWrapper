@@ -22,7 +22,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             Assert.IsInstanceOfType( _api, typeof( ApiGenreRequest ) );
 
-            ( (ApiGenreRequest)_api ).ClearAllGenres();
+            (( ApiGenreRequest )_api).ClearAllGenres();
         }
 
         [TestMethod]

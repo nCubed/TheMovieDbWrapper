@@ -91,8 +91,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 GenreFactory.Mystery()
             };
 
-            CollectionAssert.AreEquivalent( expGenres, gameOfThrones.Genres.ToArray(), 
-                string.Join(", ", gameOfThrones.Genres.Select(x => x.Name)) );
+            CollectionAssert.AreEquivalent( expGenres, gameOfThrones.Genres.ToArray(),
+                string.Join( ", ", gameOfThrones.Genres.Select( x => x.Name ) ) );
         }
 
         [TestMethod]
@@ -143,14 +143,14 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             };
 
             CollectionAssert.AreEquivalent( expGenres, show.Genres.ToArray(),
-                string.Join(", ", show.Genres.Select(x => x.Name)));
+                string.Join( ", ", show.Genres.Select( x => x.Name ) ) );
 
             Assert.AreEqual( expHomepage, show.Homepage );
 
             var expLanguages = new[] { "en" };
 
             CollectionAssert.AreEquivalent( expLanguages, show.Languages.ToArray(),
-                string.Join(", ", show.Languages));
+                string.Join( ", ", show.Languages ) );
 
             Assert.AreEqual( expName, show.Name );
 
@@ -178,7 +178,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 new ProductionCompanyInfo( 76043, "Revolution Sun Studios" )
             };
             CollectionAssert.AreEquivalent( expProductionCompanies, show.ProductionCompanies.ToArray(),
-                string.Join(", ", show.ProductionCompanies));
+                string.Join( ", ", show.ProductionCompanies ) );
 
             Keyword[] expKeywords =
             {
@@ -191,7 +191,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 new Keyword(170362, "fantasy world"),
             };
             CollectionAssert.AreEquivalent( expKeywords, show.Keywords.ToArray(),
-                string.Join(", ", show.Keywords));
+                string.Join( ", ", show.Keywords ) );
         }
 
         [TestMethod]

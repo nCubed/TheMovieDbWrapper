@@ -36,7 +36,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Companies
             Assert.AreEqual( id, response.Item.Id );
             Assert.AreEqual( expectedName, response.Item.Name );
             Assert.AreEqual( expectedHeadquarters, response.Item.Headquarters );
-            Assert.AreEqual( new Uri(expectedHomepage), new Uri(response.Item.Homepage) );
+            Assert.AreEqual( new Uri( expectedHomepage ), new Uri( response.Item.Homepage ) );
             ApiResponseUtil.AssertImagePath( response.Item.LogoPath );
 
             Assert.IsNull( response.Item.ParentCompany );

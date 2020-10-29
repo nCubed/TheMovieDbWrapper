@@ -26,8 +26,8 @@ namespace DM.MovieApi.ApiRequest
             {
                 return base.ReadJson( reader, objectType, existingValue, serializer );
             }
-            catch( Exception ex) when ( ex is FormatException 
-                                       || ex is JsonSerializationException jse 
+            catch( Exception ex ) when( ex is FormatException
+                                       || ex is JsonSerializationException jse
                                        && jse.Message.Contains( "System.DateTime" ) )
             {
                 string val = reader.Value?.ToString();
