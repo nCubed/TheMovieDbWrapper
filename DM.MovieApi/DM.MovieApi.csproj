@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>TheMovieDbWrapper</PackageId>
-    <Version>0.9.0</Version>
+    <Version>0.9.1</Version>
     <Authors>Kindler Chase</Authors>
     <Company>nCubed</Company>
     <Product>TheMovieDb.org Wrapper</Product>
@@ -18,8 +18,10 @@
     <PackageProjectUrl>https://github.com/nCubed/TheMovieDbWrapper</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Movies Movie themoviedb themoviedb.org TMDB Film TV Television Actor Acress Director</PackageTags>
-    <PackageReleaseNotes>v0.9.0 is a full upgrade from Visual Studio PCL class library to the now recommeneded .netstandard class library.</PackageReleaseNotes>
+    <PackageReleaseNotes>v0.9.1 is a full upgrade from Visual Studio PCL class library to the now recommeneded .netstandard class library.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/nCubed/TheMovieDbWrapper</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>0.9.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
