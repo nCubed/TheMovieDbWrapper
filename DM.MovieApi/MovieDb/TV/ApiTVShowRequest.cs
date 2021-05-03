@@ -111,5 +111,19 @@ namespace DM.MovieApi.MovieDb.TV
 
             return response;
         }
+
+        public async Task<ApiQueryResponse<TVShowEpisodeCredit>> GetCreditsAsync(int tvshowId, int seasonNumber, int episodeNumber, string language = "en")
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+            };
+
+            string command = $"tv/{tvshowId}/season/{seasonNumber}/episode/{episodeNumber}/credits";
+
+            ApiQueryResponse<TVShowEpisodeCredit> response = await base.QueryAsync<TVShowEpisodeCredit>(command, param);
+
+            return response;
+        }
     }
 }
