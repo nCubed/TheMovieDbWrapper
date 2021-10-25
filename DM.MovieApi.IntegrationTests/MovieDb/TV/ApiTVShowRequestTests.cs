@@ -87,8 +87,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             {
                 GenreFactory.SciFiAndFantasy(),
                 GenreFactory.ActionAndAdventure(),
-                GenreFactory.Drama(),
-                GenreFactory.Mystery()
+                GenreFactory.Drama()
             };
 
             CollectionAssert.AreEquivalent( expGenres, gameOfThrones.Genres.ToArray(),
@@ -138,8 +137,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             {
                 GenreFactory.SciFiAndFantasy(),
                 GenreFactory.ActionAndAdventure(),
-                GenreFactory.Drama(),
-                GenreFactory.Mystery()
+                GenreFactory.Drama()
             };
 
             CollectionAssert.AreEquivalent( expGenres, show.Genres.ToArray(),
@@ -182,7 +180,6 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             Keyword[] expKeywords =
             {
-                new Keyword(6091, "war"),
                 new Keyword(818, "based on novel or book"),
                 new Keyword(4152, "kingdom"),
                 new Keyword(12554, "dragon"),
