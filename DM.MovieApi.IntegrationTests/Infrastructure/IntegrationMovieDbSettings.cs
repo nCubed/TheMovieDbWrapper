@@ -59,7 +59,7 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
 
 
         // ReSharper disable InconsistentNaming
-        private static readonly Lazy<string> _rootDirectory = new Lazy<string>( GetRootDirectory );
+        private static readonly Lazy<string> _rootDirectory = new( GetRootDirectory );
 
         internal static string RootDirectory => _rootDirectory.Value;
 

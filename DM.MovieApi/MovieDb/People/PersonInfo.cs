@@ -36,7 +36,7 @@ namespace DM.MovieApi.MovieDb.People
 
         public PersonInfo()
         {
-            KnownFor = new PersonInfoRole[0];
+            KnownFor = Array.Empty<PersonInfoRole>();
         }
 
         public override string ToString()
@@ -131,9 +131,9 @@ namespace DM.MovieApi.MovieDb.People
 
         public PersonInfoRole()
         {
-            GenreIds = new int[0];
-            Genres = new Genre[0];
-            OriginCountry = new string[0];
+            GenreIds = Array.Empty<int>();
+            Genres = Array.Empty<Genre>();
+            OriginCountry = Array.Empty<string>();
         }
 
         public override string ToString()

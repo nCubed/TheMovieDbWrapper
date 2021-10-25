@@ -34,7 +34,7 @@ namespace DM.MovieApi.MovieDb.TV
 
         public override bool Equals( object obj )
         {
-            if( !(obj is Network network) )
+            if( obj is not Network network )
             {
                 return false;
             }

@@ -38,7 +38,7 @@ namespace DM.MovieApi.MovieDb.TV
 
         public override bool Equals( object obj )
         {
-            if( !(obj is TVShowCreator showCreator) )
+            if( obj is not TVShowCreator showCreator )
             {
                 return false;
             }

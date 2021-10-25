@@ -26,7 +26,7 @@ namespace DM.MovieApi.MovieDb.Keywords
 
         public override bool Equals( object obj )
         {
-            if( !(obj is Keyword genre) )
+            if( obj is not Keyword genre )
             {
                 return false;
             }

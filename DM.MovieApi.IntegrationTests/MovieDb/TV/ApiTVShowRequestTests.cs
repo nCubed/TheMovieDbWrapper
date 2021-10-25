@@ -121,8 +121,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             TVShowCreator[] expCreatedBy =
             {
-                new TVShowCreator(9813, "David Benioff", "/8CuuNIKMzMUL1NKOPv9AqEwM7og.jpg"),
-                new TVShowCreator(228068, "D. B. Weiss", "/caUAtilEe06OwOjoQY3B7BgpARi.jpg"),
+                new(9813, "David Benioff", "/8CuuNIKMzMUL1NKOPv9AqEwM7og.jpg"),
+                new(228068, "D. B. Weiss", "/caUAtilEe06OwOjoQY3B7BgpARi.jpg"),
             };
 
             CollectionAssert.AreEquivalent( expCreatedBy, show.CreatedBy.ToArray() );
@@ -154,7 +154,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             Network[] expNetworks =
             {
-                new Network(49, "HBO")
+                new(49, "HBO")
             };
 
             CollectionAssert.AreEquivalent( expNetworks, show.Networks.ToArray() );
@@ -170,22 +170,22 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             ProductionCompanyInfo[] expProductionCompanies =
             {
-                new ProductionCompanyInfo( 5820, "Generator Entertainment" ),
-                new ProductionCompanyInfo( 12525, "Television 360" ),
-                new ProductionCompanyInfo( 12526, "Bighead Littlehead" ),
-                new ProductionCompanyInfo( 76043, "Revolution Sun Studios" )
+                new( 5820, "Generator Entertainment" ),
+                new( 12525, "Television 360" ),
+                new( 12526, "Bighead Littlehead" ),
+                new( 76043, "Revolution Sun Studios" )
             };
             CollectionAssert.AreEquivalent( expProductionCompanies, show.ProductionCompanies.ToArray(),
                 string.Join( ", ", show.ProductionCompanies ) );
 
             Keyword[] expKeywords =
             {
-                new Keyword(818, "based on novel or book"),
-                new Keyword(4152, "kingdom"),
-                new Keyword(12554, "dragon"),
-                new Keyword(13084, "king"),
-                new Keyword(34038, "intrigue"),
-                new Keyword(170362, "fantasy world"),
+                new(818, "based on novel or book"),
+                new(4152, "kingdom"),
+                new(12554, "dragon"),
+                new(13084, "king"),
+                new(34038, "intrigue"),
+                new(170362, "fantasy world"),
             };
             CollectionAssert.AreEquivalent( expKeywords, show.Keywords.ToArray(),
                 string.Join( ", ", show.Keywords ) );
@@ -225,7 +225,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             const int minimumTotalResultsCount = 100;
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumTotalResultsCount,
-                ( str, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
+                ( _, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
         }
 
         [TestMethod]
@@ -247,7 +247,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             const int minimumTotalResultsCount = 100;
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumTotalResultsCount,
-                ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
+                ( _, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
     }
 }

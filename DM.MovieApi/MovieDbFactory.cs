@@ -17,14 +17,12 @@ namespace DM.MovieApi
     /// </summary>
     public static class MovieDbFactory
     {
-        private static IMovieDbSettings _settings;
-
         /// <summary>
         /// Determines if the underlying factory has been created.
         /// </summary>
-        public static bool IsFactoryComposed => _settings != null;
+        public static bool IsFactoryComposed => Settings != null;
 
-        internal static IMovieDbSettings Settings => _settings;
+        internal static IMovieDbSettings Settings { get; private set; }
 
         /// <summary>
         /// Registers themoviedb.org settings for use with the MEF container.
@@ -35,7 +33,7 @@ namespace DM.MovieApi
         {
             ResetFactory();
 
-            _settings = settings;
+            Settings = settings;
         }
 
         /// <summary>
@@ -85,7 +83,7 @@ namespace DM.MovieApi
         /// </summary>
         public static void ResetFactory()
         {
-            _settings = null;
+            Settings = null;
         }
 
         private static void ContainerGuard()

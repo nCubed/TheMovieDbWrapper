@@ -12,7 +12,7 @@ namespace DM.MovieApi.MovieDb.Genres
     internal class ApiGenreRequest : ApiRequestBase, IApiGenreRequest
     {
         // ReSharper disable once InconsistentNaming
-        private static readonly List<Genre> _allGenres = new List<Genre>();
+        private static readonly List<Genre> _allGenres = new();
 
         public IReadOnlyList<Genre> AllGenres
         {
@@ -120,9 +120,7 @@ namespace DM.MovieApi.MovieDb.Genres
         }
 
         internal void ClearAllGenres()
-        {
-            _allGenres.Clear();
-        }
+            => _allGenres.Clear();
 
         private void EnsureAllGenres( ApiQueryResponse<Genre> response )
         {
@@ -148,6 +146,7 @@ namespace DM.MovieApi.MovieDb.Genres
 
             var arr = ( JArray )obj["genres"];
 
+            // ReSharper disable once PossibleNullReferenceException
             var genres = arr.ToObject<IReadOnlyList<Genre>>();
 
             return genres;

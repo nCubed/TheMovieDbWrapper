@@ -214,10 +214,10 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             // Keywords
             var expectedKeywords = new List<Keyword>
             {
-                new Keyword(803, "android"),
-                new Keyword(1612, "spacecraft"),
-                new Keyword(10527, "jedi"),
-                new Keyword(161176, "space opera")
+                new(803, "android"),
+                new(1612, "spacecraft"),
+                new(10527, "jedi"),
+                new(161176, "space opera")
             };
             CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToArray(),
                 "actual:\r\n" + string.Join( "\r\n", movie.Keywords ) );
@@ -281,7 +281,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             const int minimumTotalResultsCount = 100; // 20 results per page x 5 pages = 100
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
-                ( str, page ) => _api.GetNowPlayingAsync( page ), x => x.Id );
+                ( _, page ) => _api.GetNowPlayingAsync( page ), x => x.Id );
         }
 
         [TestMethod]
@@ -303,7 +303,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             const int minimumTotalResultsCount = 50; // 20 results per page x 3 pages = 60
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
-                ( str, page ) => _api.GetUpcomingAsync( page ), x => x.Id );
+                ( _, page ) => _api.GetUpcomingAsync( page ), x => x.Id );
         }
 
         [TestMethod]
@@ -325,7 +325,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             const int minimumTotalResultsCount = 40;
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
-                ( str, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
+                ( _, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
         }
 
         [TestMethod]
@@ -347,7 +347,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             const int minimumTotalResultsCount = 40;
 
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
-                ( str, page ) => _api.GetPopularAsync( page ), x => x.Id );
+                ( _, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
     }
 }
