@@ -20,7 +20,7 @@ namespace DM.MovieApi.MovieDb
 
         public override bool Equals( object obj )
         {
-            if( !(obj is Language language) )
+            if( obj is not Language language )
             {
                 return false;
             }

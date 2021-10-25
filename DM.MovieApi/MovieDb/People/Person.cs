@@ -48,7 +48,7 @@ namespace DM.MovieApi.MovieDb.People
 
         public Person()
         {
-            AlsoKnownAs = new string[0];
+            AlsoKnownAs = Array.Empty<string>();
         }
 
         public override string ToString()

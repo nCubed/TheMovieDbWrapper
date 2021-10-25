@@ -31,6 +31,7 @@ namespace DM.MovieApi.MovieDb.Keywords
 
             var arr = ( JArray )obj[_key];
 
+            // ReSharper disable once PossibleNullReferenceException
             var keywords = arr.ToObject<IReadOnlyList<Keyword>>();
 
             return keywords;

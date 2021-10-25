@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace DM.MovieApi.MovieDb.Certifications
@@ -48,14 +49,14 @@ namespace DM.MovieApi.MovieDb.Certifications
 
         public MovieRatings()
         {
-            UnitedStates = new Certification[0];
-            Canada = new Certification[0];
-            Australia = new Certification[0];
-            Germany = new Certification[0];
-            France = new Certification[0];
-            NewZealand = new Certification[0];
-            India = new Certification[0];
-            UnitedKingdom = new Certification[0];
+            UnitedStates = Array.Empty<Certification>();
+            Canada = Array.Empty<Certification>();
+            Australia = Array.Empty<Certification>();
+            Germany = Array.Empty<Certification>();
+            France = Array.Empty<Certification>();
+            NewZealand = Array.Empty<Certification>();
+            India = Array.Empty<Certification>();
+            UnitedKingdom = Array.Empty<Certification>();
         }
     }
 }

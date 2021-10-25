@@ -20,7 +20,7 @@ namespace DM.MovieApi.MovieDb.Companies
 
         public override bool Equals( object obj )
         {
-            if( !(obj is ProductionCompanyInfo info) )
+            if( obj is not ProductionCompanyInfo info )
             {
                 return false;
             }

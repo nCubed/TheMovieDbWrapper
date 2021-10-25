@@ -18,8 +18,8 @@ namespace DM.MovieApi.MovieDb.People
 
         public PersonMovieCredit()
         {
-            CastRoles = new PersonMovieCastMember[0];
-            CrewRoles = new PersonMovieCrewMember[0];
+            CastRoles = Array.Empty<PersonMovieCastMember>();
+            CrewRoles = Array.Empty<PersonMovieCrewMember>();
         }
     }
 

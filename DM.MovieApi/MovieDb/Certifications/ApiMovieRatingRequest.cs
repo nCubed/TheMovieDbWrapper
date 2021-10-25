@@ -31,11 +31,13 @@ namespace DM.MovieApi.MovieDb.Certifications
 
             JToken certs = obj["certifications"];
 
+            // ReSharper disable once PossibleNullReferenceException
             var ratings = certs.ToObject<MovieRatings>();
 
             Func<IEnumerable<Certification>, IReadOnlyList<Certification>> reorder =
                 list => list.OrderBy( x => x.Order ).ThenBy( x => x.Rating ).ToList().AsReadOnly();
 
+            // ReSharper disable once PossibleNullReferenceException
             ratings.Australia = reorder( ratings.Australia );
             ratings.Canada = reorder( ratings.Canada );
             ratings.France = reorder( ratings.France );

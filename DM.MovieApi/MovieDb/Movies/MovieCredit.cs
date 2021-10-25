@@ -41,9 +41,7 @@ namespace DM.MovieApi.MovieDb.Movies
         public string ProfilePath { get; set; }
 
         public override string ToString()
-        {
-            return $"{Character}: {Name}";
-        }
+            => $"{Character}: {Name}";
     }
 
     [DataContract]
@@ -68,8 +66,6 @@ namespace DM.MovieApi.MovieDb.Movies
         public string ProfilePath { get; set; }
 
         public override string ToString()
-        {
-            return $"{Name} | {Department} | {Job}";
-        }
+            => $"{Name} | {Department} | {Job}";
     }
 }

@@ -51,8 +51,8 @@ namespace DM.MovieApi.MovieDb.Movies
 
         public MovieInfo()
         {
-            GenreIds = new int[0];
-            Genres = new Genre[0];
+            GenreIds = Array.Empty<int>();
+            Genres = Array.Empty<Genre>();
         }
 
         public override string ToString()

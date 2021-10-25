@@ -52,9 +52,9 @@ namespace DM.MovieApi.MovieDb.TV
 
         public TVShowInfo()
         {
-            OriginCountry = new string[0];
-            GenreIds = new int[0];
-            Genres = new Genre[0];
+            OriginCountry = Array.Empty<string>();
+            GenreIds = Array.Empty<int>();
+            Genres = Array.Empty<Genre>();
         }
 
         public override string ToString()

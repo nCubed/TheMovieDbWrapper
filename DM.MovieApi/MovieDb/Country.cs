@@ -20,7 +20,7 @@ namespace DM.MovieApi.MovieDb
 
         public override bool Equals( object obj )
         {
-            if( !(obj is Country country) )
+            if( obj is not Country country )
             {
                 return false;
             }

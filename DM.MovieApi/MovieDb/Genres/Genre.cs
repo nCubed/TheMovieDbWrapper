@@ -20,7 +20,7 @@ namespace DM.MovieApi.MovieDb.Genres
 
         public override bool Equals( object obj )
         {
-            if( !(obj is Genre genre) )
+            if( obj is not Genre genre )
             {
                 return false;
             }

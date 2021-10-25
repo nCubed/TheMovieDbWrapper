@@ -83,15 +83,15 @@ namespace DM.MovieApi.MovieDb.TV
 
         public TVShow()
         {
-            CreatedBy = new TVShowCreator[0];
-            EpisodeRunTime = new int[0];
-            Genres = new Genre[0];
-            Languages = new string[0];
-            Networks = new Network[0];
-            OriginCountry = new string[0];
-            ProductionCompanies = new ProductionCompanyInfo[0];
-            Seasons = new Season[0];
-            Keywords = new Keyword[0];
+            CreatedBy = Array.Empty<TVShowCreator>();
+            EpisodeRunTime = Array.Empty<int>();
+            Genres = Array.Empty<Genre>();
+            Languages = Array.Empty<string>();
+            Networks = Array.Empty<Network>();
+            OriginCountry = Array.Empty<string>();
+            ProductionCompanies = Array.Empty<ProductionCompanyInfo>();
+            Seasons = Array.Empty<Season>();
+            Keywords = Array.Empty<Keyword>();
         }
 
         public override string ToString()

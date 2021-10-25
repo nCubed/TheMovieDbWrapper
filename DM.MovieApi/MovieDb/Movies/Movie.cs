@@ -96,11 +96,11 @@ namespace DM.MovieApi.MovieDb.Movies
 
         public Movie()
         {
-            Genres = new Genre[0];
-            Keywords = new Keyword[0];
-            ProductionCompanies = new ProductionCompanyInfo[0];
-            ProductionCountries = new Country[0];
-            SpokenLanguages = new Language[0];
+            Genres = Array.Empty<Genre>();
+            Keywords = Array.Empty<Keyword>();
+            ProductionCompanies = Array.Empty<ProductionCompanyInfo>();
+            ProductionCountries = Array.Empty<Country>();
+            SpokenLanguages = Array.Empty<Language>();
         }
 
         public override string ToString()
