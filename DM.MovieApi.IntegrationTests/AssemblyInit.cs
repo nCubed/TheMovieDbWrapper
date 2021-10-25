@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using DM.MovieApi.ApiResponse;
 using DM.MovieApi.IntegrationTests.Infrastructure;
+using DM.MovieApi.MovieDb.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DM.MovieApi.IntegrationTests
@@ -12,11 +13,11 @@ namespace DM.MovieApi.IntegrationTests
         public static readonly IMovieDbSettings Settings = new IntegrationMovieDbSettings();
 
         [AssemblyInitialize]
-        public static void Init( TestContext context )
+        public static async Task Init( TestContext context )
         {
             NCrunchGuard();
 
-            ValidateApiKey();
+            await ValidateApiKey();
 
             RegisterFactorySettings();
         }
@@ -48,18 +49,18 @@ namespace DM.MovieApi.IntegrationTests
             }
         }
 
-        private static void ValidateApiKey()
+        private static async Task ValidateApiKey()
         {
-            ApiQueryResponse<object> response = Task.Run( () =>
-            {
-                var request = new IntegrationApiRequest( Settings );
-
-                var result = request.QueryAsync<object>( string.Empty );
-
-                return result;
-            } ).GetAwaiter().GetResult();
+            var request = new IntegrationApiRequest( Settings );
+            var response = await request.QueryAsync<ApiConfiguration>( "configuration" );
 
             Assert.IsNull( response.Error, $"{response.Error} Query: {response.CommandText}" );
+
+            ApiConfiguration api = response.Item;
+            Assert.IsNotNull( api );
+
+            string[] someChangeKeys = { "crew", "cast", "episode", "title", "overview", "runtime", "adult", "season" };
+            CollectionAssert.IsSubsetOf( someChangeKeys, api.ChangeKeys.ToArray() );
         }
     }
 }
