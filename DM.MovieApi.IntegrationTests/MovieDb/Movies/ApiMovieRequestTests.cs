@@ -106,7 +106,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             Assert.AreEqual( expectedTitle, movie.Title );
 
-            Assert.AreEqual( new DateTime( 1998, 08, 20 ), movie.ReleaseDate );
+            Assert.AreEqual( new DateTime( 1998, 03, 03 ), movie.ReleaseDate );
 
             var expectedGenres = new List<Genre>
             {
@@ -181,8 +181,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             var companies = new[]
             {
                 new ProductionCompanyInfo(1, "Lucasfilm Ltd."),
-                new ProductionCompanyInfo(1634, "Truenorth Productions"),
-                new ProductionCompanyInfo(11461, "Bad Robot"),
+                new ProductionCompanyInfo(11461, "Bad Robot")
             };
             CollectionAssert.AreEquivalent( companies, movie.ProductionCompanies.ToArray(),
                 "actual:\r\n" + string.Join( "\r\n", movie.ProductionCompanies ) );
@@ -218,8 +217,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 new Keyword(803, "android"),
                 new Keyword(1612, "spacecraft"),
                 new Keyword(10527, "jedi"),
-                new Keyword(161176, "space opera"),
-                new Keyword(156395, "imax"),
+                new Keyword(161176, "space opera")
             };
             CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToArray(),
                 "actual:\r\n" + string.Join( "\r\n", movie.Keywords ) );
