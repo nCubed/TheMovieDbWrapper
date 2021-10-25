@@ -132,7 +132,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            Assert.IsTrue( response.Json.Contains( "\"release_date\":\"1998-08-20\"" ), actualJson );
+            Assert.IsTrue( response.Json.Contains( "\"release_date\":\"1998-03-03\"" ), actualJson );
             Assert.IsTrue( response.Json.Contains( "\"original_title\":\"Lola rennt\"" ), actualJson );
             Assert.IsTrue( response.Json.Contains( "\"title\":\"Run Lola Run\"" ), actualJson );
             Assert.IsTrue( response.Json.Contains( "\"original_language\":\"de\"" ), actualJson );
