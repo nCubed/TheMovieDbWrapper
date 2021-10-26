@@ -139,6 +139,7 @@ namespace DM.MovieApi.ApiRequest
             var client = new HttpClient( handler );
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", _settings.ApiBearerToken );
             client.BaseAddress = new Uri( _settings.ApiUrl );
 
             return client;
@@ -149,18 +150,16 @@ namespace DM.MovieApi.ApiRequest
 
         protected string CreateCommand( string rootCommand, IDictionary<string, string> parameters )
         {
-            string command = $"{rootCommand}?api_key={_settings.ApiKey}";
-
             string tokens = parameters.Any()
                 ? string.Join( "&", parameters.Select( x => x.Key + "=" + x.Value ) )
                 : string.Empty;
 
             if( string.IsNullOrWhiteSpace( tokens ) == false )
             {
-                command = $"{command}&{tokens}";
+                rootCommand += $"?{tokens}";
             }
 
-            return command;
+            return rootCommand;
         }
     }
 }

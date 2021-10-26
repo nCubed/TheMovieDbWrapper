@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Doc>
+  <ApiUrlRaw>http://api.themoviedb.org/3/</ApiUrlRaw>
+  <ApiSettings>
+    <ApiUrl>
+      <summary>
+        <para>URL used for api calls to themoviedb.org.</para>
+        <para>Current URL is: http://api.themoviedb.org/3/</para>
+        <para>DO NOT use the .org/4/ endpoint as it does not contain all operations.</para>
+      </summary>
+    </ApiUrl>
+    <BearerToken>
+      <summary>
+        <para>TheMovieDb.org v4 API uses an Authorization Bearer token to query themoviedb.org API.</para>
+        <para>The Bearer token is found in your account page, under the API section: "API Read Access Token (v4 auth)".</para>
+        <para>This token IS NOT the same as the old "API Key (v3 auth)"</para>
+      </summary>
+    </BearerToken>
+  </ApiSettings>
+</Doc>

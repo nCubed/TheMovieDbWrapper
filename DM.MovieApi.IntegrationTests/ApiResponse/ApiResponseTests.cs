@@ -32,7 +32,6 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
             string actualCommandText = $"Actual: {response.CommandText}";
 
             Assert.IsTrue( response.CommandText.Contains( command ), actualCommandText );
-            Assert.IsTrue( response.CommandText.Contains( AssemblyInit.Settings.ApiKey ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( AssemblyInit.Settings.ApiUrl ), actualCommandText );
         }
 
@@ -48,7 +47,6 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
             string actualCommandText = $"Actual: {response.CommandText}";
 
             Assert.IsTrue( response.CommandText.Contains( command ), actualCommandText );
-            Assert.IsTrue( response.CommandText.Contains( AssemblyInit.Settings.ApiKey ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( AssemblyInit.Settings.ApiUrl ), actualCommandText );
         }
 
@@ -121,8 +119,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             Assert.IsTrue( response.CommandText.Contains( command ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( "&page=" ), actualCommandText );
-            Assert.IsTrue( response.CommandText.Contains( "&query=Run Lola Run" ), actualCommandText );
-            Assert.IsTrue( response.CommandText.Contains( AssemblyInit.Settings.ApiKey ), actualCommandText );
+            Assert.IsTrue( response.CommandText.Contains( "?query=Run Lola Run" ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( AssemblyInit.Settings.ApiUrl ), actualCommandText );
         }
 

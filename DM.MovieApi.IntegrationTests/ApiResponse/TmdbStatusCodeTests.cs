@@ -27,9 +27,9 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
         [TestMethod]
         public async Task InvalidApiKey()
         {
-            var api = new IntegrationApiRequest( new IntegrationMovieDbSettings( "xxx", AssemblyInit.Settings.ApiUrl ) );
+            var api = new IntegrationApiRequest( new IntegrationMovieDbSettings( AssemblyInit.Settings.ApiUrl, "xxx" ) );
 
-            ApiQueryResponse<InvalidObject> result = await api.QueryAsync<InvalidObject>( "junk" );
+            ApiQueryResponse<InvalidObject> result = await api.QueryAsync<InvalidObject>( "invalid/service" );
 
             AssertErrorCode( result, TmdbStatusCode.InvalidApiKey );
         }

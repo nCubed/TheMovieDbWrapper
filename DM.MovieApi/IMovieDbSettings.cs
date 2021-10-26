@@ -7,15 +7,11 @@ namespace DM.MovieApi
     /// </summary>
     public interface IMovieDbSettings
     {
-        /// <summary>
-        /// Private key required to query themoviedb.org API.
-        /// </summary>
-        string ApiKey { get; }
-
-        /// <summary>
-        /// <para>URL used for api calls to themoviedb.org.</para>
-        /// <para>Current URL is: http://api.themoviedb.org/3/ </para>
-        /// </summary>
+        // TODO: allow the ApiUrl to be empty and fallback to the MovieDbFactory.TheMovieDbApiUrl const.
+        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/ApiUrl/*'/>
         string ApiUrl { get; }
+
+        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/BearerToken/*'/>
+        string ApiBearerToken { get; }
     }
 }

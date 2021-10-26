@@ -23,12 +23,37 @@ namespace DM.MovieApi.IntegrationTests
             AssemblyInit.RegisterFactorySettings();
         }
 
-
         [TestMethod]
         public async Task RegisterSettings_CanUse_RawStrings()
         {
+            await AssertRegisterRawSettings( AssemblyInit.Settings.ApiUrl );
+        }
+
+        [TestMethod]
+        public async Task RegisterSettings_CanUse_RawStrings_ExcludeApiUrl()
+        {
+            await AssertRegisterRawSettings( "", excludeUrl: true );
+
+            await AssertRegisterRawSettings( "" );
+
+            await AssertRegisterRawSettings( "   " );
+
+            await AssertRegisterRawSettings( null );
+        }
+
+        private async Task AssertRegisterRawSettings( string apiUrl, bool excludeUrl = false )
+        {
             MovieDbFactory.ResetFactory();
-            MovieDbFactory.RegisterSettings( AssemblyInit.Settings.ApiKey, AssemblyInit.Settings.ApiUrl );
+
+            switch( excludeUrl )
+            {
+                case false:
+                    MovieDbFactory.RegisterSettings( AssemblyInit.Settings.ApiBearerToken, apiUrl );
+                    break;
+                default:
+                    MovieDbFactory.RegisterSettings( AssemblyInit.Settings.ApiBearerToken );
+                    break;
+            }
 
             var api = MovieDbFactory.Create<IApiMovieRequest>().Value;
 

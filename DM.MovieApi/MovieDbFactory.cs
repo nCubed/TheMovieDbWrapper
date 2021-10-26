@@ -17,6 +17,9 @@ namespace DM.MovieApi
     /// </summary>
     public static class MovieDbFactory
     {
+        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/ApiUrl/*'/>
+        public const string TheMovieDbApiUrl = "http://api.themoviedb.org/3/";
+
         /// <summary>
         /// Determines if the underlying factory has been created.
         /// </summary>
@@ -25,7 +28,7 @@ namespace DM.MovieApi
         internal static IMovieDbSettings Settings { get; private set; }
 
         /// <summary>
-        /// Registers themoviedb.org settings for use with the MEF container.
+        /// Registers themoviedb.org settings for use with the internal DI container.
         /// </summary>
         /// <param name="settings">The implementation of <see cref="IMovieDbSettings"/> containing
         /// the themoviedb.org credentials to use when connecting to the service.</param>
@@ -33,24 +36,35 @@ namespace DM.MovieApi
         {
             ResetFactory();
 
+            // TODO: validate settings.ApiBearerToken, length > 200
+            //       v3 key was approx 33 chars; v4 bearer is approx 212 chars.
             Settings = settings;
         }
 
         /// <summary>
-        /// Registers themoviedb.org settings for use with the MEF container.
+        /// <inheritdoc cref="RegisterSettings(IMovieDbSettings)" path="/summary"/>
         /// </summary>
-        /// <param name="apiKey">Private key required to query themoviedb.org API.</param>
-        /// <param name="apiUrl">URL used for api calls to themoviedb.org.</param>
-        public static void RegisterSettings( string apiKey, string apiUrl = "http://api.themoviedb.org/3/" )
+        /// <param name="apiBearerToken">
+        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/BearerToken/summary/*'/>
+        /// </param>
+        /// <param name="apiUrl">
+        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/ApiUrl/summary/*'/>
+        /// </param>
+        public static void RegisterSettings( string apiBearerToken, string apiUrl = TheMovieDbApiUrl )
         {
-            var settings = new MovieDbSettings( apiKey, apiUrl );
+            if( string.IsNullOrWhiteSpace( apiUrl ) )
+            {
+                apiUrl = TheMovieDbApiUrl;
+            }
+
+            var settings = new MovieDbSettings( apiUrl, apiBearerToken );
 
             RegisterSettings( settings );
         }
 
         /// <summary>
         /// <para>Creates the specific API requested.</para>
-        /// <para>Note: one of the RegisterSettings must be called before the Factory can Create anything.</para>
+        /// <para><inheritdoc cref="MovieDbFactory" path="/summary"/></para>
         /// </summary>
         public static Lazy<T> Create<T>() where T : IApiRequest
         {
@@ -65,7 +79,7 @@ namespace DM.MovieApi
         /// <para>Creates a global instance exposing all API interfaces against themoviedb.org
         /// that are currently available in this release. Each API is exposed via a Lazy property
         /// ensuring no objects are created until they are needed.</para>
-        /// <para>Note: RegisterSettings must be called before the Factory can Create anything.</para>
+        /// <para><inheritdoc cref="MovieDbFactory" path="/summary"/></para>
         /// </summary>
         public static IMovieDbApi GetAllApiRequests()
         {
@@ -96,13 +110,13 @@ namespace DM.MovieApi
 
         private class MovieDbSettings : IMovieDbSettings
         {
-            public string ApiKey { get; }
             public string ApiUrl { get; }
+            public string ApiBearerToken { get; }
 
-            public MovieDbSettings( string apiKey, string apiUrl )
+            public MovieDbSettings( string apiUrl, string apiBearerToken )
             {
-                ApiKey = apiKey;
                 ApiUrl = apiUrl;
+                ApiBearerToken = apiBearerToken;
             }
         }
 

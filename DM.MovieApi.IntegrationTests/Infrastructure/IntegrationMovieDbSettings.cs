@@ -11,9 +11,9 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
         public const string FileName = "api.creds.json";
         public readonly string FilePath = Path.Combine( RootDirectory, FileName );
 
-        public string ApiKey { get; private set; }
-
         public string ApiUrl { get; private set; }
+
+        public string ApiBearerToken { get; private set; }
 
         /// <summary>
         /// Loads the API credentials from api.creds.json in the root of the test project.
@@ -26,18 +26,18 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
         /// <summary>
         /// Loads the API credentials from the provided values. 
         /// </summary>
-        public IntegrationMovieDbSettings( string apiKey, string apiUrl )
+        public IntegrationMovieDbSettings( string apiUrl, string apiBearerToken )
         {
-            ApiKey = apiKey;
             ApiUrl = apiUrl;
+            ApiBearerToken = apiBearerToken;
         }
 
         private void Hydrate()
         {
             var anon = new
             {
-                ApiKey = "your-key-here",
-                ApiUrl = "https://api.themoviedb.org/3/"
+                ApiUrl = MovieDbFactory.TheMovieDbApiUrl,
+                ApiBearerToken = "your-v4-bearer-token-here"
             };
 
             if( File.Exists( FilePath ) == false )
@@ -53,8 +53,8 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
             var json = File.ReadAllText( FilePath );
             var api = JsonConvert.DeserializeAnonymousType( json, anon );
 
-            ApiKey = api.ApiKey;
             ApiUrl = api.ApiUrl;
+            ApiBearerToken = api.ApiBearerToken;
         }
 
 
