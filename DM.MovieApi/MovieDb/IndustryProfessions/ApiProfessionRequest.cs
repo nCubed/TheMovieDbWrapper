@@ -10,7 +10,7 @@ namespace DM.MovieApi.MovieDb.IndustryProfessions
     internal class ApiProfessionRequest : ApiRequestBase, IApiProfessionRequest
     {
         [ImportingConstructor]
-        public ApiProfessionRequest( IMovieDbSettings settings )
+        public ApiProfessionRequest( IApiSettings settings )
             : base( settings )
         { }
 

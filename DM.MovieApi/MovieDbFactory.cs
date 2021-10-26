@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,41 +25,30 @@ namespace DM.MovieApi
         /// </summary>
         public static bool IsFactoryComposed => Settings != null;
 
-        internal static IMovieDbSettings Settings { get; private set; }
+        internal static IApiSettings Settings { get; private set; }
 
         /// <summary>
         /// Registers themoviedb.org settings for use with the internal DI container.
         /// </summary>
-        /// <param name="settings">The implementation of <see cref="IMovieDbSettings"/> containing
-        /// the themoviedb.org credentials to use when connecting to the service.</param>
-        public static void RegisterSettings( IMovieDbSettings settings )
+        /// <param name="bearerToken">
+        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/BearerToken/summary/*'/>
+        /// </param>
+        public static void RegisterSettings( string bearerToken )
         {
             ResetFactory();
 
-            // TODO: validate settings.ApiBearerToken, length > 200
-            //       v3 key was approx 33 chars; v4 bearer is approx 212 chars.
-            Settings = settings;
-        }
+            // TODO: create unit tests validating the bearerToken
 
-        /// <summary>
-        /// <inheritdoc cref="RegisterSettings(IMovieDbSettings)" path="/summary"/>
-        /// </summary>
-        /// <param name="apiBearerToken">
-        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/BearerToken/summary/*'/>
-        /// </param>
-        /// <param name="apiUrl">
-        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/ApiUrl/summary/*'/>
-        /// </param>
-        public static void RegisterSettings( string apiBearerToken, string apiUrl = TheMovieDbApiUrl )
-        {
-            if( string.IsNullOrWhiteSpace( apiUrl ) )
+            if( bearerToken is null || bearerToken.Length < 200 )
             {
-                apiUrl = TheMovieDbApiUrl;
+                // v3 access key was approx 33 chars; v4 bearer is approx 212 chars.
+                throw new ArgumentException(
+                    $"Must provide a valid TheMovieDb.org Bearer token. Invalid: {bearerToken}. " +
+                    "A valid token can be found in your account page, under the API section. " +
+                    "You will see a new key listed under the header \"API Read Access Token\".", bearerToken );
             }
 
-            var settings = new MovieDbSettings( apiUrl, apiBearerToken );
-
-            RegisterSettings( settings );
+            Settings = new MovieDbSettings( TheMovieDbApiUrl, bearerToken );
         }
 
         /// <summary>
@@ -108,15 +97,15 @@ namespace DM.MovieApi
             }
         }
 
-        private class MovieDbSettings : IMovieDbSettings
+        private class MovieDbSettings : IApiSettings
         {
             public string ApiUrl { get; }
-            public string ApiBearerToken { get; }
+            public string BearerToken { get; }
 
-            public MovieDbSettings( string apiUrl, string apiBearerToken )
+            public MovieDbSettings( string apiUrl, string bearerToken )
             {
                 ApiUrl = apiUrl;
-                ApiBearerToken = apiBearerToken;
+                BearerToken = bearerToken;
             }
         }
 
@@ -129,7 +118,7 @@ namespace DM.MovieApi
             {
                 SupportedDependencyTypeMap = new Dictionary<Type, Func<object>>
                 {
-                    {typeof(IMovieDbSettings), () => Settings},
+                    {typeof(IApiSettings), () => Settings},
                     {typeof(IApiGenreRequest), () => new ApiGenreRequest( Settings )}
                 };
 

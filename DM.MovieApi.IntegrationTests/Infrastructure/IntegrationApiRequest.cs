@@ -7,7 +7,7 @@ namespace DM.MovieApi.IntegrationTests.Infrastructure
     /// </summary>
     internal class IntegrationApiRequest : ApiRequestBase
     {
-        public IntegrationApiRequest( IMovieDbSettings settings )
+        public IntegrationApiRequest( IApiSettings settings )
             : base( settings )
         { }
     }

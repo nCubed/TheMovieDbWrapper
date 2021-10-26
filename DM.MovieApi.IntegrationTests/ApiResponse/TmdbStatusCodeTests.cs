@@ -25,9 +25,9 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
         }
 
         [TestMethod]
-        public async Task InvalidApiKey()
+        public async Task InvalidBearerToken()
         {
-            var api = new IntegrationApiRequest( new IntegrationMovieDbSettings( AssemblyInit.Settings.ApiUrl, "xxx" ) );
+            var api = new IntegrationApiRequest( new IntegrationMovieDbSettings( "crappy-bearer-token" ) );
 
             ApiQueryResponse<InvalidObject> result = await api.QueryAsync<InvalidObject>( "invalid/service" );
 
