@@ -67,8 +67,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Companies
         public async Task GetMoviesAsync_CanPageResults()
         {
             const int companyId = 3;
-            const int minimumPageCount = 4;
-            const int minimumTotalResultsCount = 75;
+            const int minimumPageCount = 5;
+            const int minimumTotalResultsCount = 95;
 
             await ApiResponseUtil.AssertCanPageSearchResponse( companyId, minimumPageCount, minimumTotalResultsCount,
                 ( id, pageNumber ) => _api.GetMoviesAsync( id, pageNumber ), x => x.Id );
