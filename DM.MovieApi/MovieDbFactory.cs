@@ -163,16 +163,17 @@ namespace DM.MovieApi
                     return ctors[0];
                 }
 
-                var markedCtors = ctors
+                var importingCtors = ctors
                     .Where( x => x.IsDefined( typeof( ImportingConstructorAttribute ) ) )
                     .ToArray();
 
-                if( markedCtors.Length != 1 )
+                if( importingCtors.Length != 1 )
                 {
-                    throw new InvalidOperationException( "Multiple public constructors found.  Please mark the one to use with the FactoryConstructorAttribute." );
+                    throw new InvalidOperationException( "Multiple public constructors found. " +
+                                                         $"One must be decorated with the {nameof( ImportingConstructorAttribute )}." );
                 }
 
-                return markedCtors[0];
+                return importingCtors[0];
             }
 
             private ConstructorInfo[] GetAvailableConstructors( TypeInfo typeInfo )
@@ -183,9 +184,15 @@ namespace DM.MovieApi
                     .Where( typeInfo.IsAssignableFrom )
                     .ToArray();
 
+                if( implementingTypes.Length == 0 )
+                {
+                    throw new NotSupportedException( $"{typeInfo.Name} must have a concrete implementation." );
+                }
+
                 if( implementingTypes.Length != 1 )
                 {
-                    throw new NotSupportedException( "Multiple implementing requests per request interface is not currently supported." );
+                    throw new NotSupportedException( $"Requested type: {typeInfo.Name}. " +
+                                                     "Multiple implementations per request interface is not supported." );
                 }
 
                 return implementingTypes[0].DeclaredConstructors.ToArray();
