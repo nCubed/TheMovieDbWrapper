@@ -8,7 +8,7 @@ namespace DM.MovieApi.MovieDb.Configuration
     internal class ApiConfigurationRequest : ApiRequestBase, IApiConfigurationRequest
     {
         [ImportingConstructor]
-        public ApiConfigurationRequest( IMovieDbSettings settings )
+        public ApiConfigurationRequest( IApiSettings settings )
             : base( settings )
         { }
 

@@ -53,6 +53,8 @@ namespace DM.MovieApi.IntegrationTests
             var allFound = new List<T>();
             int pageNumber = 1;
 
+            var priorResults = new Dictionary<int, int>();
+
             do
             {
                 System.Diagnostics.Trace.WriteLine( $"search: {search} | page: {pageNumber}", "ApiResponseUti.AssertCanPageSearchResponse" );
@@ -71,7 +73,35 @@ namespace DM.MovieApi.IntegrationTests
                     AssertPersonInfoStructure( ( IEnumerable<PersonInfo> )response.Results );
                 }
 
-                allFound.AddRange( response.Results );
+                if( keySelector == null )
+                {
+                    allFound.AddRange( response.Results );
+                }
+                else
+                {
+                    var current = new List<T>();
+                    foreach( T res in response.Results )
+                    {
+                        int key = keySelector( res );
+
+                        if( priorResults.TryAdd( key, 1 ) )
+                        {
+                            current.Add( res );
+                            continue;
+                        }
+
+                        System.Diagnostics.Trace.WriteLine( $"dup on page {response.PageNumber}: {res}" );
+
+                        if( ++priorResults[key] > 2 )
+                        {
+                            Assert.Fail( "Every now and then themoviedb.org API returns a duplicate from a prior page. " +
+                                        "But this time it exceeded our tolerance of one dup.\r\n" +
+                                        $"dup: {res}" );
+                        }
+                    }
+
+                    allFound.AddRange( current );
+                }
 
                 Assert.AreEqual( pageNumber, response.PageNumber );
 
@@ -102,11 +132,10 @@ namespace DM.MovieApi.IntegrationTests
 
             List<string> dups = groupById
                 .Where( x => x.Skip( 1 ).Any() )
-                .Select( x => $"({x.Count()}) {x.First()}" )
+                .Select( x => $"({x.Count()}) {string.Join( " | ", x.Select( y => y.ToString() ) )}" )
                 .ToList();
 
-            const string note = "Note: Every now and then themoviedb.org API returns a duplicate; not to be alarmed, just re-run the test until it passes.\r\n\r\n";
-            Assert.AreEqual( 0, dups.Count, note + " Duplicates: " + Environment.NewLine + string.Join( Environment.NewLine, dups ) );
+            Assert.AreEqual( 0, dups.Count, "Duplicates: " + Environment.NewLine + string.Join( Environment.NewLine, dups ) );
         }
 
         private static void AssertPersonInfoStructure( IEnumerable<PersonInfo> people )

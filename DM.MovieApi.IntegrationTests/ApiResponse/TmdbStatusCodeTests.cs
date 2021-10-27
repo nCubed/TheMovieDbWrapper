@@ -25,11 +25,11 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
         }
 
         [TestMethod]
-        public async Task InvalidApiKey()
+        public async Task InvalidBearerToken()
         {
-            var api = new IntegrationApiRequest( new IntegrationMovieDbSettings( "xxx", AssemblyInit.Settings.ApiUrl ) );
+            var api = new IntegrationApiRequest( new IntegrationMovieDbSettings( "crappy-bearer-token" ) );
 
-            ApiQueryResponse<InvalidObject> result = await api.QueryAsync<InvalidObject>( "junk" );
+            ApiQueryResponse<InvalidObject> result = await api.QueryAsync<InvalidObject>( "invalid/service" );
 
             AssertErrorCode( result, TmdbStatusCode.InvalidApiKey );
         }

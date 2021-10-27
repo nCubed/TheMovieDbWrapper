@@ -12,7 +12,7 @@ namespace DM.MovieApi.MovieDb.People
         private readonly IApiGenreRequest _genreApi;
 
         [ImportingConstructor]
-        public ApiPeopleRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
+        public ApiPeopleRequest( IApiSettings settings, IApiGenreRequest genreApi )
             : base( settings )
         {
             _genreApi = genreApi;

@@ -99,7 +99,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
         {
             const string query = "full";
             const int minimumPageCount = 4;
-            const int minimumTotalResultsCount = 61;
+            const int minimumTotalResultsCount = 80;
 
             await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
                 ( search, pageNumber ) => _api.SearchByNameAsync( search, pageNumber ), x => x.Id );

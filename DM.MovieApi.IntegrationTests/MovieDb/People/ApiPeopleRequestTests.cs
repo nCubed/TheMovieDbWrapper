@@ -56,7 +56,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Assert.AreEqual( expectedHomepage, person.Homepage );
             Assert.AreEqual( expectedImdbId, person.ImdbId );
             Assert.AreEqual( expectedPlaceOfBirth, person.PlaceOfBirth );
-            Assert.IsTrue( person.Popularity > 10 );
+            Assert.IsTrue( person.Popularity > 8, $"Actual: {person.Popularity}" );
             Assert.IsNotNull( person.ProfilePath );
         }
 

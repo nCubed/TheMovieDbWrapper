@@ -12,7 +12,7 @@ namespace DM.MovieApi.MovieDb.TV
         private readonly IApiGenreRequest _genreApi;
 
         [ImportingConstructor]
-        public ApiTVShowRequest( IMovieDbSettings settings, IApiGenreRequest genreApi )
+        public ApiTVShowRequest( IApiSettings settings, IApiGenreRequest genreApi )
             : base( settings )
         {
             _genreApi = genreApi;

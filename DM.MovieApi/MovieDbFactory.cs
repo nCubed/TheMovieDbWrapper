@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,40 +17,41 @@ namespace DM.MovieApi
     /// </summary>
     public static class MovieDbFactory
     {
+        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/ApiUrl/*'/>
+        public const string TheMovieDbApiUrl = "http://api.themoviedb.org/3/";
+
         /// <summary>
         /// Determines if the underlying factory has been created.
         /// </summary>
         public static bool IsFactoryComposed => Settings != null;
 
-        internal static IMovieDbSettings Settings { get; private set; }
+        internal static IApiSettings Settings { get; private set; }
 
         /// <summary>
-        /// Registers themoviedb.org settings for use with the MEF container.
+        /// Registers themoviedb.org settings for use with the internal DI container.
         /// </summary>
-        /// <param name="settings">The implementation of <see cref="IMovieDbSettings"/> containing
-        /// the themoviedb.org credentials to use when connecting to the service.</param>
-        public static void RegisterSettings( IMovieDbSettings settings )
+        /// <param name="bearerToken">
+        /// <include file='ApiDocs.xml' path='Doc/ApiSettings/BearerToken/summary/*'/>
+        /// </param>
+        public static void RegisterSettings( string bearerToken )
         {
             ResetFactory();
 
-            Settings = settings;
-        }
+            if( bearerToken is null || bearerToken.Length <= 200 )
+            {
+                // v3 access key was approx 33 chars; v4 bearer is approx 212 chars.
+                throw new ArgumentException(
+                    $"Must provide a valid TheMovieDb.org Bearer token. Invalid: {bearerToken}. " +
+                    "A valid token can be found in your account page, under the API section. " +
+                    "You will see a new key listed under the header \"API Read Access Token\".", bearerToken );
+            }
 
-        /// <summary>
-        /// Registers themoviedb.org settings for use with the MEF container.
-        /// </summary>
-        /// <param name="apiKey">Private key required to query themoviedb.org API.</param>
-        /// <param name="apiUrl">URL used for api calls to themoviedb.org.</param>
-        public static void RegisterSettings( string apiKey, string apiUrl = "http://api.themoviedb.org/3/" )
-        {
-            var settings = new MovieDbSettings( apiKey, apiUrl );
-
-            RegisterSettings( settings );
+            Settings = new MovieDbSettings( TheMovieDbApiUrl, bearerToken );
         }
 
         /// <summary>
         /// <para>Creates the specific API requested.</para>
-        /// <para>Note: one of the RegisterSettings must be called before the Factory can Create anything.</para>
+        /// <para><inheritdoc cref="MovieDbFactory" path="/summary"/></para>
         /// </summary>
         public static Lazy<T> Create<T>() where T : IApiRequest
         {
@@ -65,7 +66,7 @@ namespace DM.MovieApi
         /// <para>Creates a global instance exposing all API interfaces against themoviedb.org
         /// that are currently available in this release. Each API is exposed via a Lazy property
         /// ensuring no objects are created until they are needed.</para>
-        /// <para>Note: RegisterSettings must be called before the Factory can Create anything.</para>
+        /// <para><inheritdoc cref="MovieDbFactory" path="/summary"/></para>
         /// </summary>
         public static IMovieDbApi GetAllApiRequests()
         {
@@ -94,15 +95,15 @@ namespace DM.MovieApi
             }
         }
 
-        private class MovieDbSettings : IMovieDbSettings
+        private class MovieDbSettings : IApiSettings
         {
-            public string ApiKey { get; }
             public string ApiUrl { get; }
+            public string BearerToken { get; }
 
-            public MovieDbSettings( string apiKey, string apiUrl )
+            public MovieDbSettings( string apiUrl, string bearerToken )
             {
-                ApiKey = apiKey;
                 ApiUrl = apiUrl;
+                BearerToken = bearerToken;
             }
         }
 
@@ -115,7 +116,7 @@ namespace DM.MovieApi
             {
                 SupportedDependencyTypeMap = new Dictionary<Type, Func<object>>
                 {
-                    {typeof(IMovieDbSettings), () => Settings},
+                    {typeof(IApiSettings), () => Settings},
                     {typeof(IApiGenreRequest), () => new ApiGenreRequest( Settings )}
                 };
 
@@ -163,16 +164,17 @@ namespace DM.MovieApi
                     return ctors[0];
                 }
 
-                var markedCtors = ctors
+                var importingCtors = ctors
                     .Where( x => x.IsDefined( typeof( ImportingConstructorAttribute ) ) )
                     .ToArray();
 
-                if( markedCtors.Length != 1 )
+                if( importingCtors.Length != 1 )
                 {
-                    throw new InvalidOperationException( "Multiple public constructors found.  Please mark the one to use with the FactoryConstructorAttribute." );
+                    throw new InvalidOperationException( "Multiple public constructors found. " +
+                                                         $"One must be decorated with the {nameof( ImportingConstructorAttribute )}." );
                 }
 
-                return markedCtors[0];
+                return importingCtors[0];
             }
 
             private ConstructorInfo[] GetAvailableConstructors( TypeInfo typeInfo )
@@ -183,9 +185,15 @@ namespace DM.MovieApi
                     .Where( typeInfo.IsAssignableFrom )
                     .ToArray();
 
+                if( implementingTypes.Length == 0 )
+                {
+                    throw new NotSupportedException( $"{typeInfo.Name} must have a concrete implementation." );
+                }
+
                 if( implementingTypes.Length != 1 )
                 {
-                    throw new NotSupportedException( "Multiple implementing requests per request interface is not currently supported." );
+                    throw new NotSupportedException( $"Requested type: {typeInfo.Name}. " +
+                                                     "Multiple implementations per request interface is not supported." );
                 }
 
                 return implementingTypes[0].DeclaredConstructors.ToArray();

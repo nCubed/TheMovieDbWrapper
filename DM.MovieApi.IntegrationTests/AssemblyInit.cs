@@ -10,16 +10,17 @@ namespace DM.MovieApi.IntegrationTests
     [TestClass]
     internal class AssemblyInit
     {
-        public static readonly IMovieDbSettings Settings = new IntegrationMovieDbSettings();
+        public static readonly IApiSettings Settings = new IntegrationMovieDbSettings();
 
         [AssemblyInitialize]
         public static async Task Init( TestContext context )
         {
             NCrunchGuard();
 
-            await ValidateApiKey();
-
+            // register first; the factory will throw an ex if the BearerToken is invalid (fuzzy check).
             RegisterFactorySettings();
+
+            await ValidateSettings();
         }
 
         [TestMethod]
@@ -28,12 +29,12 @@ namespace DM.MovieApi.IntegrationTests
         }
 
         /// <summary>
-        /// Registers the <see cref="IMovieDbSettings"/> for the <see cref="MovieDbFactory"/>
+        /// Registers the <see cref="IApiSettings"/> for the <see cref="MovieDbFactory"/>
         /// with the credentials from api.creds.json.
         /// </summary>
         public static void RegisterFactorySettings()
         {
-            MovieDbFactory.RegisterSettings( Settings );
+            MovieDbFactory.RegisterSettings( Settings.BearerToken );
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace DM.MovieApi.IntegrationTests
             }
         }
 
-        private static async Task ValidateApiKey()
+        private static async Task ValidateSettings()
         {
             var request = new IntegrationApiRequest( Settings );
             var response = await request.QueryAsync<ApiConfiguration>( "configuration" );
