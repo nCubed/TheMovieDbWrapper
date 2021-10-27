@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>TheMovieDbWrapper</PackageId>
-    <Version>0.9.0</Version>
+    <Version>1.0.0</Version>
     <Authors>Kindler Chase</Authors>
     <Company>nCubed</Company>
     <Product>TheMovieDb.org Wrapper</Product>
@@ -17,8 +17,8 @@
     <Copyright>Copyright 2016</Copyright>
     <PackageProjectUrl>https://github.com/nCubed/TheMovieDbWrapper</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>Movies Movie themoviedb themoviedb.org TMDB Film TV Television Actor Acress Director</PackageTags>
-    <PackageReleaseNotes>v0.9.0 is a full upgrade from Visual Studio PCL class library to the now recommeneded .netstandard class library.</PackageReleaseNotes>
+    <PackageTags>Movies Movie themoviedb themoviedb.org TMDB Film TV Television Actor Acress Director IMDB</PackageTags>
+    <PackageReleaseNotes>v1.0.0 is a full upgrade to net5.0. This release now uses TheMovieDb.org's Bearer Token for authentication; this change introduces a minor breaking change from the prior releases. See the github ReadMe for full details as you will need to update your implmentation to provide the new Bearer Token with the RegisterSettings method.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/nCubed/TheMovieDbWrapper</RepositoryUrl>
   </PropertyGroup>
 
