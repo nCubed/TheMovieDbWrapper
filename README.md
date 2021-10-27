@@ -1,88 +1,86 @@
+<style>
+table td:first-child > code {
+  white-space: nowrap;
+}
+</style>
+
+
 # TheMovieDb.org Wrapper
-TheMovieDbWrapper is a C# wrapper for [themoviedb.org](https://www.themoviedb.org) API providing cross-platform support for Xamarin, iOS, Android, and all flavors of .NET.
+TheMovieDbWrapper is a C# wrapper for [TheMovieDb.org](https://www.themoviedb.org) API providing cross-platform support for Xamarin, iOS, Android, and all flavors of .NET.
 
 A nuget package is available directly through Visual Studio: https://www.nuget.org/packages/TheMovieDbWrapper/
 
-##### Common Requests
-The current release supports common requests for movie and other miscellaneous information, such as:
-* themoviedb.org configuration information
-* Movie information
-* Movie rating information
-* TV show information
-* Movie and TV genres
-* Movie/TV industry specific professions
-* Production company information
-* People information
-
-## Usage - Setup
-In order to use any feature of the wrapper, a concrete implementation of the [IMovieDbSettings](DM.MovieApi/IMovieDbSettings.cs) interface must be created. The interface only contains 2 properties:
-
-1. ApiKey: a private key required to query [themoviedb.org API](https://www.themoviedb.org/documentation/api).
-2. ApiUrl: the URL used for api calls to themoviedb.org. This URL should be static, but is included in case an alternative URL is ever provided. The current URL is `https://api.themoviedb.org/3/`
-
-Once the `IMovieDbSettings` interface has been implemented, it can be used to register your settings with the `MovieDbFactory`.
-
-_Note_: There is an overloaded method on the `MovieDbFactory` which allows you to register your settings as parameters to the method.
-
-### Usage - MovieDbFactory
-The `MovieDbFactory` provides access to all exposed operations for retrieving information from themoviedb.org. The factory exposes the following methods (other methods may be exposed, but these are the important ones):
-* `void MovieDbFactory.RegisterSettings( IMovieDbSettings settings )`: Registers your themoviedb.org specific API key with the factory.
-* `void MovieDbFactory.RegisterSettings( string apiKey, string apiUrl = "https://api.themoviedb.org/3/" )`: Registers your themoviedb.org specific API key with the factory.
-* `Lazy<T> MovieDbFactory.Create<T>() where T : IApiRequest`: Creates the specific API requested. See below (Usages - Interfaces) for all exposed interfaces. One of the `RegisterSettings` methods must be called prior to creating anything from the factory.
-
-### Usage - Interfaces
-The following interfaces can be used to retrieve information:
-* [`IApiConfigurationRequest`](DM.MovieApi/MovieDb/Configuration/IApiConfigurationRequest.cs): Provides access for retrieving themoviedb.org configuration information.
-* [`IApiMovieRequest`](DM.MovieApi/MovieDb/Movies/IApiMovieRequest.cs): Provides access for retrieving information about Movies.
-* [`IApiMovieRatingRequest`](DM.MovieApi/MovieDb/Certifications/IApiMovieRatingRequest.cs): Provides access for retrieving movie rating information.
-* [`IApiTVShowRequest`](DM.MovieApi/MovieDb/TV/IApiTVShowRequest.cs): Provides access for retrieving information about TV shows.
-* [`IApiGenreRequest`](DM.MovieApi/MovieDb/Genres/IApiGenreRequest.cs): Provides access for retrieving Movie and TV genres.
-* [`IApiCompanyRequest`](DM.MovieApi/MovieDb/Companies/IApiCompanyRequest.cs): Provides access for retrieving production company information.
-* [`IApiProfessionRequest`](DM.MovieApi/MovieDb/IndustryProfessions/IApiProfessionRequest.cs): Provides access for retrieving information about Movie/TV industry specific professions.
-* [`IApiPeopleRequest`](DM.MovieApi/MovieDb/People/IApiPeopleRequest.cs): Provides access for retrieving information about People.
-
-### Usage - Examples
-Register your settings first:
-```csharp
-// registration with an implementation of IMovieDbSettings
-//, i.e., public class YourMovieDbSettings : IMoveDbSettings { // implementation }
-MovieDbFactory.RegisterSettings( new YourMovieDbSettings() )
-
-// alternative method of registration
-MovieDbFactory.RegisterSettings( "your-apiKey", "https://api.themoviedb.org/3/" )
+## v1.0 Breaking Changes :vomiting_face:
+```
+The v1.0 release on 2021-10-27 introduces a minor breaking change when registering your TheMovieDb.org credentials with our MovieDbFactory.
 ```
 
-Retrieve an API request interface (see Usage - Interfaces above for available interfaces):
+* `IMovieDbSettings` has been completely eliminated and simplifies the process of registering your credentials.
+  * You no longer need to create a concrete implementation of the interface when registering your credentials.
+  * You no longer need to provide TheMovieDb.org api url.
+* Your TheMovieDb.org credentials now use their updated authentication using a Bearer Token.
+  * Your Bearer token is found in your [TheMovieDb.org account page](https://www.themoviedb.org/settings/api), under the API section: _"API Read Access Token (v4 auth)"_. 
+  * Note: This token IS NOT the same as the old _"API Key (v3 auth)"_.
+
+## Common API Requests
+The current release supports common requests for movie, tv, and other information, such as:
+* TheMovieDb.org configuration
+* Movies :movie_camera:	
+* Movie Ratings
+* TV Shows :tv:
+* Movie and TV Genres
+* Movie/TV Industry Specific Professions
+* Production Companies
+* People such as Actors, Actresses, Directors, etc...
+
+## Basic Usage
+The `MovieDbFactory` class is the single entry point for retrieving information from TheMovieDb.org API. Before making any requests, you simply need to register your TheMovieDb.org Bearer Token with our `MovieDbFactory` class:
+
+```csharp
+// your bearer token can be found on TheMovieDb.org's website under your account settings
+// https://www.themoviedb.org/settings/api
+string bearerToken = "your-bearer-token-from-TheMovieDb.org";
+
+// RegisterSettings only needs to be called one time when your application starts-up.
+MovieDbFactory.RegisterSettings( bearerToken );
+```
+
+Once your Bearer Token has been registered, you will then use the `.Create<T>()` method to get a specific API request type. The full signature of the method is:
+
+```csharp
+Lazy<T> MovieDbFactory.Create<T>() where T : IApiRequest
+```
+
+The `IApiRequest` is simply an Interface providing a constraint for all our request interfaces/classes used in the factory. For example, to retrieve the API about movies:
+
 ```csharp
 // as the factory returns a Lazy<T> instance, simply grab the Value out of the Lazy<T>
 // and assign to a local variable.
-var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value
+var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
 ```
+## API Interfaces
+The following interfaces are used with the `MovieDbFactory.Create<T>()` method:
 
-Use the API request interface to retrieve information:
+`IApiRequest` | Description
+-|-
+[`IApiConfigurationRequest`](DM.MovieApi/MovieDb/Configuration/IApiConfigurationRequest.cs) | Provides access for retrieving TheMovieDb.org configuration information.
+[`IApiMovieRequest`](DM.MovieApi/MovieDb/Movies/IApiMovieRequest.cs) | Provides access for retrieving information about Movies.
+[`IApiMovieRatingRequest`](DM.MovieApi/MovieDb/Certifications/IApiMovieRatingRequest.cs) | Provides access for retrieving movie rating information.
+[`IApiTVShowRequest`](DM.MovieApi/MovieDb/TV/IApiTVShowRequest.cs) | Provides access for retrieving information about TV shows.
+[`IApiGenreRequest`](DM.MovieApi/MovieDb/Genres/IApiGenreRequest.cs) | Provides access for retrieving Movie and TV genres.
+[`IApiCompanyRequest`](DM.MovieApi/MovieDb/Companies/IApiCompanyRequest.cs) | Provides access for retrieving production company information.
+[`IApiProfessionRequest`](DM.MovieApi/MovieDb/IndustryProfessions/IApiProfessionRequest.cs) | Provides access for retrieving information about Movie/TV industry specific professions.
+[`IApiPeopleRequest`](DM.MovieApi/MovieDb/People/IApiPeopleRequest.cs) | Provides access for retrieving information about People.
+
+## More Examples
+
+### Search by Movie Title
+
 ```csharp
-ApiSearchResponse<MovieInfo> response = await _api.SearchByTitleAsync( "Star Trek" );
-```
+string bearerToken = "your-bearer-token-from-TheMovieDb.org";
 
-The [`ApiSearchResponse<T>`](DM.MovieApi/ApiResponse/ApiSearchResponse.cs) provides rich information about the results of the search:
-* `IReadOnlyList<T> Results`: The list of results from the search.
-* `int PageNumber`: The current page number of the search result.
-* `int TotalPages`: The total number of pages found from the search result.
-* `int TotalResults`: The total number of results from the search.
-* `ToString()`: returns "Page x of y (z total results)".
-* `ApiError Error`: Contains specific error information if an error was encountered during the API call to themoviedb.org.
-* `ApiRateLimit RateLimit`: Contains the current rate limits from your most recent API call to themoviedb.org.
-
-Other methods querying on specific Id's, such as `IApiMovieRequest.FindByIdAsync( movieId )` will return an [`ApiQueryResponse<T>`](DM.MovieApi/ApiResponse/ApiQueryResponse.cs) with a single result as well as some common information seen in the `ApiSearchResponse`:
-* `T Item`: The item returned from the API call, where T is the specific query such as `MovieInfo`, `Movie`, `MovieCredit`, etc..
-* `ToString()`: returns the ToString method of the Item.
-* `ApiError Error`: Contains specific error information if an error was encountered during the API call to themoviedb.org.
-* `ApiRateLimit RateLimit`: Contains the current rate limits from your most recent API call to themoviedb.org.
-
-#### Usage - Examples: Putting it all together
-```csharp
 // RegisterSettings only needs to be called one time when your application starts-up.
-MovieDbFactory.RegisterSettings( new YourMovieDbSettings() )
+MovieDbFactory.RegisterSettings( bearerToken );
 
 var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
 
@@ -90,14 +88,59 @@ ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Star
 
 foreach( MovieInfo info in response.Results )
 {
-    Console.WriteLine( "{0} ({1}): {2}" info.Title, info.ReleaseDate, info.Overview );
+    Console.WriteLine( $"{info.Title} ({info.ReleaseDate}): {info.Overview}" );
 }
 ```
 
-See the [MovieInfo](DM.MovieApi/MovieDb/Movies/MovieInfo.cs) class for all available information from a movie search response.
+The above example returns an [`ApiSearchResponse<T>`](DM.MovieApi/ApiResponse/ApiSearchResponse.cs) which provides rich information about the results of your search:
 
-#### Usage - Examples: Paging a search result
+Member | Description
+-|-
+`IReadOnlyList<T> Results` | The list of results from the search.
+`int PageNumber` | The current page number of the search result.
+`int TotalPages` | The total number of pages found from the search result.
+`int TotalResults` | The total number of results from the search.
+`ToString()` | returns "Page x of y (z total results)".
+`ApiError Error` | Contains specific error information if an error was encountered during the API call to TheMovieDb.org.
+`ApiRateLimit RateLimit` | Contains the current rate limits from your most recent API call to TheMovieDb.org. Note: TheMovieDb.org has removed all rate limits as of December of 2019.
+
+### Find Movie By Id
+
 ```csharp
+string bearerToken = "your-bearer-token-from-TheMovieDb.org";
+
+// RegisterSettings only needs to be called one time when your application starts-up.
+MovieDbFactory.RegisterSettings( bearerToken );
+
+var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
+
+ApiQueryResponse<Movie> response = await movieApi.FindByIdAsync( 140607 );
+
+Movie movie = response.Item;
+
+Console.WriteLine( movie.Id );
+Console.WriteLine( movie.Title );
+Console.WriteLine( movie.Tagline );
+Console.WriteLine( movie.ReleaseDate );
+Console.WriteLine( movie.Budget );
+```
+
+The above query returns an [`ApiQueryResponse<T>`](DM.MovieApi/ApiResponse/ApiQueryResponse.cs) which returns a single result as well as some common information seen in the `ApiSearchResponse` in the prior example:
+
+Member | Description
+-|-
+`T Item` | The item returned from the API call, where T is the specific query such as `MovieInfo`, `Movie`, `MovieCredit`, etc..
+`ToString()` | Typically returns a well formatted string of `T`.
+`ApiError Error` | If an error was encountered, this will provide specific error information from the API call to TheMovieDb.org.
+`ApiRateLimit RateLimit` | Contains the current rate limits from your most recent API call to TheMovieDb.org. Note: TheMovieDb.org has removed all rate limits as of December of 2019.
+
+## Paging a search result
+```csharp
+string bearerToken = "your-bearer-token-from-TheMovieDb.org";
+
+// RegisterSettings only needs to be called one time when your application starts-up.
+MovieDbFactory.RegisterSettings( bearerToken );
+
 var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
 
 int pageNumber = 1;
@@ -107,17 +150,18 @@ do
     ApiSearchResponse<MovieInfo> response = await movieApi.SearchByTitleAsync( "Harry", pageNumber );
 
     // alternatively, just call response.ToString() which will provide the same paged information format as below:
-    Console.WriteLine( "Page {0} of {1} ({2} total results)", response.PageNumber, response.TotalPages, response.TotalResults );
+    Console.WriteLine( $"Page {response.PageNumber} of {response.TotalPages} ({response.TotalResults} total results)" );
 
     foreach( MovieInfo info in response.Results )
     {
-        Console.WriteLine( "{0} ({1}): {2}", info.Title, info.ReleaseDate, info.Overview );
+        Console.WriteLine( $"{info.Title} ({info.ReleaseDate}): {info.Overview}" );
     }
 
     totalPages = response.TotalPages;
 } while( pageNumber++ < totalPages );
 ```
 
-### Do you have a comprehensive list of examples?
+## Do you have a comprehensive list of examples?
 * The API we've exposed should be fairly straight forward. All interfaces, classes, methods, properties, etc... have full intellisense support. If you need more detailed examples, just ask!
 * You may also browse the suite of [integration tests](DM.MovieApi.IntegrationTests/) covering all usages of the API.
+
