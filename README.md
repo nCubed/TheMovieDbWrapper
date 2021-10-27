@@ -1,10 +1,3 @@
-<style>
-table td:first-child > code {
-  white-space: nowrap;
-}
-</style>
-
-
 # TheMovieDb.org Wrapper
 TheMovieDbWrapper is a C# wrapper for [TheMovieDb.org](https://www.themoviedb.org) API providing cross-platform support for Xamarin, iOS, Android, and all flavors of .NET.
 
@@ -12,7 +5,8 @@ A nuget package is available directly through Visual Studio: https://www.nuget.o
 
 ## v1.0 Breaking Changes :vomiting_face:
 ```
-The v1.0 release on 2021-10-27 introduces a minor breaking change when registering your TheMovieDb.org credentials with our MovieDbFactory.
+The v1.0 release on 2021-10-27 introduces a minor breaking change when 
+registering your TheMovieDb.org credentials with our MovieDbFactory.
 ```
 
 * `IMovieDbSettings` has been completely eliminated and simplifies the process of registering your credentials.
@@ -103,6 +97,7 @@ Member | Description
 `ToString()` | returns "Page x of y (z total results)".
 `ApiError Error` | Contains specific error information if an error was encountered during the API call to TheMovieDb.org.
 `ApiRateLimit RateLimit` | Contains the current rate limits from your most recent API call to TheMovieDb.org. Note: TheMovieDb.org has removed all rate limits as of December of 2019.
+nevermind_this_sad_little_nobr | nothing to see here
 
 ### Find Movie By Id
 
@@ -133,6 +128,7 @@ Member | Description
 `ToString()` | Typically returns a well formatted string of `T`.
 `ApiError Error` | If an error was encountered, this will provide specific error information from the API call to TheMovieDb.org.
 `ApiRateLimit RateLimit` | Contains the current rate limits from your most recent API call to TheMovieDb.org. Note: TheMovieDb.org has removed all rate limits as of December of 2019.
+nevermind_this_sad_little_nobr | nothing to see here
 
 ## Paging a search result
 ```csharp
