@@ -37,9 +37,7 @@ namespace DM.MovieApi
         {
             ResetFactory();
 
-            // TODO: create unit tests validating the bearerToken
-
-            if( bearerToken is null || bearerToken.Length < 200 )
+            if( bearerToken is null || bearerToken.Length <= 200 )
             {
                 // v3 access key was approx 33 chars; v4 bearer is approx 212 chars.
                 throw new ArgumentException(

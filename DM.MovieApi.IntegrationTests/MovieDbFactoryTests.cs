@@ -39,7 +39,7 @@ namespace DM.MovieApi.IntegrationTests
         }
 
         [TestMethod]
-        public void Create_Throws_InvalidOperationException_When_SettingsNotRegistered()
+        public void Create_ThrowsException_When_SettingsNotRegistered()
         {
             try
             {
@@ -70,7 +70,7 @@ namespace DM.MovieApi.IntegrationTests
         }
 
         [TestMethod]
-        public void Create_CanCreate_Lazy_IApiMovieRequest()
+        public void Create_Returns_Lazy_IApiMovieRequest()
         {
             Lazy<IApiMovieRequest> lazy = MovieDbFactory.Create<IApiMovieRequest>();
 
@@ -121,13 +121,16 @@ namespace DM.MovieApi.IntegrationTests
         }
 
         [TestMethod]
-        public void ResetFactory_SetsIsFactoryComposed()
+        public void ResetFactory_Sets_IsFactoryComposed()
         {
             MovieDbFactory.ResetFactory();
             Assert.IsFalse( MovieDbFactory.IsFactoryComposed );
 
             AssemblyInit.RegisterFactorySettings();
             Assert.IsTrue( MovieDbFactory.IsFactoryComposed );
+
+            MovieDbFactory.ResetFactory();
+            Assert.IsFalse( MovieDbFactory.IsFactoryComposed );
         }
 
         [TestMethod]
@@ -152,7 +155,7 @@ namespace DM.MovieApi.IntegrationTests
             try
             {
                 // ReSharper disable once UnusedVariable
-                var api = MovieDbFactory.Create<IMockApiRequestWithImplementation>().Value;
+                var api = MovieDbFactory.Create<IMockApiRequestMultipleCtors>().Value;
             }
             catch( InvalidOperationException ex )
             {
@@ -189,23 +192,53 @@ namespace DM.MovieApi.IntegrationTests
                          "when no concrete implementation is found." );
         }
 
-
-        [SuppressMessage( "ReSharper", "UnusedType.Local" )]
-        [SuppressMessage( "ReSharper", "NotAccessedField.Local" )]
-        private class MockApiRequestMultipleImportingCtors : IMockApiRequestWithImplementation
+        [TestMethod]
+        public void BearerToken_MustBe_GreaterThan_200chars()
         {
-            private readonly string _val;
+            const int minLength = 201;
 
-            public MockApiRequestMultipleImportingCtors()
-            { }
+            AssertRegisterSettingsThrowsEx( null );
+            AssertRegisterSettingsThrowsEx( "" );
+            AssertRegisterSettingsThrowsEx( " " );
+            AssertRegisterSettingsThrowsEx( new string( '-', minLength - 1 ) );
 
-            public MockApiRequestMultipleImportingCtors( string val )
-            {
-                _val = val;
-            }
+            MovieDbFactory.ResetFactory();
+            MovieDbFactory.RegisterSettings( new string( '*', minLength ) );
         }
 
-        private interface IMockApiRequestWithImplementation : IApiRequest
+        private void AssertRegisterSettingsThrowsEx( string bearerToken )
+        {
+            MovieDbFactory.ResetFactory();
+
+            try
+            {
+                MovieDbFactory.RegisterSettings( bearerToken );
+                Assert.Fail( "Bearer Token < 200 chars was expected to throw ex." );
+            }
+            catch( ArgumentException ex )
+            {
+                string msg = ex.Message;
+                Assert.IsTrue( msg.StartsWith( "Must provide a valid TheMovieDb.org Bearer token." ) );
+                Assert.IsTrue( msg.Contains( "A valid token can be found in your account page, under the API section." ) );
+                Assert.IsTrue( msg.Contains( "API Read Access Token" ) );
+            }
+
+            Assert.IsFalse( MovieDbFactory.IsFactoryComposed );
+        }
+
+
+        [SuppressMessage( "ReSharper", "UnusedType.Local" )]
+        private class MockApiRequestMultipleCtors : IMockApiRequestMultipleCtors
+        {
+            public MockApiRequestMultipleCtors()
+            { }
+
+            [SuppressMessage( "ReSharper", "UnusedParameter.Local" )]
+            public MockApiRequestMultipleCtors( string val )
+            { }
+        }
+
+        private interface IMockApiRequestMultipleCtors : IApiRequest
         { }
 
         private interface IMockApiRequestNotImplemented : IApiRequest
