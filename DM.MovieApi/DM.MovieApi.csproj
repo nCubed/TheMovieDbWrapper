@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>TheMovieDbWrapper</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Kindler Chase</Authors>
     <Company>nCubed</Company>
     <Product>TheMovieDb.org Wrapper</Product>
@@ -18,9 +18,16 @@
     <PackageProjectUrl>https://github.com/nCubed/TheMovieDbWrapper</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Movies Movie themoviedb themoviedb.org TMDB Film TV Television Actor Acress Director IMDB</PackageTags>
-    <PackageReleaseNotes>v1.0.0 is a full upgrade to net5.0. This release now uses TheMovieDb.org's Bearer Token for authentication; this change introduces a minor breaking change from the prior releases. See the github ReadMe for full details as you will need to update your implmentation to provide the new Bearer Token with the RegisterSettings method.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.0.x is a full upgrade to net5.0. This release now uses TheMovieDb.org's Bearer Token for authentication; this change introduces a minor breaking change from releases &lt; 1.0. See the github ReadMe for full details as you will need to update your implementation to provide the new Bearer Token with the RegisterSettings method.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/nCubed/TheMovieDbWrapper</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="MovieDbApi.cs" />
