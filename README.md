@@ -76,7 +76,7 @@ var movieApi = MovieDbFactory.Create<IApiMovieRequest>().Value;
 The following interfaces are used with the `MovieDbFactory.Create<T>()` method:
 
 IApiRequest | Description
--- | --
+:-- | :--
 [`IApiConfigurationRequest`](DM.MovieApi/MovieDb/Configuration/IApiConfigurationRequest.cs) | Api for retrieving TheMovieDb.org configuration information.
 [`IApiMovieRequest`](DM.MovieApi/MovieDb/Movies/IApiMovieRequest.cs) | Api for retrieving Movies.
 [`IApiMovieRatingRequest`](DM.MovieApi/MovieDb/Certifications/IApiMovieRatingRequest.cs) | Api for retrieving movie ratings.
@@ -108,7 +108,7 @@ foreach( MovieInfo info in response.Results )
 The above example returns an [`ApiSearchResponse<T>`](DM.MovieApi/ApiResponse/ApiSearchResponse.cs) which provides rich information about the results of your search, including the following:
 
 Member | Type | Description
--- | -- | --
+:-- | :-- | :--
 Results | `IReadOnlyList<T>` | The list of results from the search.
 PageNumber | `int`| The current page number of the search result.
 TotalPages | `int` | The total number of pages found from the search result.
@@ -141,7 +141,7 @@ Console.WriteLine( movie.Budget );
 The above query returns an [`ApiQueryResponse<T>`](DM.MovieApi/ApiResponse/ApiQueryResponse.cs) which returns a single result as well as some common information previously seen in the `ApiSearchResponse`:
 
 Member | Type | Description
--- | -- | --
+:-- | :-- | :--
 Item | `T` | The item returned from the API call, where `T` is the specific type returned from the query, such as `MovieInfo`, `Movie`, `MovieCredit`, etc..
 ToString() | `string` | Typically returns a well formatted string representation of `T`.
 Error | `ApiError` | If an error was encountered, the `Error` property will provide specific error information about the API call to TheMovieDb.org.
