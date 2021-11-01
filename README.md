@@ -2,7 +2,7 @@
 TheMovieDbWrapper is a C# wrapper for [TheMovieDb.org](https://www.themoviedb.org) API providing cross-platform support for Xamarin, iOS, Android, and all flavors of .NET.
 
 # Installation
-![Nuget Stats for TheMovieDbWrapper](https://buildstats.info/nuget/TheMovieDbWrapper?vWidth=75&dWidth=100)
+[![Nuget Stats for TheMovieDbWrapper](https://buildstats.info/nuget/TheMovieDbWrapper?vWidth=75&dWidth=100)](https://www.nuget.org/packages/TheMovieDbWrapper/)
 * The recommened method of installation is to use the [Nuget package manager for TheMovieDbWrapper](https://www.nuget.org/packages/TheMovieDbWrapper/).
 * Alternatively, download the [latest release](https://github.com/nCubed/TheMovieDbWrapper/releases) from our Github repo.
 
