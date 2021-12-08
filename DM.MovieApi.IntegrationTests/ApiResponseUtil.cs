@@ -286,9 +286,9 @@ namespace DM.MovieApi.IntegrationTests
             Assert.IsTrue(episode.Id > 0);
             Assert.IsFalse(episode.AirDate == default(DateTime));
             Assert.IsTrue(episode.EpisodeNumber > 0);
-            Assert.IsTrue(!string.IsNullOrEmpty(episode.Name));
-            Assert.IsTrue(!string.IsNullOrEmpty(episode.Overview));
-            Assert.IsTrue(!string.IsNullOrEmpty(episode.ProductionCode));
+            Assert.IsFalse(string.IsNullOrEmpty(episode.Name));
+            Assert.IsFalse(string.IsNullOrEmpty(episode.Overview));
+            Assert.IsFalse(string.IsNullOrEmpty(episode.ProductionCode));
             Assert.IsTrue(episode.SeasonNumber > 0);
             AssertImagePath(episode.StillPath);
             Assert.IsTrue(episode.VoteAverage > 0);
@@ -308,12 +308,12 @@ namespace DM.MovieApi.IntegrationTests
         private static void AssertTvShowCrewStructure(Crew crew)
         {
             Assert.IsTrue(crew.Id > 0);
-            Assert.IsTrue(!string.IsNullOrEmpty(crew.Job));
-            Assert.IsTrue(!string.IsNullOrEmpty(crew.Department));
-            Assert.IsTrue(!string.IsNullOrEmpty(crew.CreditId));
-            Assert.IsTrue(!string.IsNullOrEmpty(crew.KnownForDepartment));
-            Assert.IsTrue(!string.IsNullOrEmpty(crew.Name));
-            Assert.IsTrue(!string.IsNullOrEmpty(crew.OriginalName));
+            Assert.IsFalse(string.IsNullOrEmpty(crew.Job));
+            Assert.IsFalse(string.IsNullOrEmpty(crew.Department));
+            Assert.IsFalse(string.IsNullOrEmpty(crew.CreditId));
+            Assert.IsFalse(string.IsNullOrEmpty(crew.KnownForDepartment));
+            Assert.IsFalse(string.IsNullOrEmpty(crew.Name));
+            Assert.IsFalse(string.IsNullOrEmpty(crew.OriginalName));
             Assert.IsTrue(crew.Popularity > 0);
 
             if(crew.ProfilePath != null)
@@ -326,11 +326,11 @@ namespace DM.MovieApi.IntegrationTests
         {
             Assert.IsTrue(guestStars.Id > 0);
             Assert.IsTrue(guestStars.Order > 0);
-            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.Character));
-            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.CreditId));
-            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.KnownForDepartment));
-            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.Name));
-            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.OriginalName));
+            Assert.IsFalse(string.IsNullOrEmpty(guestStars.Character));
+            Assert.IsFalse(string.IsNullOrEmpty(guestStars.CreditId));
+            Assert.IsFalse(string.IsNullOrEmpty(guestStars.KnownForDepartment));
+            Assert.IsFalse(string.IsNullOrEmpty(guestStars.Name));
+            Assert.IsFalse(string.IsNullOrEmpty(guestStars.OriginalName));
             Assert.IsTrue(guestStars.Popularity > 0);
 
             if (guestStars.ProfilePath != null)
