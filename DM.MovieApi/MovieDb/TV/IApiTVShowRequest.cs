@@ -43,5 +43,13 @@ namespace DM.MovieApi.MovieDb.TV
         /// <param name="pageNumber">Default is page 1. The page number to retrieve; the <see cref="ApiSearchResponse{T}"/> will contain the current page returned and the total number of pages available.</param>
         /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
         Task<ApiSearchResponse<TVShowInfo>> GetPopularAsync( int pageNumber = 1, string language = "en" );
+
+        /// <summary>
+        /// Get the TV season details by id.
+        /// </summary>
+        /// <param name="tvShowId">The TV show Id which is typically found from a more generic TV show query.</param>
+        /// <param name="tvSeasonNumber">The Season Number is typically found from a more generic TV show query.</param>
+        /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
+        Task<ApiQueryResponse<SeasonInfo>> GetTvShowSeasonInfoAsync(int tvShowId, int tvSeasonNumber, string language = "en");
     }
 }

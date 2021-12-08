@@ -268,5 +268,75 @@ namespace DM.MovieApi.IntegrationTests
                 Assert.IsTrue( genre.Id > 0 );
             }
         }
+
+        public static void AssertTVShowSeasonInformationStructure(SeasonInfo seasonInfo)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            Assert.IsTrue(seasonInfo.Episodes.Any());
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            foreach (var episode in seasonInfo.Episodes)
+            {
+                AssertTVShowSeasonInformationStructure(episode);
+            }
+        }
+
+        private static void AssertTVShowSeasonInformationStructure(Episode episode)
+        {
+            Assert.IsTrue(episode.Id > 0);
+            Assert.IsFalse(episode.AirDate == default(DateTime));
+            Assert.IsTrue(episode.EpisodeNumber > 0);
+            Assert.IsTrue(!string.IsNullOrEmpty(episode.Name));
+            Assert.IsTrue(!string.IsNullOrEmpty(episode.Overview));
+            Assert.IsTrue(!string.IsNullOrEmpty(episode.ProductionCode));
+            Assert.IsTrue(episode.SeasonNumber > 0);
+            AssertImagePath(episode.StillPath);
+            Assert.IsTrue(episode.VoteAverage > 0);
+            Assert.IsTrue(episode.VoteCount > 0);
+
+            foreach (var crew in episode.Crew)
+            {
+                AssertTvShowCrewStructure(crew);
+            }
+
+            foreach (var guestStars in episode.GuestStars)
+            {
+                AssertTvShowGuestStarsStructure(guestStars);
+            }
+        }
+
+        private static void AssertTvShowCrewStructure(Crew crew)
+        {
+            Assert.IsTrue(crew.Id > 0);
+            Assert.IsTrue(!string.IsNullOrEmpty(crew.Job));
+            Assert.IsTrue(!string.IsNullOrEmpty(crew.Department));
+            Assert.IsTrue(!string.IsNullOrEmpty(crew.CreditId));
+            Assert.IsTrue(!string.IsNullOrEmpty(crew.KnownForDepartment));
+            Assert.IsTrue(!string.IsNullOrEmpty(crew.Name));
+            Assert.IsTrue(!string.IsNullOrEmpty(crew.OriginalName));
+            Assert.IsTrue(crew.Popularity > 0);
+
+            if(crew.ProfilePath != null)
+            {
+                AssertImagePath(crew.ProfilePath);
+            }
+        }
+
+        private static void AssertTvShowGuestStarsStructure(GuestStars guestStars)
+        {
+            Assert.IsTrue(guestStars.Id > 0);
+            Assert.IsTrue(guestStars.Order > 0);
+            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.Character));
+            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.CreditId));
+            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.KnownForDepartment));
+            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.Name));
+            Assert.IsTrue(!string.IsNullOrEmpty(guestStars.OriginalName));
+            Assert.IsTrue(guestStars.Popularity > 0);
+
+            if (guestStars.ProfilePath != null)
+            {
+                AssertImagePath(guestStars.ProfilePath);
+            }
+        }
     }
 }
