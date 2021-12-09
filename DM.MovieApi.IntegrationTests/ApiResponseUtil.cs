@@ -275,7 +275,7 @@ namespace DM.MovieApi.IntegrationTests
             Assert.IsTrue(seasonInfo.Episodes.Any());
 
             // ReSharper disable once PossibleMultipleEnumeration
-            foreach (var episode in seasonInfo.Episodes)
+            foreach (Episode episode in seasonInfo.Episodes)
             {
                 AssertTVShowSeasonInformationStructure(episode);
             }
@@ -294,12 +294,12 @@ namespace DM.MovieApi.IntegrationTests
             Assert.IsTrue(episode.VoteAverage > 5);
             Assert.IsTrue(episode.VoteCount > 5);
 
-            foreach (var crew in episode.Crew)
+            foreach (Crew crew in episode.Crew)
             {
                 AssertTvShowCrewStructure(crew);
             }
 
-            foreach (var guestStars in episode.GuestStars)
+            foreach (GuestStars guestStars in episode.GuestStars)
             {
                 AssertTvShowGuestStarsStructure(guestStars);
             }
