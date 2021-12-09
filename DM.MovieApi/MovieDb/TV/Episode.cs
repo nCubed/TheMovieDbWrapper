@@ -49,6 +49,7 @@ namespace DM.MovieApi.MovieDb.TV
             GuestStars = Array.Empty<GuestStars>();
         }
 
+        public override string ToString()
+            => $"({Name} - {AirDate:yyyy-MM-dd})";
     }
-
 }

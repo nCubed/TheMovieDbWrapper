@@ -37,6 +37,8 @@ namespace DM.MovieApi.MovieDb.TV
 
         [DataMember(Name = "profile_path")]
         public string ProfilePath { get; set; }
-    }
 
+        public override string ToString()
+            => $"({Name} - {Job})";
+    }
 }

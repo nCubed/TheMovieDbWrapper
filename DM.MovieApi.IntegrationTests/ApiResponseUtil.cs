@@ -284,15 +284,15 @@ namespace DM.MovieApi.IntegrationTests
         private static void AssertTVShowSeasonInformationStructure(Episode episode)
         {
             Assert.IsTrue(episode.Id > 0);
-            Assert.IsFalse(episode.AirDate == default(DateTime));
+            Assert.IsFalse(episode.AirDate == default);
             Assert.IsTrue(episode.EpisodeNumber > 0);
-            Assert.IsFalse(string.IsNullOrEmpty(episode.Name));
-            Assert.IsFalse(string.IsNullOrEmpty(episode.Overview));
-            Assert.IsFalse(string.IsNullOrEmpty(episode.ProductionCode));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(episode.Name));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(episode.Overview));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(episode.ProductionCode));
             Assert.IsTrue(episode.SeasonNumber > 0);
             AssertImagePath(episode.StillPath);
-            Assert.IsTrue(episode.VoteAverage > 0);
-            Assert.IsTrue(episode.VoteCount > 0);
+            Assert.IsTrue(episode.VoteAverage > 5);
+            Assert.IsTrue(episode.VoteCount > 5);
 
             foreach (var crew in episode.Crew)
             {
@@ -308,12 +308,12 @@ namespace DM.MovieApi.IntegrationTests
         private static void AssertTvShowCrewStructure(Crew crew)
         {
             Assert.IsTrue(crew.Id > 0);
-            Assert.IsFalse(string.IsNullOrEmpty(crew.Job));
-            Assert.IsFalse(string.IsNullOrEmpty(crew.Department));
-            Assert.IsFalse(string.IsNullOrEmpty(crew.CreditId));
-            Assert.IsFalse(string.IsNullOrEmpty(crew.KnownForDepartment));
-            Assert.IsFalse(string.IsNullOrEmpty(crew.Name));
-            Assert.IsFalse(string.IsNullOrEmpty(crew.OriginalName));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(crew.Job));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(crew.Department));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(crew.CreditId));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(crew.KnownForDepartment));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(crew.Name));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(crew.OriginalName));
             Assert.IsTrue(crew.Popularity > 0);
 
             if(crew.ProfilePath != null)
@@ -326,11 +326,11 @@ namespace DM.MovieApi.IntegrationTests
         {
             Assert.IsTrue(guestStars.Id > 0);
             Assert.IsTrue(guestStars.Order > 0);
-            Assert.IsFalse(string.IsNullOrEmpty(guestStars.Character));
-            Assert.IsFalse(string.IsNullOrEmpty(guestStars.CreditId));
-            Assert.IsFalse(string.IsNullOrEmpty(guestStars.KnownForDepartment));
-            Assert.IsFalse(string.IsNullOrEmpty(guestStars.Name));
-            Assert.IsFalse(string.IsNullOrEmpty(guestStars.OriginalName));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(guestStars.Character));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(guestStars.CreditId));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(guestStars.KnownForDepartment));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(guestStars.Name));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(guestStars.OriginalName));
             Assert.IsTrue(guestStars.Popularity > 0);
 
             if (guestStars.ProfilePath != null)

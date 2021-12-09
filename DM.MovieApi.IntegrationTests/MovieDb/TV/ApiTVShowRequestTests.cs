@@ -259,7 +259,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             const int expEpisodeCount = 10;
             const int expSeasonNumber = 5;
 
-            Episode expEpisodeOne = new Episode()
+            var expEpisodeOne = new Episode
             {
                 Id = 1043618,
                 AirDate = new DateTime(2015, 04, 12),
@@ -269,8 +269,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
                 ProductionCode = "501",
                 SeasonNumber = 5,
                 StillPath = "/shIFxmFySt9CtGXMTXWBipsNOIs.jpg",
-                VoteAverage = 7.828F,
-                VoteCount = 102
+                VoteAverage = 7.0F,
+                VoteCount = 100
             };
 
             ApiQueryResponse<SeasonInfo> response = await _api.GetTvShowSeasonInfoAsync(1399, 05, "");
@@ -298,8 +298,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             Assert.AreEqual(expEpisodeOne.ProductionCode, episodeResponse.ProductionCode);
             Assert.AreEqual(expEpisodeOne.SeasonNumber, episodeResponse.SeasonNumber);
             Assert.AreEqual(expEpisodeOne.StillPath, episodeResponse.StillPath);
-            Assert.AreEqual(expEpisodeOne.VoteAverage, episodeResponse.VoteAverage);
-            Assert.AreEqual(expEpisodeOne.VoteCount, episodeResponse.VoteCount);
+            Assert.IsTrue(expEpisodeOne.VoteAverage < episodeResponse.VoteAverage);
+            Assert.IsTrue(expEpisodeOne.VoteCount < episodeResponse.VoteCount);
         }
     }
 }
