@@ -82,7 +82,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
 
             ApiResponseUtil.AssertErrorIsNull( response );
 
-            TVShowInfo gameOfThrones = response.Results.Single();
+            TVShowInfo gameOfThrones = response.Results.Single( x => x.Name == query );
             Genre[] expGenres =
             {
                 GenreFactory.SciFiAndFantasy(),
