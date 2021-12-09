@@ -119,7 +119,7 @@ namespace DM.MovieApi.IntegrationTests.ApiResponse
 
             Assert.IsTrue( response.CommandText.Contains( command ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( "&page=" ), actualCommandText );
-            Assert.IsTrue( response.CommandText.Contains( "?query=Run Lola Run" ), actualCommandText );
+            Assert.IsTrue( response.CommandText.Contains( "?query=Run+Lola+Run" ), actualCommandText );
             Assert.IsTrue( response.CommandText.Contains( AssemblyInit.Settings.ApiUrl ), actualCommandText );
         }
 

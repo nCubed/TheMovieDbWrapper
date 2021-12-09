@@ -151,7 +151,7 @@ namespace DM.MovieApi.ApiRequest
         protected string CreateCommand( string rootCommand, IDictionary<string, string> parameters )
         {
             string tokens = parameters.Any()
-                ? string.Join( "&", parameters.Select( x => x.Key + "=" + x.Value ) )
+                ? string.Join( "&", parameters.Select( x => $"{x.Key}={WebUtility.UrlEncode( x.Value )}" ) )
                 : string.Empty;
 
             if( string.IsNullOrWhiteSpace( tokens ) == false )
