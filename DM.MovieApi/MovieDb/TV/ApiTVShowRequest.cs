@@ -112,7 +112,7 @@ namespace DM.MovieApi.MovieDb.TV
             return response;
         }
 
-        public async Task<ApiQueryResponse<SeasonInfo>> GetTvShowSeasonInfoAsync(int tvShowId, int seasonNumber, string language = "en")
+        public async Task<ApiQueryResponse<SeasonInfo>> GetTvShowSeasonInfoAsync( int tvShowId, int seasonNumber, string language = "en" )
         {
             var param = new Dictionary<string, string>
             {
@@ -122,7 +122,7 @@ namespace DM.MovieApi.MovieDb.TV
 
             string command = $"tv/{tvShowId}/season/{seasonNumber}";
 
-            ApiQueryResponse<SeasonInfo> response = await base.QueryAsync<SeasonInfo>(command, param);
+            ApiQueryResponse<SeasonInfo> response = await base.QueryAsync<SeasonInfo>( command, param );
 
             return response;
         }

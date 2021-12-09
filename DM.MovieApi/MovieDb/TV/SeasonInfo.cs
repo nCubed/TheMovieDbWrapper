@@ -7,25 +7,25 @@ namespace DM.MovieApi.MovieDb.TV
     [DataContract]
     public class SeasonInfo
     {
-        [DataMember(Name = "id")]
+        [DataMember( Name = "id" )]
         public int Id { get; set; }
 
-        [DataMember(Name = "air_date")]
+        [DataMember( Name = "air_date" )]
         public DateTime AirDate { get; set; }
 
-        [DataMember(Name = "overview")]
+        [DataMember( Name = "overview" )]
         public string Overview { get; set; }
 
-        [DataMember(Name = "name")]
+        [DataMember( Name = "name" )]
         public string Name { get; set; }
 
-        [DataMember(Name = "poster_path")]
+        [DataMember( Name = "poster_path" )]
         public string PosterPath { get; set; }
 
-        [DataMember(Name = "season_number")]
+        [DataMember( Name = "season_number" )]
         public int SeasonNumber { get; set; }
 
-        [DataMember(Name = "episodes")]
+        [DataMember( Name = "episodes" )]
         public IReadOnlyList<Episode> Episodes { get; set; }
 
         public SeasonInfo()
@@ -34,6 +34,6 @@ namespace DM.MovieApi.MovieDb.TV
         }
 
         public override string ToString()
-            => $"({Name} - {AirDate:yyyy-MM-dd})";
+            => $"{Name} - {AirDate:yyyy-MM-dd}";
     }
 }
