@@ -249,5 +249,57 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.TV
             await ApiResponseUtil.AssertCanPageSearchResponse( "none", minimumPageCount, minimumTotalResultsCount,
                 ( _, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
+
+        [TestMethod]
+        public async Task GetTvShow_SeasonInfo_GameOfThrones_ReturnsAllValues()
+        {
+            var expFirstAirDate = new DateTime(2015, 04, 12);
+            const string expName = "Season 5";
+            const string expOverview = "The War of the Five Kings, once thought to be drawing to a close, is instead entering a new and more chaotic phase. Westeros is on the brink of collapse, and many are seizing what they can while the realm implodes, like a corpse making a feast for crows.";
+            const int expEpisodeCount = 10;
+            const int expSeasonNumber = 5;
+
+            var expEpisodeOne = new Episode
+            {
+                Id = 1043618,
+                AirDate = new DateTime(2015, 04, 12),
+                EpisodeNumber = 1,
+                Name = "The Wars to Come",
+                Overview = "Cersei and Jaime adjust to a world without Tywin. Varys reveals a conspiracy to Tyrion. Dany faces a new threat to her rule. Jon is caught between two kings.",
+                ProductionCode = "501",
+                SeasonNumber = 5,
+                StillPath = "/shIFxmFySt9CtGXMTXWBipsNOIs.jpg",
+                VoteAverage = 7.0F,
+                VoteCount = 100
+            };
+
+            ApiQueryResponse<SeasonInfo> response = await _api.GetTvShowSeasonInfoAsync(1399, 05, "");
+
+            ApiResponseUtil.AssertErrorIsNull(response);
+
+            Assert.AreEqual(expFirstAirDate, response.Item.AirDate);
+            Assert.AreEqual(expOverview, response.Item.Overview);
+            Assert.AreEqual(expName, response.Item.Name);
+            Assert.AreEqual(expSeasonNumber, response.Item.SeasonNumber);
+            Assert.IsTrue(response.Item.Id > 0);
+            ApiResponseUtil.AssertImagePath(response.Item.PosterPath);
+
+            ApiResponseUtil.AssertTVShowSeasonInformationStructure(response.Item);
+
+            Assert.AreEqual(expEpisodeCount, response.Item.Episodes.Count);
+
+            Episode episodeResponse = response.Item.Episodes[0];
+
+            Assert.AreEqual(expEpisodeOne.Id, episodeResponse.Id);
+            Assert.AreEqual(expEpisodeOne.AirDate, episodeResponse.AirDate);
+            Assert.AreEqual(expEpisodeOne.EpisodeNumber, episodeResponse.EpisodeNumber);
+            Assert.AreEqual(expEpisodeOne.Name, episodeResponse.Name);
+            Assert.AreEqual(expEpisodeOne.Overview, episodeResponse.Overview);
+            Assert.AreEqual(expEpisodeOne.ProductionCode, episodeResponse.ProductionCode);
+            Assert.AreEqual(expEpisodeOne.SeasonNumber, episodeResponse.SeasonNumber);
+            Assert.AreEqual(expEpisodeOne.StillPath, episodeResponse.StillPath);
+            Assert.IsTrue(expEpisodeOne.VoteAverage < episodeResponse.VoteAverage);
+            Assert.IsTrue(expEpisodeOne.VoteCount < episodeResponse.VoteCount);
+        }
     }
 }
