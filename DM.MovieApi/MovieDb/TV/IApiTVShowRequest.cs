@@ -50,6 +50,6 @@ namespace DM.MovieApi.MovieDb.TV
         /// <param name="tvShowId">The TV show Id which is typically found from a more generic TV show query.</param>
         /// <param name="seasonNumber">The Season Number is typically found from a more generic TV show query.</param>
         /// <param name="language">Default is English. The ISO 639-1 language code to retrieve the result from.</param>
-        Task<ApiQueryResponse<SeasonInfo>> GetTvShowSeasonInfoAsync(int tvShowId, int seasonNumber, string language = "en");
+        Task<ApiQueryResponse<SeasonInfo>> GetTvShowSeasonInfoAsync( int tvShowId, int seasonNumber, string language = "en" );
     }
 }

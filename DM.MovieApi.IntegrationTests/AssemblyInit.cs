@@ -8,9 +8,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DM.MovieApi.IntegrationTests
 {
     [TestClass]
-    internal class AssemblyInit
+    public class AssemblyInit
     {
-        public static readonly IApiSettings Settings = new IntegrationMovieDbSettings();
+        internal static readonly IApiSettings Settings = new IntegrationMovieDbSettings();
 
         [AssemblyInitialize]
         public static async Task Init( TestContext context )

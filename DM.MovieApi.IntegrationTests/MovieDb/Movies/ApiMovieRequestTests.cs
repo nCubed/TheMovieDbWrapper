@@ -180,11 +180,12 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             // Production Companies
             var companies = new[]
             {
-                new ProductionCompanyInfo(1, "Lucasfilm Ltd."),
+                new ProductionCompanyInfo(1, "Lucasfilm"),
                 new ProductionCompanyInfo(11461, "Bad Robot")
             };
             CollectionAssert.AreEquivalent( companies, movie.ProductionCompanies.ToArray(),
-                "actual:\r\n" + string.Join( "\r\n", movie.ProductionCompanies ) );
+                $"\r\nexpected:\r\n\t{string.Join( "\r\n\t", companies.Select( x => x ) )}" +
+                $"\r\nactual:\r\n\t{string.Join( "\r\n\t", movie.ProductionCompanies )}" );
 
             // Production Countries
             var countries = new[]
@@ -216,11 +217,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             {
                 new(803, "android"),
                 new(1612, "spacecraft"),
-                new(10527, "jedi"),
                 new(161176, "space opera")
             };
             CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToArray(),
-                "actual:\r\n" + string.Join( "\r\n", movie.Keywords ) );
+                $"\r\nactual:\r\n\t{string.Join( "\r\n\t", expectedKeywords )}" +
+                $"\r\nactual:\r\n\t{string.Join( "\r\n\t", movie.Keywords )}" );
         }
 
         [TestMethod]
