@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>DM.MovieApi.IntegrationTests</AssemblyName>
     <RootNamespace>DM.MovieApi.IntegrationTests</RootNamespace>
   </PropertyGroup>

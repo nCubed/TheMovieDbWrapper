@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.MovieApi", "DM.MovieApi\DM.MovieApi.csproj", "{DD45BBDE-7BB4-41D5-9EB8-B33C74189679}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DM.MovieApi", "DM.MovieApi\DM.MovieApi.csproj", "{DD45BBDE-7BB4-41D5-9EB8-B33C74189679}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.MovieApi.IntegrationTests", "DM.MovieApi.IntegrationTests\DM.MovieApi.IntegrationTests.csproj", "{415A810A-75AA-4EFE-9B7B-A16DEE8CCCC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DM.MovieApi.IntegrationTests", "DM.MovieApi.IntegrationTests\DM.MovieApi.IntegrationTests.csproj", "{415A810A-75AA-4EFE-9B7B-A16DEE8CCCC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
