@@ -12,13 +12,13 @@ namespace DM.MovieApi.MovieDb.Movies
         private readonly IApiGenreRequest _genreApi;
 
         [ImportingConstructor]
-        public ApiMovieRequest( IApiSettings settings, IApiGenreRequest genreApi )
-            : base( settings )
+        public ApiMovieRequest(IApiSettings settings, IApiGenreRequest genreApi)
+            : base(settings)
         {
             _genreApi = genreApi;
         }
 
-        public async Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en" )
+        public async Task<ApiQueryResponse<Movie>> FindByIdAsync(int movieId, string language = "en")
         {
             var param = new Dictionary<string, string>
             {
@@ -28,12 +28,12 @@ namespace DM.MovieApi.MovieDb.Movies
 
             string command = $"movie/{movieId}";
 
-            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
+            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>(command, param);
 
             return response;
         }
 
-        public async Task<ApiSearchResponse<MovieInfo>> SearchByTitleAsync( string query, int pageNumber = 1, string language = "en" )
+        public async Task<ApiSearchResponse<MovieInfo>> SearchByTitleAsync(string query, int pageNumber = 1, string language = "en")
         {
             var param = new Dictionary<string, string>
             {
@@ -44,19 +44,19 @@ namespace DM.MovieApi.MovieDb.Movies
 
             const string command = "search/movie";
 
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>(command, pageNumber, param);
 
-            if( response.Error != null )
+            if (response.Error != null)
             {
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi );
+            response.Results.PopulateGenres(_genreApi);
 
             return response;
         }
 
-        public async Task<ApiQueryResponse<Movie>> GetLatestAsync( string language = "en" )
+        public async Task<ApiQueryResponse<Movie>> GetLatestAsync(string language = "en")
         {
             var param = new Dictionary<string, string>
             {
@@ -66,12 +66,12 @@ namespace DM.MovieApi.MovieDb.Movies
 
             const string command = "movie/latest";
 
-            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
+            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>(command, param);
 
             return response;
         }
 
-        public async Task<ApiSearchResponse<Movie>> GetNowPlayingAsync( int pageNumber = 1, string language = "en" )
+        public async Task<ApiSearchResponse<Movie>> GetNowPlayingAsync(int pageNumber = 1, string language = "en")
         {
             var param = new Dictionary<string, string>
             {
@@ -81,12 +81,12 @@ namespace DM.MovieApi.MovieDb.Movies
 
             const string command = "movie/now_playing";
 
-            ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>( command, pageNumber, param );
+            ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>(command, pageNumber, param);
 
             return response;
         }
 
-        public async Task<ApiSearchResponse<Movie>> GetUpcomingAsync( int pageNumber = 1, string language = "en" )
+        public async Task<ApiSearchResponse<Movie>> GetUpcomingAsync(int pageNumber = 1, string language = "en")
         {
             var param = new Dictionary<string, string>
             {
@@ -96,12 +96,12 @@ namespace DM.MovieApi.MovieDb.Movies
 
             const string command = "movie/upcoming";
 
-            ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>( command, pageNumber, param );
+            ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>(command, pageNumber, param);
 
             return response;
         }
 
-        public async Task<ApiSearchResponse<MovieInfo>> GetTopRatedAsync( int pageNumber = 1, string language = "en" )
+        public async Task<ApiSearchResponse<MovieInfo>> GetTopRatedAsync(int pageNumber = 1, string language = "en")
         {
             var param = new Dictionary<string, string>
             {
@@ -110,19 +110,19 @@ namespace DM.MovieApi.MovieDb.Movies
 
             const string command = "movie/top_rated";
 
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>(command, pageNumber, param);
 
-            if( response.Error != null )
+            if (response.Error != null)
             {
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi );
+            response.Results.PopulateGenres(_genreApi);
 
             return response;
         }
 
-        public async Task<ApiSearchResponse<MovieInfo>> GetPopularAsync( int pageNumber = 1, string language = "en" )
+        public async Task<ApiSearchResponse<MovieInfo>> GetPopularAsync(int pageNumber = 1, string language = "en")
         {
             var param = new Dictionary<string, string>
             {
@@ -131,19 +131,19 @@ namespace DM.MovieApi.MovieDb.Movies
 
             const string command = "movie/popular";
 
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>(command, pageNumber, param);
 
-            if( response.Error != null )
+            if (response.Error != null)
             {
                 return response;
             }
 
-            response.Results.PopulateGenres( _genreApi );
+            response.Results.PopulateGenres(_genreApi);
 
             return response;
         }
 
-        public async Task<ApiQueryResponse<MovieCredit>> GetCreditsAsync( int movieId, string language = "en" )
+        public async Task<ApiQueryResponse<MovieCredit>> GetCreditsAsync(int movieId, string language = "en")
         {
             var param = new Dictionary<string, string>
             {
@@ -152,7 +152,51 @@ namespace DM.MovieApi.MovieDb.Movies
 
             string command = $"movie/{movieId}/credits";
 
-            ApiQueryResponse<MovieCredit> response = await base.QueryAsync<MovieCredit>( command, param );
+            ApiQueryResponse<MovieCredit> response = await base.QueryAsync<MovieCredit>(command, param);
+
+            return response;
+        }
+
+        public async Task<ApiSearchResponse<MovieInfo>> GetRecommendationsAsync(int movieId, int pageNumber = 1, string language = "en")
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+                {"append_to_response", "keywords"},
+
+            };
+
+            string command = $"movie/{movieId}/recommendations";
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>(command, pageNumber, param);
+
+            if (response.Error != null)
+            {
+                return response;
+            }
+
+            response.Results.PopulateGenres(_genreApi);
+
+            return response;
+        }
+
+        public async Task<ApiSearchResponse<MovieInfo>> GetSimilarAsync(int movieId, int pageNumber = 1, string language = "en")
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+                {"append_to_response", "keywords"},
+
+            };
+
+            string command = $"movie/{movieId}/similar";
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>(command, pageNumber, param);
+
+            if (response.Error != null)
+            {
+                return response;
+            }
+
+            response.Results.PopulateGenres(_genreApi);
 
             return response;
         }

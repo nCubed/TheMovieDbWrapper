@@ -350,5 +350,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
                 ( _, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
+
+        
     }
 }
