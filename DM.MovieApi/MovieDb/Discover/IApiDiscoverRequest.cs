@@ -8,6 +8,6 @@ namespace DM.MovieApi.MovieDb.Discover
 {
     public interface IApiDiscoverRequest : IApiRequest
     {
-        Task<ApiSearchResponse<MovieInfo>> DiscoverMoviesAsync(IDiscoverParameterBuilder paramBuilder, int pageNumber  = 1,string language = "en");
+        Task<ApiSearchResponse<MovieInfo>> DiscoverMoviesAsync(IDiscoverMovieParameterBuilder paramBuilder, int pageNumber  = 1,string language = "en");
     }
 }

@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace DM.MovieApi.MovieDb.Discover
 {
-    public class DiscoverParameterBuilder : IDiscoverParameterBuilder
+    public class DiscoverMovieParameterBuilder : IDiscoverMovieParameterBuilder
     {
         private readonly Dictionary<string, IList<string>> _param;
 
-        public DiscoverParameterBuilder()
+        public DiscoverMovieParameterBuilder()
         {
             _param = new Dictionary<string, IList<string>>();
         }
@@ -22,7 +22,7 @@ namespace DM.MovieApi.MovieDb.Discover
             return response;
         }
 
-        public IDiscoverParameterBuilder WithCast(int personId)
+        public IDiscoverMovieParameterBuilder WithCast(int personId)
         {
             if (!_param.ContainsKey("with_cast"))
             {
@@ -34,7 +34,7 @@ namespace DM.MovieApi.MovieDb.Discover
             return this;
         }
 
-        public IDiscoverParameterBuilder WithCrew(int personId)
+        public IDiscoverMovieParameterBuilder WithCrew(int personId)
         {
             if (!_param.ContainsKey("with_crew"))
             {
@@ -45,7 +45,7 @@ namespace DM.MovieApi.MovieDb.Discover
             return this;
         }
 
-        public IDiscoverParameterBuilder WithGenre(int genreId)
+        public IDiscoverMovieParameterBuilder WithGenre(int genreId)
         {
             if (!_param.ContainsKey("with_genres"))
             {
@@ -57,7 +57,7 @@ namespace DM.MovieApi.MovieDb.Discover
             return this;
         }
 
-        public IDiscoverParameterBuilder WithOriginalLanguage(string language)
+        public IDiscoverMovieParameterBuilder WithOriginalLanguage(string language)
         {
             if (!_param.ContainsKey("original_language"))
             {
@@ -69,7 +69,7 @@ namespace DM.MovieApi.MovieDb.Discover
             return this;
         }
 
-        public IDiscoverParameterBuilder WithoutGenre(int genreId)
+        public IDiscoverMovieParameterBuilder WithoutGenre(int genreId)
         {
             if (!_param.ContainsKey("without_genres"))
             {

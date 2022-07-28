@@ -24,7 +24,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         [TestMethod]
         public async Task DiscoverMovies_WithCrew()
         {
-            var paramBuilder= new DiscoverParameterBuilder();
+            var paramBuilder= new DiscoverMovieParameterBuilder();
             var directorId=66212;
             paramBuilder.WithCrew(directorId);
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
@@ -36,7 +36,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         [TestMethod]
         public async Task DiscoverMovies_WithCrew_HasNoResult_InvalidPersonId()
         {
-            var paramBuilder= new DiscoverParameterBuilder();
+            var paramBuilder= new DiscoverMovieParameterBuilder();
             var directorId=0;
             paramBuilder.WithCrew(directorId);
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
@@ -48,7 +48,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         [TestMethod]
         public async Task DiscoverMovies_WithCast()
         {
-            var paramBuilder= new DiscoverParameterBuilder();
+            var paramBuilder= new DiscoverMovieParameterBuilder();
             var actorId=66462;
             paramBuilder.WithCast(actorId);
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
@@ -60,7 +60,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         [TestMethod]
         public async Task DiscoverMovies_WithCast_HasNoResult_InvalidPersonId()
         {
-            var paramBuilder= new DiscoverParameterBuilder();
+            var paramBuilder= new DiscoverMovieParameterBuilder();
             var actorId=0;
             paramBuilder.WithCast(actorId);
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
@@ -72,7 +72,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         [TestMethod]
         public async Task DiscoverMovies_WithGenre()
         {
-            var paramBuilder= new DiscoverParameterBuilder();
+            var paramBuilder= new DiscoverMovieParameterBuilder();
             var genreId=28;
             paramBuilder.WithGenre(genreId);
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
@@ -84,7 +84,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         [TestMethod]
         public async Task DiscoverMovies_WithoutGenre()
         {
-            var paramBuilder= new DiscoverParameterBuilder();
+            var paramBuilder= new DiscoverMovieParameterBuilder();
             var genreId=28;
             paramBuilder.WithoutGenre(genreId);
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
@@ -97,7 +97,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         [TestMethod]
         public async Task DiscoverMovies_WithOriginalLanguage_InFinnish()
         {
-            var paramBuilder= new DiscoverParameterBuilder();
+            var paramBuilder= new DiscoverMovieParameterBuilder();
             var directorId=66212;
             var originalLanguage="fi";
             paramBuilder.WithOriginalLanguage(originalLanguage).WithCrew(directorId);
@@ -110,7 +110,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         [TestMethod]
         public async Task DiscoverMovies_WithOriginalLanguage_HasNoResuts_InGerman()
         {
-            var paramBuilder= new DiscoverParameterBuilder();
+            var paramBuilder= new DiscoverMovieParameterBuilder();
             var directorId=66212;
             var originalLanguage="de";
             paramBuilder.WithOriginalLanguage(originalLanguage).WithCrew(directorId);
