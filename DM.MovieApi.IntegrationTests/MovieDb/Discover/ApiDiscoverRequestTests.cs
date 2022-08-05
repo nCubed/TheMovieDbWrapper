@@ -10,7 +10,6 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
     {
         private IApiDiscoverRequest _api;
         
-        
         [TestInitialize]
         public void TestInit()
         {
@@ -27,10 +26,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
             var paramBuilder= new DiscoverMovieParameterBuilder();
             var directorId=66212;
             paramBuilder.WithCrew(directorId);
+            
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
+
             ApiResponseUtil.AssertErrorIsNull(response);
             Assert.IsTrue(response.Results.Count>0, "No results returned");
-
         } 
 
         [TestMethod]
@@ -39,10 +39,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
             var paramBuilder= new DiscoverMovieParameterBuilder();
             var directorId=0;
             paramBuilder.WithCrew(directorId);
+
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
+
             ApiResponseUtil.AssertErrorIsNull(response);
             Assert.IsTrue(response.Results.Count==0, "Results returned");
-
         } 
 
         [TestMethod]
@@ -51,10 +52,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
             var paramBuilder= new DiscoverMovieParameterBuilder();
             var actorId=66462;
             paramBuilder.WithCast(actorId);
+
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
+
             ApiResponseUtil.AssertErrorIsNull(response);
             Assert.IsTrue(response.Results.Count>0, "No results returned");
-
         }
 
         [TestMethod]
@@ -63,10 +65,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
             var paramBuilder= new DiscoverMovieParameterBuilder();
             var actorId=0;
             paramBuilder.WithCast(actorId);
+
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
+
             ApiResponseUtil.AssertErrorIsNull(response);
             Assert.IsTrue(response.Results.Count==0, "Results returned");
-
         }
 
         [TestMethod]
@@ -75,7 +78,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
             var paramBuilder= new DiscoverMovieParameterBuilder();
             var genreId=28;
             paramBuilder.WithGenre(genreId);
+
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
+
             ApiResponseUtil.AssertErrorIsNull(response);
             Assert.IsTrue(response.Results.Count>0, "No results returned");
             Assert.IsTrue(response.Results.All(r=>r.Genres.Any(g=>g.Id==genreId)), "No results with genre");
@@ -87,11 +92,12 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
             var paramBuilder= new DiscoverMovieParameterBuilder();
             var genreId=28;
             paramBuilder.WithoutGenre(genreId);
+
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
+
             ApiResponseUtil.AssertErrorIsNull(response);
             Assert.IsTrue(response.Results.Count>0, "No results returned");
             Assert.IsTrue(response.Results.All(r=>r.Genres.All(g=>g.Id!=genreId)), "Genre found in results");
-
         }
 
         [TestMethod]
@@ -101,10 +107,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
             var directorId=66212;
             var originalLanguage="fi";
             paramBuilder.WithOriginalLanguage(originalLanguage).WithCrew(directorId);
+
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
+
             ApiResponseUtil.AssertErrorIsNull(response);
             Assert.IsTrue(response.Results.Count>0, "No results returned");
-            //Assert.IsTrue(response.Results.All(r=>r.OriginalLanguage==language), "No results with language");
         }
 
         [TestMethod]
@@ -114,10 +121,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
             var directorId=66212;
             var originalLanguage="de";
             paramBuilder.WithOriginalLanguage(originalLanguage).WithCrew(directorId);
+
             var response= await _api.DiscoverMoviesAsync(paramBuilder); 
+
             ApiResponseUtil.AssertErrorIsNull(response);
             Assert.IsTrue(response.Results.Count>0, "No results returned");
-            //Assert.IsTrue(response.Results.All(r=>r.OriginalLanguage==language), "No results with language");
         }
     }    
 }

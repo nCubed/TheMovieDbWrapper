@@ -7,5 +7,3 @@ namespace DM.MovieApi.MovieDb.Discover
         Dictionary<string, string> Build();
     }
 }
-
-
