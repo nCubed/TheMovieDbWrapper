@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Movies;
@@ -5,7 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 {
-
     [TestClass]
     public class GetRecommendationsTests
     {
@@ -14,10 +14,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         [TestInitialize]
         public void TestInit()
         {
-
             ApiResponseUtil.ThrottleTests();
             _api = MovieDbFactory.Create<IApiMovieRequest>().Value;
-
         }
 
         [TestMethod]
@@ -33,7 +31,6 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             Assert.IsTrue(response.TotalPages > 0);
             Assert.IsTrue(response.TotalResults > 0);
             Assert.IsTrue(response.PageNumber == 1);
-
         }
 
         [TestMethod]
@@ -42,8 +39,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             const int movieId = 1;
 
             ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync(movieId);
-            Assert.IsNotNull(response.Error);
-            
+            Assert.IsNotNull(response.Error);           
         }
     }
 }

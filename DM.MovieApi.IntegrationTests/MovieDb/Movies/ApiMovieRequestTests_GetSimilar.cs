@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 {
-
     [TestClass]
     public class GetSimilarTests
     {
@@ -14,14 +13,14 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         [TestInitialize]
         public void TestInit()
         {
-
             ApiResponseUtil.ThrottleTests();
+
             _api = MovieDbFactory.Create<IApiMovieRequest>().Value;
 
         }
 
         [TestMethod]
-        public async Task GetSimilarsAsync_Returns_ValidResults()
+        public async Task GetSimilarAsync_Returns_ValidResults()
         {
             const int movieIdRunLolaRun = 104;
 
@@ -33,7 +32,6 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             Assert.IsTrue(response.TotalPages > 0);
             Assert.IsTrue(response.TotalResults > 0);
             Assert.IsTrue(response.PageNumber == 1);
-
         }
 
         [TestMethod]
@@ -43,7 +41,6 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             ApiSearchResponse<MovieInfo> response = await _api.GetSimilarAsync(movieId);
             Assert.IsNotNull(response.Error);
-            
         }
     }
 }

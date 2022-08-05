@@ -162,8 +162,6 @@ namespace DM.MovieApi.MovieDb.Movies
             var param = new Dictionary<string, string>
             {
                 {"language", language},
-                {"append_to_response", "keywords"},
-
             };
 
             string command = $"movie/{movieId}/recommendations";
@@ -184,8 +182,6 @@ namespace DM.MovieApi.MovieDb.Movies
             var param = new Dictionary<string, string>
             {
                 {"language", language},
-                {"append_to_response", "keywords"},
-
             };
 
             string command = $"movie/{movieId}/similar";
