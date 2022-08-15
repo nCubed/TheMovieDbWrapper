@@ -9,6 +9,6 @@ namespace DM.MovieApi.MovieDb.Discover
         IDiscoverMovieParameterBuilder WithCrew( int personId );
         IDiscoverMovieParameterBuilder WithCast( int personId );
         IDiscoverMovieParameterBuilder WithGenre( int genre );
-        IDiscoverMovieParameterBuilder WithoutGenre( int genre );
+        IDiscoverMovieParameterBuilder ExcludeGenre( int genre );
     }
 }

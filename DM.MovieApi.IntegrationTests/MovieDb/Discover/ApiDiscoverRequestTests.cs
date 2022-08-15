@@ -87,11 +87,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         }
 
         [TestMethod]
-        public async Task DiscoverMovies_WithoutGenre()
+        public async Task DiscoverMovies_ExcludeGenre()
         {
             var paramBuilder = new DiscoverMovieParameterBuilder();
             var genreId = 28;
-            paramBuilder.WithoutGenre( genreId );
+            paramBuilder.ExcludeGenre( genreId );
 
             var response = await _api.DiscoverMoviesAsync( paramBuilder );
 

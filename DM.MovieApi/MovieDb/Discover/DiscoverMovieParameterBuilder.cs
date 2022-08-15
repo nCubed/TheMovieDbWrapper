@@ -69,7 +69,7 @@ namespace DM.MovieApi.MovieDb.Discover
             return this;
         }
 
-        public IDiscoverMovieParameterBuilder WithoutGenre( int genreId )
+        public IDiscoverMovieParameterBuilder ExcludeGenre( int genreId )
         {
             if( !_param.ContainsKey( "without_genres" ) )
             {
