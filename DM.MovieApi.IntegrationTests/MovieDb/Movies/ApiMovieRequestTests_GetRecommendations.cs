@@ -1,5 +1,4 @@
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Movies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,6 +14,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         public void TestInit()
         {
             ApiResponseUtil.ThrottleTests();
+
             _api = MovieDbFactory.Create<IApiMovieRequest>().Value;
         }
 
@@ -23,14 +23,14 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             const int movieIdRunLolaRun = 104;
 
-            ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync(movieIdRunLolaRun);
+            ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieIdRunLolaRun );
 
-            ApiResponseUtil.AssertErrorIsNull(response);
+            ApiResponseUtil.AssertErrorIsNull( response );
 
-            Assert.IsTrue(response.Results.Count > 0);
-            Assert.IsTrue(response.TotalPages > 0);
-            Assert.IsTrue(response.TotalResults > 0);
-            Assert.IsTrue(response.PageNumber == 1);
+            Assert.IsTrue( response.Results.Count > 0 );
+            Assert.IsTrue( response.TotalPages > 0 );
+            Assert.IsTrue( response.TotalResults > 0 );
+            Assert.IsTrue( response.PageNumber == 1 );
         }
 
         [TestMethod]
@@ -38,8 +38,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             const int movieId = 1;
 
-            ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync(movieId);
-            Assert.IsNotNull(response.Error);           
+            ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieId );
+            Assert.IsNotNull( response.Error );
         }
     }
 }
