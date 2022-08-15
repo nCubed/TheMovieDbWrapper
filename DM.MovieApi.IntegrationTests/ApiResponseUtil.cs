@@ -17,6 +17,7 @@ namespace DM.MovieApi.IntegrationTests
     {
         internal const int TestInitThrottle = 375;
         internal const int PagingThrottle = 225;
+        private static readonly DateTime MinDate = new( 1900, 1, 1 );
 
         /// <summary>
         /// Slows down the starting of tests to keep themoviedb.org api from denying the request
@@ -66,11 +67,11 @@ namespace DM.MovieApi.IntegrationTests
 
                 if( typeof( T ) == typeof( Movie ) )
                 {
-                    AssertMovieStructure( ( IEnumerable<Movie> )response.Results );
+                    AssertMovieStructure( (IEnumerable<Movie>)response.Results );
                 }
                 else if( typeof( T ) == typeof( PersonInfo ) )
                 {
-                    AssertPersonInfoStructure( ( IEnumerable<PersonInfo> )response.Results );
+                    AssertPersonInfoStructure( (IEnumerable<PersonInfo>)response.Results );
                 }
 
                 if( keySelector == null )
@@ -232,9 +233,14 @@ namespace DM.MovieApi.IntegrationTests
 
         public static void AssertMovieInformationStructure( MovieInfo movie )
         {
-            Assert.IsFalse( string.IsNullOrWhiteSpace( movie.Title ) );
-            Assert.IsTrue( movie.Id > 0 );
+            Assert.IsFalse( string.IsNullOrWhiteSpace( movie.Title ) , $"Actual: {movie}" );
+            Assert.IsFalse( string.IsNullOrWhiteSpace( movie.OriginalTitle ) , $"Actual {movie}" );
+            // movie.Overview is sometimes empty
 
+            Assert.IsTrue( movie.Id > 1 );
+            Assert.IsTrue( movie.ReleaseDate > MinDate, $"Actual: {movie.ReleaseDate} | {movie}" );
+
+            AssertImagePath( movie.PosterPath );
             AssertGenres( movie.GenreIds, movie.Genres );
         }
 
