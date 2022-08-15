@@ -94,7 +94,7 @@ namespace DM.MovieApi.IntegrationTests
                 .Distinct()
                 .ToList();
 
-            Assert.AreEqual( 8, dbApi.Count );
+            Assert.AreEqual( 9, dbApi.Count );
 
             IMovieDbApi api;
 
