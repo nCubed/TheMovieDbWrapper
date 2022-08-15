@@ -19,9 +19,9 @@ namespace DM.MovieApi.MovieDb.Discover
             _genreApi = genreApi;
         }
 
-        public async Task<ApiSearchResponse<MovieInfo>> DiscoverMoviesAsync( IDiscoverMovieParameterBuilder paramBuilder, int pageNumber = 1, string language = "en" )
+        public async Task<ApiSearchResponse<MovieInfo>> DiscoverMoviesAsync( IDiscoverMovieParameterBuilder builder, int pageNumber = 1, string language = "en" )
         {
-            Dictionary<string, string> param = paramBuilder.Build();
+            Dictionary<string, string> param = builder.Build();
             param.Add( "language", language );
 
             const string command = "discover/movie";
