@@ -108,7 +108,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
             Assert.AreEqual( new DateTime( 1998, 03, 03 ), movie.ReleaseDate );
 
-            var expectedGenres = new List<Genre>
+            var expectedGenres = new[]
             {
                 GenreFactory.Action(),
                 GenreFactory.Drama(),
@@ -202,7 +202,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             ApiResponseUtil.AssertImagePath( movie.MovieCollectionInfo.PosterPath );
 
             // Genres
-            var expectedGenres = new List<Genre>
+            var expectedGenres = new[]
             {
                 GenreFactory.Action(),
                 GenreFactory.Adventure(),
@@ -213,15 +213,15 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
                 "actual:\r\n" + string.Join( "\r\n", movie.Genres ) );
 
             // Keywords
-            var expectedKeywords = new List<Keyword>
+            var expectedKeywords = new Keyword[]
             {
                 new(803, "android"),
                 new(1612, "spacecraft"),
                 new(161176, "space opera")
             };
             CollectionAssert.AreEquivalent( expectedKeywords, movie.Keywords.ToArray(),
-                $"\r\nactual:\r\n\t{string.Join( "\r\n\t", expectedKeywords )}" +
-                $"\r\nactual:\r\n\t{string.Join( "\r\n\t", movie.Keywords )}" );
+                $"\r\nactual:\r\n\t{string.Join( "\r\n\t", expectedKeywords.Select( x => x.ToString() ) )}" +
+                $"\r\nactual:\r\n\t{string.Join( "\r\n\t", movie.Keywords.Select( x => x.ToString() ) )}" );
         }
 
         [TestMethod]
