@@ -26,11 +26,11 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
             ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieIdRunLolaRun );
 
             ApiResponseUtil.AssertErrorIsNull( response );
+            ApiResponseUtil.AssertMovieInformationStructure( response.Results );
 
-            Assert.IsTrue( response.Results.Count > 0 );
-            Assert.IsTrue( response.TotalPages > 0 );
-            Assert.IsTrue( response.TotalResults > 0 );
-            Assert.IsTrue( response.PageNumber == 1 );
+            Assert.IsTrue( response.TotalPages > 1 );
+            Assert.IsTrue( response.TotalResults > 20 );
+            Assert.AreEqual( 1, response.PageNumber );
         }
 
         [TestMethod]
