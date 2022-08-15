@@ -36,11 +36,23 @@ namespace DM.MovieApi.IntegrationTests
 
         public static void AssertImagePath( string path )
         {
+            if( path == null ) return;
+
             Assert.IsTrue( path.StartsWith( "/" ), $"Actual: {path}" );
 
             Assert.IsTrue(
                 path.EndsWith( ".jpg" ) || path.EndsWith( ".png" ),
                 $"Actual: {path}" );
+        }
+
+        public static void AssertNoSearchResults<T>( ApiSearchResponse<T> response )
+        {
+            AssertErrorIsNull( response );
+
+            Assert.AreEqual( 0, response.Results.Count, $"Actual: {response}" );
+            Assert.AreEqual( 1, response.PageNumber, $"Actual: {response}" );
+            Assert.AreEqual( 0, response.TotalPages, $"Actual: {response}" );
+            Assert.AreEqual( 0, response.TotalResults, $"Actual: {response}" );
         }
 
         public static async Task AssertCanPageSearchResponse<T, TSearch>( TSearch search, int minimumPageCount, int minimumTotalResultsCount,
@@ -233,13 +245,14 @@ namespace DM.MovieApi.IntegrationTests
 
         public static void AssertMovieInformationStructure( MovieInfo movie )
         {
-            Assert.IsFalse( string.IsNullOrWhiteSpace( movie.Title ) , $"Actual: {movie}" );
-            Assert.IsFalse( string.IsNullOrWhiteSpace( movie.OriginalTitle ) , $"Actual {movie}" );
+            Assert.IsFalse( string.IsNullOrWhiteSpace( movie.Title ), $"Actual: {movie}" );
+            Assert.IsFalse( string.IsNullOrWhiteSpace( movie.OriginalTitle ), $"Actual {movie}" );
             // movie.Overview is sometimes empty
 
             Assert.IsTrue( movie.Id > 1 );
             Assert.IsTrue( movie.ReleaseDate > MinDate, $"Actual: {movie.ReleaseDate} | {movie}" );
 
+            AssertImagePath( movie.BackdropPath );
             AssertImagePath( movie.PosterPath );
             AssertGenres( movie.GenreIds, movie.Genres );
         }
