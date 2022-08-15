@@ -7,12 +7,12 @@ using DM.MovieApi.Shims;
 
 namespace DM.MovieApi.MovieDb.Discover
 {
-    internal class ApiDisoverRequest : ApiRequestBase, IApiDiscoverRequest
+    internal class ApiDiscoverRequest : ApiRequestBase, IApiDiscoverRequest
     {
         private readonly IApiGenreRequest _genreApi;
 
         [ImportingConstructor]
-        public ApiDisoverRequest( IApiSettings settings, IApiGenreRequest genreApi ) : base( settings )
+        public ApiDiscoverRequest( IApiSettings settings, IApiGenreRequest genreApi ) : base( settings )
         {
             _genreApi = genreApi;
         }

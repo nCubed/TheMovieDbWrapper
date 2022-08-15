@@ -17,7 +17,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
 
             _api = MovieDbFactory.Create<IApiDiscoverRequest>().Value;
 
-            Assert.IsInstanceOfType( _api, typeof( ApiDisoverRequest ) );
+            Assert.IsInstanceOfType( _api, typeof( ApiDiscoverRequest ) );
         }
 
         [TestMethod]
