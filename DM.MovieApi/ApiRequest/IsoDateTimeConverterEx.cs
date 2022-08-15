@@ -37,7 +37,7 @@ namespace DM.MovieApi.ApiRequest
                     return new DateTime( year, 1, 1 );
                 }
 
-                return default( DateTime );
+                return DateTime.UnixEpoch;
             }
         }
 
