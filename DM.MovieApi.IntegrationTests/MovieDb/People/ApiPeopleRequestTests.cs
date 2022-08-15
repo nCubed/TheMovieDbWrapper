@@ -310,7 +310,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             {
                 "The Fifth Element",
                 "Resident Evil",
-                "Zoolander"
+                "Resident Evil: Apocalypse"
             };
 
             foreach( string role in roles )
