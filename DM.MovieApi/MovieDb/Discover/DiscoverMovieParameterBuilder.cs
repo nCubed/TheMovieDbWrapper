@@ -13,21 +13,19 @@ namespace DM.MovieApi.MovieDb.Discover
 
         public Dictionary<string, string> Build()
         {
-            var response = new Dictionary<string, string>();
+            var param = new Dictionary<string, string>();
+
             foreach( var kvp in _param )
             {
-                response.Add( kvp.Key, string.Join( ",", kvp.Value ) );
+                param.Add( kvp.Key, string.Join( ",", kvp.Value ) );
             }
 
-            return response;
+            return param;
         }
 
         public IDiscoverMovieParameterBuilder WithCast( int personId )
         {
-            if( !_param.ContainsKey( "with_cast" ) )
-            {
-                _param.Add( "with_cast", new List<string>() );
-            }
+            AddParamType( "with_cast" );
 
             _param["with_cast"].Add( personId.ToString() );
 
@@ -36,21 +34,16 @@ namespace DM.MovieApi.MovieDb.Discover
 
         public IDiscoverMovieParameterBuilder WithCrew( int personId )
         {
-            if( !_param.ContainsKey( "with_crew" ) )
-            {
-                _param.Add( "with_crew", new List<string>() );
-            }
+            AddParamType( "with_crew" );
 
             _param["with_crew"].Add( personId.ToString() );
+
             return this;
         }
 
         public IDiscoverMovieParameterBuilder WithGenre( int genreId )
         {
-            if( !_param.ContainsKey( "with_genres" ) )
-            {
-                _param.Add( "with_genres", new List<string>() );
-            }
+            AddParamType( "with_genres" );
 
             _param["with_genres"].Add( genreId.ToString() );
 
@@ -59,10 +52,7 @@ namespace DM.MovieApi.MovieDb.Discover
 
         public IDiscoverMovieParameterBuilder WithOriginalLanguage( string language )
         {
-            if( !_param.ContainsKey( "original_language" ) )
-            {
-                _param.Add( "original_language", new List<string>() );
-            }
+            AddParamType( "original_language" );
 
             _param["original_language"].Add( language );
 
@@ -71,14 +61,14 @@ namespace DM.MovieApi.MovieDb.Discover
 
         public IDiscoverMovieParameterBuilder ExcludeGenre( int genreId )
         {
-            if( !_param.ContainsKey( "without_genres" ) )
-            {
-                _param.Add( "without_genres", new List<string>() );
-            }
+            AddParamType( "without_genres" );
 
             _param["without_genres"].Add( genreId.ToString() );
 
             return this;
         }
+
+        private void AddParamType( string name )
+            => _param.TryAdd( name, new List<string>() );
     }
 }
