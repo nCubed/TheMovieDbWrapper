@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DM.MovieApi.MovieDb.Discover
 {
@@ -13,70 +13,70 @@ namespace DM.MovieApi.MovieDb.Discover
 
         public Dictionary<string, string> Build()
         {
-            var response=new Dictionary<string, string>();
-            foreach (var kvp in _param)
+            var response = new Dictionary<string, string>();
+            foreach( var kvp in _param )
             {
-                response.Add(kvp.Key, string.Join(",", kvp.Value));
+                response.Add( kvp.Key, string.Join( ",", kvp.Value ) );
             }
 
             return response;
         }
 
-        public IDiscoverMovieParameterBuilder WithCast(int personId)
+        public IDiscoverMovieParameterBuilder WithCast( int personId )
         {
-            if (!_param.ContainsKey("with_cast"))
+            if( !_param.ContainsKey( "with_cast" ) )
             {
-                _param.Add("with_cast", new List<string>());
+                _param.Add( "with_cast", new List<string>() );
             }
 
-            _param["with_cast"].Add(personId.ToString());
+            _param["with_cast"].Add( personId.ToString() );
 
             return this;
         }
 
-        public IDiscoverMovieParameterBuilder WithCrew(int personId)
+        public IDiscoverMovieParameterBuilder WithCrew( int personId )
         {
-            if (!_param.ContainsKey("with_crew"))
+            if( !_param.ContainsKey( "with_crew" ) )
             {
-                _param.Add("with_crew", new List<string>());
+                _param.Add( "with_crew", new List<string>() );
             }
 
-            _param["with_crew"].Add(personId.ToString());
+            _param["with_crew"].Add( personId.ToString() );
             return this;
         }
 
-        public IDiscoverMovieParameterBuilder WithGenre(int genreId)
+        public IDiscoverMovieParameterBuilder WithGenre( int genreId )
         {
-            if (!_param.ContainsKey("with_genres"))
+            if( !_param.ContainsKey( "with_genres" ) )
             {
-                _param.Add("with_genres", new List<string>());
+                _param.Add( "with_genres", new List<string>() );
             }
 
-            _param["with_genres"].Add(genreId.ToString());
-
-            return this;
-        }
-
-        public IDiscoverMovieParameterBuilder WithOriginalLanguage(string language)
-        {
-            if (!_param.ContainsKey("original_language"))
-            {
-                _param.Add("original_language", new List<string>());
-            }
-
-            _param["original_language"].Add(language);
+            _param["with_genres"].Add( genreId.ToString() );
 
             return this;
         }
 
-        public IDiscoverMovieParameterBuilder WithoutGenre(int genreId)
+        public IDiscoverMovieParameterBuilder WithOriginalLanguage( string language )
         {
-            if (!_param.ContainsKey("without_genres"))
+            if( !_param.ContainsKey( "original_language" ) )
             {
-                _param.Add("without_genres", new List<string>());
+                _param.Add( "original_language", new List<string>() );
             }
 
-            _param["without_genres"].Add(genreId.ToString());
+            _param["original_language"].Add( language );
+
+            return this;
+        }
+
+        public IDiscoverMovieParameterBuilder WithoutGenre( int genreId )
+        {
+            if( !_param.ContainsKey( "without_genres" ) )
+            {
+                _param.Add( "without_genres", new List<string>() );
+            }
+
+            _param["without_genres"].Add( genreId.ToString() );
 
             return this;
         }
