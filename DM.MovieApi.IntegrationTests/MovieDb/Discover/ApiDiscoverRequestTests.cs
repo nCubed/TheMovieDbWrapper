@@ -115,7 +115,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover
         }
 
         [TestMethod]
-        public async Task DiscoverMovies_WithOriginalLanguage_HasNoResuts_InGerman()
+        public async Task DiscoverMovies_WithOriginalLanguage_HasNoResults_InGerman()
         {
             var paramBuilder = new DiscoverMovieParameterBuilder();
             var directorId = 66212;
