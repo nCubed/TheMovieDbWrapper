@@ -158,6 +158,7 @@ internal class ApiMovieRequest : ApiRequestBase, IApiMovieRequest
         };
 
         string command = $"movie/{movieId}/recommendations";
+
         ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 
         if( response.Error != null )
@@ -178,6 +179,7 @@ internal class ApiMovieRequest : ApiRequestBase, IApiMovieRequest
         };
 
         string command = $"movie/{movieId}/similar";
+
         ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 
         if( response.Error != null )
