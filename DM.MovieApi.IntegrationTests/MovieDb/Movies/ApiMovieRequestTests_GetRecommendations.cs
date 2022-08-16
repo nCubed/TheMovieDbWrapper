@@ -16,9 +16,9 @@ public class GetRecommendationsTests
     [TestMethod]
     public async Task GetRecommendationsAsync_Returns_ValidResults()
     {
-        const int movieIdRunLolaRun = 104;
+        const int movieId = 104; // run lola run
 
-        ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieIdRunLolaRun );
+        ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieId );
 
         ApiResponseUtil.AssertErrorIsNull( response );
         ApiResponseUtil.AssertMovieInformationStructure( response.Results );
@@ -26,6 +26,16 @@ public class GetRecommendationsTests
         Assert.IsTrue( response.TotalPages > 1 );
         Assert.IsTrue( response.TotalResults > 20 );
         Assert.AreEqual( 1, response.PageNumber );
+    }
+
+    [TestMethod]
+    public async Task GetRecommendationsAsync_CanPageResults()
+    {
+        const int movieId = 104; // run lola run
+        const int minimumPageCount = 2;
+
+        await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount,
+            ( _, pageNumber ) => _api.GetRecommendationsAsync( movieId, pageNumber ), x => x.Id );
     }
 
     [TestMethod]
