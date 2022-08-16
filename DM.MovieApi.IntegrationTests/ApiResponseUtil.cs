@@ -1,4 +1,4 @@
-﻿namespace DM.MovieApi.IntegrationTests;
+namespace DM.MovieApi.IntegrationTests;
 internal static class ApiResponseUtil
 {
     internal const int TestInitThrottle = 375;
@@ -51,6 +51,9 @@ internal static class ApiResponseUtil
         {
             Assert.Fail( "minimumPageCount must be greater than 1." );
         }
+
+        // the api defaults to a page size of 20.
+        const int apiPageSize = 20;
 
         var ids = new HashSet<int>();
         var dups = new List<string>();
@@ -114,8 +117,7 @@ internal static class ApiResponseUtil
 
         Assert.AreEqual( minimumPageCount, pageNumber );
 
-        // api defaults to 20 results per page
-        int minCount = pageNumber * 20;
+        int minCount = pageNumber * apiPageSize;
         Assert.IsTrue( totalResults >= minCount,
             $"Actual results: {totalResults} | Expected min: {minCount}" );
 
