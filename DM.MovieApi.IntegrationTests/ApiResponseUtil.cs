@@ -130,8 +130,8 @@ internal static class ApiResponseUtil
 
         // api tends to return duplicate results when paging
         // shouldn't be more than 2 or 3 per page; at 20 per page,
-        // that's approximately 4-6; let's target 20%
-        int min = (int)(totalResults * 0.8);
+        // that's approximately 4-6; let's target 25%
+        int min = (int)(totalResults * 0.75);
         var d = dups
             .GroupBy( x => x )
             .Select( x => $"{x.Key} (x {x.Count()})" );
@@ -140,7 +140,7 @@ internal static class ApiResponseUtil
         if( min >= ids.Count )
         {
             Assert.Fail( "Every now and then themoviedb.org API returns a duplicate from a prior page. " +
-                         "But this time it exceeded our tolerance of 20% dups.\r\n" +
+                         "But this time it exceeded our tolerance of 25% dups.\r\n" +
                          $"Actual: {ids.Count} vs {min}" );
         }
     }
