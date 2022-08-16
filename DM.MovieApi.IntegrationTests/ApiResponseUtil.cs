@@ -30,7 +30,7 @@ namespace DM.MovieApi.IntegrationTests
 
         public static void AssertErrorIsNull( ApiResponseBase response )
         {
-            Console.WriteLine( response.CommandText );
+            Log( response.CommandText );
             Assert.IsNull( response.Error, response.Error?.ToString() ?? "Makes Compiler Happy" );
         }
 
@@ -55,22 +55,26 @@ namespace DM.MovieApi.IntegrationTests
             Assert.AreEqual( 0, response.TotalResults, $"Actual: {response}" );
         }
 
-        public static async Task AssertCanPageSearchResponse<T, TSearch>( TSearch search, int minimumPageCount, int minimumTotalResultsCount,
-            Func<TSearch, int, Task<ApiSearchResponse<T>>> apiSearch, Func<T, int> keySelector )
+        public static async Task AssertCanPageSearchResponse<T, TSearch>(
+            TSearch search,
+            int minimumPageCount,
+            int minimumTotalResultsCount,
+            Func<TSearch, int, Task<ApiSearchResponse<T>>> apiSearch,
+            Func<T, int> keySelector )
         {
             if( minimumPageCount < 2 )
             {
                 Assert.Fail( "minimumPageCount must be greater than 1." );
             }
 
-            var allFound = new List<T>();
+            var ids = new HashSet<int>();
+            var dups = new List<string>();
+            int totalResults = 0;
             int pageNumber = 1;
-
-            var priorResults = new Dictionary<int, int>();
 
             do
             {
-                System.Diagnostics.Trace.WriteLine( $"search: {search} | page: {pageNumber}", "ApiResponseUti.AssertCanPageSearchResponse" );
+                Log( $"search: {search} | page: {pageNumber}", "AssertCanPage" );
                 ApiSearchResponse<T> response = await apiSearch( search, pageNumber );
 
                 AssertErrorIsNull( response );
@@ -88,32 +92,19 @@ namespace DM.MovieApi.IntegrationTests
 
                 if( keySelector == null )
                 {
-                    allFound.AddRange( response.Results );
+                    totalResults += response.Results.Count;
                 }
                 else
                 {
-                    var current = new List<T>();
                     foreach( T res in response.Results )
                     {
+                        totalResults++;
                         int key = keySelector( res );
-
-                        if( priorResults.TryAdd( key, 1 ) )
+                        if( ids.Add( key ) == false )
                         {
-                            current.Add( res );
-                            continue;
-                        }
-
-                        System.Diagnostics.Trace.WriteLine( $"dup on page {response.PageNumber}: {res}" );
-
-                        if( ++priorResults[key] > 2 )
-                        {
-                            Assert.Fail( "Every now and then themoviedb.org API returns a duplicate from a prior page. " +
-                                        "But this time it exceeded our tolerance of one dup.\r\n" +
-                                        $"dup: {res}" );
+                            dups.Add( res.ToString() );
                         }
                     }
-
-                    allFound.AddRange( current );
                 }
 
                 Assert.AreEqual( pageNumber, response.PageNumber );
@@ -121,16 +112,14 @@ namespace DM.MovieApi.IntegrationTests
                 Assert.IsTrue( response.TotalPages >= minimumPageCount,
                     $"Expected minimum of {minimumPageCount} TotalPages. Actual TotalPages: {response.TotalPages}" );
 
-                pageNumber++;
-
                 // keeps the system from being throttled
                 System.Threading.Thread.Sleep( PagingThrottle );
-            } while( pageNumber <= minimumPageCount );
+            } while( ++pageNumber <= minimumPageCount );
 
             // will be 1 greater than minimumPageCount in the last loop
             Assert.AreEqual( minimumPageCount + 1, pageNumber );
 
-            Assert.IsTrue( allFound.Count >= minimumTotalResultsCount, $"Actual found count: {allFound.Count} | Expected min count: {minimumTotalResultsCount}" );
+            Assert.IsTrue( totalResults >= minimumTotalResultsCount, $"Actual result count: {totalResults} | Expected min count: {minimumTotalResultsCount}" );
 
             if( keySelector == null )
             {
@@ -139,16 +128,21 @@ namespace DM.MovieApi.IntegrationTests
                 return;
             }
 
-            List<IGrouping<int, T>> groupById = allFound
-                .ToLookup( keySelector )
-                .ToList();
+            // api tends to return duplicate results when paging
+            // shouldn't be more than 2 or 3 per page; at 20 per page,
+            // that's approximately 4-6; let's target 20%
+            int min = (int)(totalResults * 0.8);
+            var d = dups
+                .GroupBy( x => x )
+                .Select( x => $"{x.Key} (x {x.Count()})" );
+            Log( $"Results: {totalResults}, Dups: {dups.Count}\r\n{string.Join( "\r\n", d )}" );
 
-            List<string> dups = groupById
-                .Where( x => x.Skip( 1 ).Any() )
-                .Select( x => $"({x.Count()}) {string.Join( " | ", x.Select( y => y.ToString() ) )}" )
-                .ToList();
-
-            Assert.AreEqual( 0, dups.Count, "Duplicates: " + Environment.NewLine + string.Join( Environment.NewLine, dups ) );
+            if( min >= ids.Count )
+            {
+                Assert.Fail( "Every now and then themoviedb.org API returns a duplicate from a prior page. " +
+                             "But this time it exceeded our tolerance of 20% dups.\r\n" +
+                             $"Actual: {ids.Count} vs {min}" );
+            }
         }
 
         private static void AssertPersonInfoStructure( IEnumerable<PersonInfo> people )
@@ -352,10 +346,10 @@ namespace DM.MovieApi.IntegrationTests
             Assert.IsFalse( string.IsNullOrWhiteSpace( guestStars.OriginalName ) );
             Assert.IsTrue( guestStars.Popularity > 0 );
 
-            if( guestStars.ProfilePath != null )
-            {
-                AssertImagePath( guestStars.ProfilePath );
-            }
+            AssertImagePath( guestStars.ProfilePath );
         }
+
+        private static void Log( string msg, string category = null )
+            => System.Diagnostics.Trace.WriteLine( msg, category );
     }
 }
