@@ -102,7 +102,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
         public async Task FindByIdAsync_CourteneyCox_Returns_ExpectedValues()
         {
             const string expectedName = "Courteney Cox";
-            const string expectedBiography = "Courteney Bass Cox (born June 15, 1964) is an American actress"; // truncated
+            const string expectedBiography = "Courteney Bass Cox (previously Courteney Cox-Arquette; born June 15, 1964) " +
+                                             "is an American actress, director, and producer."; // truncated
             DateTime expectedBirthday = DateTime.Parse( "1964-06-15" );
             const Gender expectedGender = Gender.Female;
             const string expectedHomepage = null;
@@ -123,7 +124,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             Person person = response.Item;
 
             Assert.AreEqual( expectedName, person.Name );
-            Assert.IsTrue( person.Biography.StartsWith( expectedBiography ) );
+            Assert.IsTrue( person.Biography.StartsWith( expectedBiography ), $"Actual: {person.Biography}" );
             Assert.IsFalse( person.IsAdultFilmStar );
             Assert.AreEqual( expectedBirthday, person.Birthday );
             Assert.AreEqual( expectedGender, person.Gender );
@@ -309,7 +310,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
             {
                 "The Fifth Element",
                 "Resident Evil",
-                "Zoolander"
+                "Resident Evil: Apocalypse"
             };
 
             foreach( string role in roles )
@@ -325,9 +326,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
         {
             const string query = "Cox";
             const int minimumPageCount = 15;
-            const int minimumTotalResultsCount = 300;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount,
                 ( search, pageNumber ) => _api.SearchByNameAsync( search, pageNumber ), null );
         }
     }

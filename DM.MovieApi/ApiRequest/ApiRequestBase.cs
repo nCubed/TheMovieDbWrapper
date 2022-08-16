@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,15 +14,7 @@ namespace DM.MovieApi.ApiRequest
     {
         private readonly IApiSettings _settings;
 
-        protected ApiRequestBase( IApiSettings settings )
-        {
-            _settings = settings;
-        }
-
-        public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command )
-            => await QueryAsync<T>( command, new Dictionary<string, string>() );
-
-        public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command, IDictionary<string, string> parameters )
+        static ApiRequestBase()
         {
             var settings = new JsonSerializerSettings
             {
@@ -31,17 +23,25 @@ namespace DM.MovieApi.ApiRequest
             };
             settings.Converters.Add( new IsoDateTimeConverterEx() );
 
-            return await QueryAsync( command, parameters, Deserializer );
-
-            T Deserializer( string json )
-                => JsonConvert.DeserializeObject<T>( json, settings );
+            JsonConvert.DefaultSettings = () => settings;
         }
+
+        protected ApiRequestBase( IApiSettings settings )
+            => _settings = settings;
+
+        public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command )
+            => await QueryAsync<T>( command, new Dictionary<string, string>(), null );
+
+        public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command, IDictionary<string, string> parameters )
+            => await QueryAsync<T>( command, parameters, null );
 
         public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command, Func<string, T> deserializer )
             => await QueryAsync( command, new Dictionary<string, string>(), deserializer );
 
         public async Task<ApiQueryResponse<T>> QueryAsync<T>( string command, IDictionary<string, string> parameters, Func<string, T> deserializer )
         {
+            deserializer ??= JsonConvert.DeserializeObject<T>;
+
             using HttpClient client = CreateClient();
             string cmd = CreateCommand( command, parameters );
 
@@ -118,7 +118,7 @@ namespace DM.MovieApi.ApiRequest
                 return error;
             }
 
-            var result = JsonConvert.DeserializeObject<ApiSearchResponse<T>>( json, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } );
+            var result = JsonConvert.DeserializeObject<ApiSearchResponse<T>>( json );
 
             // ReSharper disable PossibleNullReferenceException
             result.CommandText = response.RequestMessage.RequestUri.ToString();

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <NoWarn>$(NoWarn);1591</NoWarn>
@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>TheMovieDbWrapper</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.3.0</Version>
     <Authors>Kindler Chase</Authors>
     <Company>nCubed</Company>
     <Product>TheMovieDb.org Wrapper</Product>
@@ -18,15 +18,15 @@
     <PackageProjectUrl>https://github.com/nCubed/TheMovieDbWrapper</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Movies Movie themoviedb themoviedb.org TMDB Film TV Television Actor Acress Director IMDB</PackageTags>
-    <PackageReleaseNotes>v1.0.x is a full upgrade to net5.0. This release now uses TheMovieDb.org's Bearer Token for authentication; this change introduces a minor breaking change from releases &lt; 1.0. See the github ReadMe for full details as you will need to update your implementation to provide the new Bearer Token with the RegisterSettings method.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.3.0 adds support for movie recommendations and movie discovery. See v1.0.x release notes for a minor breaking change from releases &lt; 1.0.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/nCubed/TheMovieDbWrapper</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <AssemblyVersion>1.3.0.0</AssemblyVersion>
+    <FileVersion>1.3.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

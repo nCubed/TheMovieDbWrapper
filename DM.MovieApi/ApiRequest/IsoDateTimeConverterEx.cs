@@ -37,7 +37,7 @@ namespace DM.MovieApi.ApiRequest
                     return new DateTime( year, 1, 1 );
                 }
 
-                return default( DateTime );
+                return DateTime.UnixEpoch;
             }
         }
 
@@ -50,7 +50,7 @@ namespace DM.MovieApi.ApiRequest
                 val = "<empty>";
             }
 
-            Debug.WriteLine( $"IsoDateTimeConverterEx.JsonReader.Value: {val}" );
+            Trace.WriteLine( val, "IsoDateTimeConverterEx" );
         }
     }
 }

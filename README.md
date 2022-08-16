@@ -85,6 +85,7 @@ IApiRequest | Description
 [`IApiCompanyRequest`](DM.MovieApi/MovieDb/Companies/IApiCompanyRequest.cs) | Api for retrieving production companies.
 [`IApiProfessionRequest`](DM.MovieApi/MovieDb/IndustryProfessions/IApiProfessionRequest.cs) | Api for retrieving Movie/TV industry specific professions.
 [`IApiPeopleRequest`](DM.MovieApi/MovieDb/People/IApiPeopleRequest.cs) | Api for retrieving People.
+[`IApiDiscoverRequest`](DM.MovieApi/MovieDb/Discover/IApiDiscoverRequest.cs) | Api for discovering movies.
 
 # More Examples
 ## Search by Movie Title

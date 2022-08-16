@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -88,13 +87,13 @@ namespace DM.MovieApi.IntegrationTests
         [TestMethod]
         public void GetAllApiRequests_CanCreate_IMovieApi()
         {
-            List<PropertyInfo> dbApi = typeof( IMovieDbApi )
+            PropertyInfo[] dbApi = typeof( IMovieDbApi )
                 .GetProperties()
                 .Where( x => typeof( IApiRequest ).IsAssignableFrom( x.PropertyType ) )
                 .Distinct()
-                .ToList();
+                .ToArray();
 
-            Assert.AreEqual( 8, dbApi.Count );
+            Assert.AreEqual( 9, dbApi.Length );
 
             IMovieDbApi api;
 
