@@ -19,7 +19,7 @@ public class ApiCompanyRequestTests
     public async Task FindByIdAsync_Lucasfilm_WithResults_NoParentCompany()
     {
         const int id = 1;
-        const string expectedName = "Lucasfilm";
+        const string expectedName = "Lucasfilm Ltd.";
         const string expectedHeadquarters = "San Francisco, California";
         const string expectedHomepage = "https://www.lucasfilm.com";
 

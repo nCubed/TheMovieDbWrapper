@@ -166,7 +166,7 @@ public class ApiMovieRequestTests
         // Production Companies
         var companies = new[]
         {
-            new ProductionCompanyInfo(1, "Lucasfilm"),
+            new ProductionCompanyInfo(1, "Lucasfilm Ltd."),
             new ProductionCompanyInfo(11461, "Bad Robot")
         };
         CollectionAssert.AreEquivalent( companies, movie.ProductionCompanies.ToArray(),
