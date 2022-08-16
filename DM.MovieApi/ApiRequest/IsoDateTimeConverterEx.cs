@@ -50,7 +50,7 @@ namespace DM.MovieApi.ApiRequest
                 val = "<empty>";
             }
 
-            Debug.WriteLine( $"IsoDateTimeConverterEx.JsonReader.Value: {val}" );
+            Trace.WriteLine( val, "IsoDateTimeConverterEx" );
         }
     }
 }
