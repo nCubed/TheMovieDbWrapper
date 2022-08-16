@@ -1,200 +1,192 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using DM.MovieApi.ApiRequest;
-using DM.MovieApi.ApiResponse;
-using DM.MovieApi.MovieDb.Genres;
-using DM.MovieApi.Shims;
+﻿namespace DM.MovieApi.MovieDb.Movies;
 
-namespace DM.MovieApi.MovieDb.Movies
+internal class ApiMovieRequest : ApiRequestBase, IApiMovieRequest
 {
-    internal class ApiMovieRequest : ApiRequestBase, IApiMovieRequest
+    private readonly IApiGenreRequest _genreApi;
+
+    [ImportingConstructor]
+    public ApiMovieRequest( IApiSettings settings, IApiGenreRequest genreApi )
+        : base( settings )
     {
-        private readonly IApiGenreRequest _genreApi;
+        _genreApi = genreApi;
+    }
 
-        [ImportingConstructor]
-        public ApiMovieRequest( IApiSettings settings, IApiGenreRequest genreApi )
-            : base( settings )
+    public async Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            _genreApi = genreApi;
-        }
+            {"language", language},
+            {"append_to_response", "keywords"},
+        };
 
-        public async Task<ApiQueryResponse<Movie>> FindByIdAsync( int movieId, string language = "en" )
+        string command = $"movie/{movieId}";
+
+        ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
+
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<MovieInfo>> SearchByTitleAsync( string query, int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-                {"append_to_response", "keywords"},
-            };
+            {"query", query},
+            {"include_adult", "false"},
+            {"language", language},
+        };
 
-            string command = $"movie/{movieId}";
+        const string command = "search/movie";
 
-            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
+        ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiSearchResponse<MovieInfo>> SearchByTitleAsync( string query, int pageNumber = 1, string language = "en" )
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
+    }
+
+    public async Task<ApiQueryResponse<Movie>> GetLatestAsync( string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                {"query", query},
-                {"include_adult", "false"},
-                {"language", language},
-            };
+            {"language", language},
+            {"append_to_response", "keywords"},
+        };
 
-            const string command = "search/movie";
+        const string command = "movie/latest";
 
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+        ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
 
-            if( response.Error != null )
-            {
-                return response;
-            }
+        return response;
+    }
 
-            response.Results.PopulateGenres( _genreApi );
+    public async Task<ApiSearchResponse<Movie>> GetNowPlayingAsync( int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
+        {
+            {"language", language},
+            {"append_to_response", "keywords"},
+        };
 
+        const string command = "movie/now_playing";
+
+        ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>( command, pageNumber, param );
+
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<Movie>> GetUpcomingAsync( int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
+        {
+            {"language", language},
+            {"append_to_response", "keywords"},
+        };
+
+        const string command = "movie/upcoming";
+
+        ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>( command, pageNumber, param );
+
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<MovieInfo>> GetTopRatedAsync( int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
+        {
+            {"language", language},
+        };
+
+        const string command = "movie/top_rated";
+
+        ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiQueryResponse<Movie>> GetLatestAsync( string language = "en" )
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<MovieInfo>> GetPopularAsync( int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-                {"append_to_response", "keywords"},
-            };
+            {"language", language},
+        };
 
-            const string command = "movie/latest";
+        const string command = "movie/popular";
 
-            ApiQueryResponse<Movie> response = await base.QueryAsync<Movie>( command, param );
+        ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiSearchResponse<Movie>> GetNowPlayingAsync( int pageNumber = 1, string language = "en" )
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
+    }
+
+    public async Task<ApiQueryResponse<MovieCredit>> GetCreditsAsync( int movieId, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-                {"append_to_response", "keywords"},
-            };
+            {"language", language},
+        };
 
-            const string command = "movie/now_playing";
+        string command = $"movie/{movieId}/credits";
 
-            ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>( command, pageNumber, param );
+        ApiQueryResponse<MovieCredit> response = await base.QueryAsync<MovieCredit>( command, param );
 
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<MovieInfo>> GetRecommendationsAsync( int movieId, int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
+        {
+            {"language", language},
+        };
+
+        string command = $"movie/{movieId}/recommendations";
+        ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiSearchResponse<Movie>> GetUpcomingAsync( int pageNumber = 1, string language = "en" )
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<MovieInfo>> GetSimilarAsync( int movieId, int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-                {"append_to_response", "keywords"},
-            };
+            {"language", language},
+        };
 
-            const string command = "movie/upcoming";
+        string command = $"movie/{movieId}/similar";
+        ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
 
-            ApiSearchResponse<Movie> response = await base.SearchAsync<Movie>( command, pageNumber, param );
-
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiSearchResponse<MovieInfo>> GetTopRatedAsync( int pageNumber = 1, string language = "en" )
-        {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-            };
+        response.Results.PopulateGenres( _genreApi );
 
-            const string command = "movie/top_rated";
-
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
-
-            if( response.Error != null )
-            {
-                return response;
-            }
-
-            response.Results.PopulateGenres( _genreApi );
-
-            return response;
-        }
-
-        public async Task<ApiSearchResponse<MovieInfo>> GetPopularAsync( int pageNumber = 1, string language = "en" )
-        {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-            };
-
-            const string command = "movie/popular";
-
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
-
-            if( response.Error != null )
-            {
-                return response;
-            }
-
-            response.Results.PopulateGenres( _genreApi );
-
-            return response;
-        }
-
-        public async Task<ApiQueryResponse<MovieCredit>> GetCreditsAsync( int movieId, string language = "en" )
-        {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-            };
-
-            string command = $"movie/{movieId}/credits";
-
-            ApiQueryResponse<MovieCredit> response = await base.QueryAsync<MovieCredit>( command, param );
-
-            return response;
-        }
-
-        public async Task<ApiSearchResponse<MovieInfo>> GetRecommendationsAsync( int movieId, int pageNumber = 1, string language = "en" )
-        {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-            };
-
-            string command = $"movie/{movieId}/recommendations";
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
-
-            if( response.Error != null )
-            {
-                return response;
-            }
-
-            response.Results.PopulateGenres( _genreApi );
-
-            return response;
-        }
-
-        public async Task<ApiSearchResponse<MovieInfo>> GetSimilarAsync( int movieId, int pageNumber = 1, string language = "en" )
-        {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-            };
-
-            string command = $"movie/{movieId}/similar";
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
-
-            if( response.Error != null )
-            {
-                return response;
-            }
-
-            response.Results.PopulateGenres( _genreApi );
-
-            return response;
-        }
+        return response;
     }
 }

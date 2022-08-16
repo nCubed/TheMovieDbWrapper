@@ -1,130 +1,122 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using DM.MovieApi.ApiRequest;
-using DM.MovieApi.ApiResponse;
-using DM.MovieApi.MovieDb.Genres;
-using DM.MovieApi.Shims;
+﻿namespace DM.MovieApi.MovieDb.TV;
 
-namespace DM.MovieApi.MovieDb.TV
+internal class ApiTVShowRequest : ApiRequestBase, IApiTVShowRequest
 {
-    internal class ApiTVShowRequest : ApiRequestBase, IApiTVShowRequest
+    private readonly IApiGenreRequest _genreApi;
+
+    [ImportingConstructor]
+    public ApiTVShowRequest( IApiSettings settings, IApiGenreRequest genreApi )
+        : base( settings )
     {
-        private readonly IApiGenreRequest _genreApi;
+        _genreApi = genreApi;
+    }
 
-        [ImportingConstructor]
-        public ApiTVShowRequest( IApiSettings settings, IApiGenreRequest genreApi )
-            : base( settings )
+    public async Task<ApiQueryResponse<TVShow>> FindByIdAsync( int tvShowId, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            _genreApi = genreApi;
-        }
+            { "language", language },
+            { "append_to_response", "keywords" },
+        };
 
-        public async Task<ApiQueryResponse<TVShow>> FindByIdAsync( int tvShowId, string language = "en" )
+        string command = $"tv/{tvShowId}";
+
+        ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command, param );
+
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<TVShowInfo>> SearchByNameAsync( string query, int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                { "language", language },
-                { "append_to_response", "keywords" },
-            };
+            { "query", query },
+            { "language", language }
+        };
 
-            string command = $"tv/{tvShowId}";
+        const string command = "search/tv";
 
-            ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command, param );
+        ApiSearchResponse<TVShowInfo> response = await base.SearchAsync<TVShowInfo>( command, pageNumber, param );
 
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiSearchResponse<TVShowInfo>> SearchByNameAsync( string query, int pageNumber = 1, string language = "en" )
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
+    }
+
+    public async Task<ApiQueryResponse<TVShow>> GetLatestAsync( string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                { "query", query },
-                { "language", language }
-            };
+            { "language", language },
+            { "append_to_response", "keywords" },
+        };
 
-            const string command = "search/tv";
+        const string command = "tv/latest";
 
-            ApiSearchResponse<TVShowInfo> response = await base.SearchAsync<TVShowInfo>( command, pageNumber, param );
+        ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command, param );
 
-            if( response.Error != null )
-            {
-                return response;
-            }
+        return response;
+    }
 
-            response.Results.PopulateGenres( _genreApi );
+    public async Task<ApiSearchResponse<TVShowInfo>> GetTopRatedAsync( int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
+        {
+            { "language", language }
+        };
 
+        const string command = "tv/top_rated";
+
+        ApiSearchResponse<TVShowInfo> response = await base.SearchAsync<TVShowInfo>( command, pageNumber, param );
+
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiQueryResponse<TVShow>> GetLatestAsync( string language = "en" )
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<TVShowInfo>> GetPopularAsync( int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                { "language", language },
-                { "append_to_response", "keywords" },
-            };
+            { "language", language }
+        };
 
-            const string command = "tv/latest";
+        const string command = "tv/popular";
 
-            ApiQueryResponse<TVShow> response = await base.QueryAsync<TVShow>( command, param );
+        ApiSearchResponse<TVShowInfo> response = await base.SearchAsync<TVShowInfo>( command, pageNumber, param );
 
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiSearchResponse<TVShowInfo>> GetTopRatedAsync( int pageNumber = 1, string language = "en" )
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
+    }
+
+    public async Task<ApiQueryResponse<SeasonInfo>> GetTvShowSeasonInfoAsync( int tvShowId, int seasonNumber, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                { "language", language }
-            };
+            { "language", language },
+            { "append_to_response", "keywords" },
+        };
 
-            const string command = "tv/top_rated";
+        string command = $"tv/{tvShowId}/season/{seasonNumber}";
 
-            ApiSearchResponse<TVShowInfo> response = await base.SearchAsync<TVShowInfo>( command, pageNumber, param );
+        ApiQueryResponse<SeasonInfo> response = await base.QueryAsync<SeasonInfo>( command, param );
 
-            if( response.Error != null )
-            {
-                return response;
-            }
-
-            response.Results.PopulateGenres( _genreApi );
-
-            return response;
-        }
-
-        public async Task<ApiSearchResponse<TVShowInfo>> GetPopularAsync( int pageNumber = 1, string language = "en" )
-        {
-            var param = new Dictionary<string, string>
-            {
-                { "language", language }
-            };
-
-            const string command = "tv/popular";
-
-            ApiSearchResponse<TVShowInfo> response = await base.SearchAsync<TVShowInfo>( command, pageNumber, param );
-
-            if( response.Error != null )
-            {
-                return response;
-            }
-
-            response.Results.PopulateGenres( _genreApi );
-
-            return response;
-        }
-
-        public async Task<ApiQueryResponse<SeasonInfo>> GetTvShowSeasonInfoAsync( int tvShowId, int seasonNumber, string language = "en" )
-        {
-            var param = new Dictionary<string, string>
-            {
-                { "language", language },
-                { "append_to_response", "keywords" },
-            };
-
-            string command = $"tv/{tvShowId}/season/{seasonNumber}";
-
-            ApiQueryResponse<SeasonInfo> response = await base.QueryAsync<SeasonInfo>( command, param );
-
-            return response;
-        }
+        return response;
     }
 }

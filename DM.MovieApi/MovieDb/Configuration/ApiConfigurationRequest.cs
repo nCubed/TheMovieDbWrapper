@@ -1,22 +1,16 @@
-using System.Threading.Tasks;
-using DM.MovieApi.ApiRequest;
-using DM.MovieApi.ApiResponse;
-using DM.MovieApi.Shims;
+﻿namespace DM.MovieApi.MovieDb.Configuration;
 
-namespace DM.MovieApi.MovieDb.Configuration
+internal class ApiConfigurationRequest : ApiRequestBase, IApiConfigurationRequest
 {
-    internal class ApiConfigurationRequest : ApiRequestBase, IApiConfigurationRequest
+    [ImportingConstructor]
+    public ApiConfigurationRequest( IApiSettings settings )
+        : base( settings )
+    { }
+
+    public async Task<ApiQueryResponse<ApiConfiguration>> GetAsync()
     {
-        [ImportingConstructor]
-        public ApiConfigurationRequest( IApiSettings settings )
-            : base( settings )
-        { }
+        ApiQueryResponse<ApiConfiguration> response = await base.QueryAsync<ApiConfiguration>( "configuration" );
 
-        public async Task<ApiQueryResponse<ApiConfiguration>> GetAsync()
-        {
-            ApiQueryResponse<ApiConfiguration> response = await base.QueryAsync<ApiConfiguration>( "configuration" );
-
-            return response;
-        }
+        return response;
     }
 }

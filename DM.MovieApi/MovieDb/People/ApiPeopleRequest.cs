@@ -1,86 +1,78 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using DM.MovieApi.ApiRequest;
-using DM.MovieApi.ApiResponse;
-using DM.MovieApi.MovieDb.Genres;
-using DM.MovieApi.Shims;
+﻿namespace DM.MovieApi.MovieDb.People;
 
-namespace DM.MovieApi.MovieDb.People
+internal class ApiPeopleRequest : ApiRequestBase, IApiPeopleRequest
 {
-    internal class ApiPeopleRequest : ApiRequestBase, IApiPeopleRequest
+    private readonly IApiGenreRequest _genreApi;
+
+    [ImportingConstructor]
+    public ApiPeopleRequest( IApiSettings settings, IApiGenreRequest genreApi )
+        : base( settings )
     {
-        private readonly IApiGenreRequest _genreApi;
+        _genreApi = genreApi;
+    }
 
-        [ImportingConstructor]
-        public ApiPeopleRequest( IApiSettings settings, IApiGenreRequest genreApi )
-            : base( settings )
+    public async Task<ApiQueryResponse<Person>> FindByIdAsync( int personId, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            _genreApi = genreApi;
-        }
+            {"language", language}
+        };
 
-        public async Task<ApiQueryResponse<Person>> FindByIdAsync( int personId, string language = "en" )
+        string command = $"person/{personId}";
+
+        ApiQueryResponse<Person> response = await base.QueryAsync<Person>( command, param );
+
+        return response;
+    }
+
+    public async Task<ApiSearchResponse<PersonInfo>> SearchByNameAsync( string query, int pageNumber = 1, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language}
-            };
+            {"query", query},
+            {"include_adult", "false"},
+            {"language", language},
+        };
 
-            string command = $"person/{personId}";
+        const string command = "search/person";
 
-            ApiQueryResponse<Person> response = await base.QueryAsync<Person>( command, param );
+        ApiSearchResponse<PersonInfo> response = await base.SearchAsync<PersonInfo>( command, pageNumber, param );
 
+        if( response.Error != null )
+        {
             return response;
         }
 
-        public async Task<ApiSearchResponse<PersonInfo>> SearchByNameAsync( string query, int pageNumber = 1, string language = "en" )
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
+    }
+
+    public async Task<ApiQueryResponse<PersonMovieCredit>> GetMovieCreditsAsync( int personId, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                {"query", query},
-                {"include_adult", "false"},
-                {"language", language},
-            };
+            {"language", language},
+        };
 
-            const string command = "search/person";
+        string command = $"person/{personId}/movie_credits";
 
-            ApiSearchResponse<PersonInfo> response = await base.SearchAsync<PersonInfo>( command, pageNumber, param );
+        ApiQueryResponse<PersonMovieCredit> response = await base.QueryAsync<PersonMovieCredit>( command, param );
 
-            if( response.Error != null )
-            {
-                return response;
-            }
+        return response;
+    }
 
-            response.Results.PopulateGenres( _genreApi );
-
-            return response;
-        }
-
-        public async Task<ApiQueryResponse<PersonMovieCredit>> GetMovieCreditsAsync( int personId, string language = "en" )
+    public async Task<ApiQueryResponse<PersonTVCredit>> GetTVCreditsAsync( int personId, string language = "en" )
+    {
+        var param = new Dictionary<string, string>
         {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-            };
+            {"language", language},
+        };
 
-            string command = $"person/{personId}/movie_credits";
+        string command = $"person/{personId}/tv_credits";
 
-            ApiQueryResponse<PersonMovieCredit> response = await base.QueryAsync<PersonMovieCredit>( command, param );
+        ApiQueryResponse<PersonTVCredit> response = await base.QueryAsync<PersonTVCredit>( command, param );
 
-            return response;
-        }
-
-        public async Task<ApiQueryResponse<PersonTVCredit>> GetTVCreditsAsync( int personId, string language = "en" )
-        {
-            var param = new Dictionary<string, string>
-            {
-                {"language", language},
-            };
-
-            string command = $"person/{personId}/tv_credits";
-
-            ApiQueryResponse<PersonTVCredit> response = await base.QueryAsync<PersonTVCredit>( command, param );
-
-            return response;
-        }
+        return response;
     }
 }
