@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DM.MovieApi.ApiResponse;
 using DM.MovieApi.MovieDb.Movies;
@@ -41,8 +42,12 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             const int movieIdRunLolaRun = 104;
 
+            // todo: move to ApiResponseUtil and refactor w/ existing AssertCanPageSearchResponse
+            //       * each component may be able to become re-usable methods
+
             int num = 0;
             var ids = new HashSet<int>();
+            var dups = new List<string>();
 
             for( int i = 1; i <= 10; i++ )
             {
@@ -60,16 +65,25 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
 
                 foreach( MovieInfo m in response.Results )
                 {
-                    ids.Add( m.Id );
                     num++;
+                    if( ids.Add( m.Id ) == false )
+                    {
+                        dups.Add( m.ToString() );
+                    }
                 }
             }
 
             // api tends to return duplicate results when paging
             // shouldn't be more than 2 or 3 per page; at 20 per page,
-            // that's approximately 4-6; let's target 20% (4/page)
-            int min = (int)(num * 0.8);
-            Assert.IsTrue( ids.Count > min, $"Actual: {ids.Count} vs {min}" );
+            // that's approximately 4-6; let's target 25%
+            int min = (int)(num * 0.75);
+            var d = dups
+                .GroupBy( x => x )
+                .Select( x => $"{x.Key} (x {x.Count()})" );
+            System.Diagnostics.Trace.WriteLine( $"Results: {num}, Dups: {dups.Count}" +
+                                                $"\r\n{string.Join( "\r\n", d )}" );
+
+            Assert.IsTrue( ids.Count >= min, $"Total: {num}.\r\nUnique: {ids.Count}, Dup Threshold {min}" );
         }
 
         [TestMethod]
