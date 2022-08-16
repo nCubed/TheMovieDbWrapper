@@ -87,15 +87,12 @@ internal static class ApiResponseUtil
                 Assert.Fail( $"Unsupported type: {typeof( T ).Name}" );
             }
 
-            if( keySelector == null )
-            {
-                totalResults += response.Results.Count;
-            }
-            else
+            totalResults += response.Results.Count;
+
+            if( keySelector != null )
             {
                 foreach( T res in response.Results )
                 {
-                    totalResults++;
                     int key = keySelector( res );
                     if( ids.Add( key ) == false )
                     {
