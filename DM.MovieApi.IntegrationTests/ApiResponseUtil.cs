@@ -70,9 +70,21 @@ internal static class ApiResponseUtil
             {
                 AssertMovieStructure( (IEnumerable<Movie>)response.Results );
             }
+            else if( typeof( T ) == typeof( MovieInfo ) )
+            {
+                AssertMovieInformationStructure( (IEnumerable<MovieInfo>)response.Results );
+            }
             else if( typeof( T ) == typeof( PersonInfo ) )
             {
                 AssertPersonInfoStructure( (IEnumerable<PersonInfo>)response.Results );
+            }
+            else if( typeof( T ) == typeof( TVShowInfo ) )
+            {
+                AssertTVShowInformationStructure( (IEnumerable<TVShowInfo>)response.Results );
+            }
+            else
+            {
+                Assert.Fail( $"Unsupported type: {typeof( T ).Name}" );
             }
 
             if( keySelector == null )
@@ -254,8 +266,11 @@ internal static class ApiResponseUtil
     public static void AssertTVShowInformationStructure( TVShowInfo tvShow )
     {
         Assert.IsTrue( tvShow.Id > 0 );
-        Assert.IsFalse( string.IsNullOrEmpty( tvShow.Name ) );
+        Assert.IsFalse( string.IsNullOrEmpty( tvShow.Name ), $"Actual {tvShow}" );
+        Assert.IsFalse( string.IsNullOrWhiteSpace( tvShow.OriginalName ), $"Actual {tvShow}" );
 
+        AssertImagePath( tvShow.BackdropPath );
+        AssertImagePath( tvShow.PosterPath );
         AssertGenres( tvShow.GenreIds, tvShow.Genres );
     }
 
