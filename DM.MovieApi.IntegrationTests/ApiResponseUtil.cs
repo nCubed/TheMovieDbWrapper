@@ -55,10 +55,12 @@ internal static class ApiResponseUtil
         var ids = new HashSet<int>();
         var dups = new List<string>();
         int totalResults = 0;
-        int pageNumber = 1;
+        int pageNumber = 0;
 
         do
         {
+            pageNumber++;
+
             Log( $"search: {search} | page: {pageNumber}", "AssertCanPage" );
             ApiSearchResponse<T> response = await apiSearch( search, pageNumber );
 
@@ -108,12 +110,11 @@ internal static class ApiResponseUtil
 
             // keeps the system from being throttled
             System.Threading.Thread.Sleep( PagingThrottle );
-        } while( ++pageNumber <= minimumPageCount );
+        } while( pageNumber < minimumPageCount );
 
-        // will be 1 greater than minimumPageCount in the last loop
-        Assert.AreEqual( minimumPageCount, --pageNumber );
+        Assert.AreEqual( minimumPageCount, pageNumber );
 
-        // 20 results per page
+        // api defaults to 20 results per page
         int minCount = pageNumber * 20;
         Assert.IsTrue( totalResults >= minCount,
             $"Actual results: {totalResults} | Expected min: {minCount}" );
