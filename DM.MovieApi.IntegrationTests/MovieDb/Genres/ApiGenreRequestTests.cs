@@ -31,7 +31,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
             const int id = 10769;
             const string name = "Foreign";
 
-            CollectionAssert.DoesNotContain( _api.AllGenres.ToList(), new Genre( id, name ) );
+            CollectionAssert.DoesNotContain( _api.AllGenres.ToArray(), new Genre( id, name ) );
 
             // FindById will add to AllGenres when it does not exist
             ApiQueryResponse<Genre> response = await _api.FindByIdAsync( id );
@@ -41,7 +41,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             // the genre should not have been added to AllGenres since TMDB no longer recognizes
             // the foreign genre category.
-            CollectionAssert.DoesNotContain( _api.AllGenres.ToList(), new Genre( id, name ) );
+            CollectionAssert.DoesNotContain( _api.AllGenres.ToArray(), new Genre( id, name ) );
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             IReadOnlyList<Genre> knownGenres = GenreFactory.GetAll();
 
-            CollectionAssert.AreEquivalent( knownGenres.ToList(), response.Item.ToList() );
+            CollectionAssert.AreEquivalent( knownGenres.ToArray(), response.Item.ToArray() );
         }
 
         [TestMethod]
@@ -118,7 +118,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             Assert.IsTrue( all.Item.Count > movies.Item.Count );
 
-            CollectionAssert.IsSubsetOf( movies.Item.ToList(), all.Item.ToList() );
+            CollectionAssert.IsSubsetOf( movies.Item.ToArray(), all.Item.ToArray() );
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             Assert.IsTrue( all.Item.Count > tv.Item.Count );
 
-            CollectionAssert.IsSubsetOf( tv.Item.ToList(), all.Item.ToList() );
+            CollectionAssert.IsSubsetOf( tv.Item.ToArray(), all.Item.ToArray() );
         }
 
         [TestMethod]
@@ -152,7 +152,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
 
             foreach( MovieInfo info in response.Results )
             {
-                CollectionAssert.IsSubsetOf( expectedGenres, info.Genres.ToList() );
+                CollectionAssert.IsSubsetOf( expectedGenres, info.Genres.ToArray() );
             }
         }
 
@@ -161,10 +161,9 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Genres
         {
             int genreId = GenreFactory.Comedy().Id;
             // Comedy has upwards of 2k pages.
-            const int minimumPageCount = 5;
-            const int minimumTotalResultsCount = 100; // 20 results per page x 5 pages = 100
+            const int minimumPageCount = 10;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( genreId, minimumPageCount, minimumTotalResultsCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( genreId, minimumPageCount,
                 ( id, page ) => _api.FindMoviesByIdAsync( id, page ), x => x.Id );
         }
     }

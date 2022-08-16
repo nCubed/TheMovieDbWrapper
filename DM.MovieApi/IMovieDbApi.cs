@@ -1,6 +1,7 @@
-using DM.MovieApi.MovieDb.Certifications;
+﻿using DM.MovieApi.MovieDb.Certifications;
 using DM.MovieApi.MovieDb.Companies;
 using DM.MovieApi.MovieDb.Configuration;
+using DM.MovieApi.MovieDb.Discover;
 using DM.MovieApi.MovieDb.Genres;
 using DM.MovieApi.MovieDb.IndustryProfessions;
 using DM.MovieApi.MovieDb.Movies;
@@ -54,5 +55,10 @@ namespace DM.MovieApi
         /// Provides access for retrieving information about People.
         /// </summary>
         IApiPeopleRequest People { get; }
+
+        /// <summary>
+        /// Provides access for discovering movies based on a filtered set of parameters.
+        /// </summary>
+        IApiDiscoverRequest Discover { get; }
     }
 }

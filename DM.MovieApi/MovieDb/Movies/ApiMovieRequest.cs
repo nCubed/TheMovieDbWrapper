@@ -156,5 +156,45 @@ namespace DM.MovieApi.MovieDb.Movies
 
             return response;
         }
+
+        public async Task<ApiSearchResponse<MovieInfo>> GetRecommendationsAsync( int movieId, int pageNumber = 1, string language = "en" )
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+            };
+
+            string command = $"movie/{movieId}/recommendations";
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+
+            if( response.Error != null )
+            {
+                return response;
+            }
+
+            response.Results.PopulateGenres( _genreApi );
+
+            return response;
+        }
+
+        public async Task<ApiSearchResponse<MovieInfo>> GetSimilarAsync( int movieId, int pageNumber = 1, string language = "en" )
+        {
+            var param = new Dictionary<string, string>
+            {
+                {"language", language},
+            };
+
+            string command = $"movie/{movieId}/similar";
+            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+
+            if( response.Error != null )
+            {
+                return response;
+            }
+
+            response.Results.PopulateGenres( _genreApi );
+
+            return response;
+        }
     }
 }

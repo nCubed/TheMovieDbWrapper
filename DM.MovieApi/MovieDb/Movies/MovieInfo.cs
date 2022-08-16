@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using DM.MovieApi.MovieDb.Genres;
@@ -53,6 +53,7 @@ namespace DM.MovieApi.MovieDb.Movies
         {
             GenreIds = Array.Empty<int>();
             Genres = Array.Empty<Genre>();
+            ReleaseDate = DateTime.UnixEpoch;
         }
 
         public override string ToString()
