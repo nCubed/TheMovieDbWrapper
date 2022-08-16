@@ -58,7 +58,6 @@ namespace DM.MovieApi.IntegrationTests
         public static async Task AssertCanPageSearchResponse<T, TSearch>(
             TSearch search,
             int minimumPageCount,
-            int minimumTotalResultsCount,
             Func<TSearch, int, Task<ApiSearchResponse<T>>> apiSearch,
             Func<T, int> keySelector )
         {
@@ -117,9 +116,12 @@ namespace DM.MovieApi.IntegrationTests
             } while( ++pageNumber <= minimumPageCount );
 
             // will be 1 greater than minimumPageCount in the last loop
-            Assert.AreEqual( minimumPageCount + 1, pageNumber );
+            Assert.AreEqual( minimumPageCount, --pageNumber );
 
-            Assert.IsTrue( totalResults >= minimumTotalResultsCount, $"Actual result count: {totalResults} | Expected min count: {minimumTotalResultsCount}" );
+            // 20 results per page
+            int minCount = pageNumber * 20;
+            Assert.IsTrue( totalResults >= minCount,
+                $"Actual results: {totalResults} | Expected min: {minCount}" );
 
             if( keySelector == null )
             {

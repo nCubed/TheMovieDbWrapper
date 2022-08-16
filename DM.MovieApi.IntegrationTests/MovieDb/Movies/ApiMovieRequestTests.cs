@@ -122,9 +122,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             const string query = "Harry";
             const int minimumPageCount = 8;
-            const int minimumTotalResultsCount = 150;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount,
                 ( search, pageNumber ) => _api.SearchByTitleAsync( search, pageNumber ), x => x.Id );
         }
 
@@ -279,9 +278,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         {
             // Now Playing typically has 25+ pages.
             const int minimumPageCount = 5;
-            const int minimumTotalResultsCount = 100; // 20 results per page x 5 pages = 100
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount,
                 ( _, page ) => _api.GetNowPlayingAsync( page ), x => x.Id );
         }
 
@@ -299,11 +297,10 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         public async Task GetUpcomingAsync_CanPageResults()
         {
             // Now Playing typically has 5+ pages.
-            // - intentionally setting minimumTotalResultsCount at 50; sometimes upcoming movies are scarce.
+            // note: sometimes upcoming movies are scarce and may occasionally fail.
             const int minimumPageCount = 3;
-            const int minimumTotalResultsCount = 50; // 20 results per page x 3 pages = 60
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount,
                 ( _, page ) => _api.GetUpcomingAsync( page ), x => x.Id );
         }
 
@@ -323,9 +320,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         public async Task GetTopRatedAsync_CanPageResults()
         {
             const int minimumPageCount = 2;
-            const int minimumTotalResultsCount = 40;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount,
                 ( _, page ) => _api.GetTopRatedAsync( page ), x => x.Id );
         }
 
@@ -345,9 +341,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
         public async Task GetPopularAsync_CanPageResults()
         {
             const int minimumPageCount = 2;
-            const int minimumTotalResultsCount = 40;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount, minimumTotalResultsCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount,
                 ( _, page ) => _api.GetPopularAsync( page ), x => x.Id );
         }
     }

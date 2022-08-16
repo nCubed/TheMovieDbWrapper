@@ -326,9 +326,8 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.People
         {
             const string query = "Cox";
             const int minimumPageCount = 15;
-            const int minimumTotalResultsCount = 300;
 
-            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount, minimumTotalResultsCount,
+            await ApiResponseUtil.AssertCanPageSearchResponse( query, minimumPageCount,
                 ( search, pageNumber ) => _api.SearchByNameAsync( search, pageNumber ), null );
         }
     }
