@@ -1,4 +1,5 @@
-﻿using DM.MovieApi.MovieDb.Discover;
+﻿using DM.MovieApi.IntegrationTests.MovieDb.People;
+using DM.MovieApi.MovieDb.Discover;
 
 namespace DM.MovieApi.IntegrationTests.MovieDb.Discover;
 
@@ -6,6 +7,7 @@ namespace DM.MovieApi.IntegrationTests.MovieDb.Discover;
 public class ApiDiscoverRequestTests
 {
     private IApiDiscoverRequest _api;
+    private IApiMovieRequest _movie;
 
     [TestInitialize]
     public void TestInit()
@@ -13,17 +15,17 @@ public class ApiDiscoverRequestTests
         ApiResponseUtil.ThrottleTests();
 
         _api = MovieDbFactory.Create<IApiDiscoverRequest>().Value;
+        _movie = MovieDbFactory.Create<IApiMovieRequest>().Value;
 
         Assert.IsInstanceOfType( _api, typeof( ApiDiscoverRequest ) );
     }
 
     [TestMethod]
-    public async Task DiscoverMovies_WithCrew()
+    public async Task WithCrew()
     {
         int directorId = 66212;
 
-        IDiscoverMovieParameterBuilder builder = CreateBuilder();
-        builder.WithCrew( directorId );
+        var builder = new DiscoverMovieParameterBuilder().WithCrew( directorId );
 
         ApiSearchResponse<MovieInfo> response = await _api.DiscoverMoviesAsync( builder );
 
@@ -32,109 +34,107 @@ public class ApiDiscoverRequestTests
     }
 
     [TestMethod]
-    public async Task DiscoverMovies_WithCrew_HasNoResult_InvalidPersonId()
+    public async Task WithCrew_HasNoResult_InvalidPersonId()
     {
-        int personId = 0;
-
-        IDiscoverMovieParameterBuilder builder = CreateBuilder();
-        builder.WithCrew( personId );
+        var builder = new DiscoverMovieParameterBuilder().WithCrew( 0 );
 
         ApiSearchResponse<MovieInfo> response = await _api.DiscoverMoviesAsync( builder );
 
         ApiResponseUtil.AssertNoSearchResults( response );
     }
 
+    [DataRow( ApiPeopleRequestTests.PersonId_MillaJovovich )]
+    [DataRow( ApiPeopleRequestTests.PersonId_KevinBacon )]
+    [DataRow( ApiPeopleRequestTests.PersonId_CourteneyCox )]
     [TestMethod]
-    public async Task DiscoverMovies_WithCast()
+    public async Task WithCast( int personId )
     {
-        int actorId = 66462;
-
-        IDiscoverMovieParameterBuilder builder = CreateBuilder();
-        builder.WithCast( actorId );
+        var builder = new DiscoverMovieParameterBuilder().WithCast( personId );
 
         ApiSearchResponse<MovieInfo> response = await _api.DiscoverMoviesAsync( builder );
 
         ApiResponseUtil.AssertErrorIsNull( response );
         ApiResponseUtil.AssertMovieInformationStructure( response.Results );
+
+        foreach( MovieInfo info in response.Results )
+        {
+            MovieCredit credits = (await _movie.GetCreditsAsync( info.Id )).Item;
+
+            Assert.IsTrue( credits.CastMembers.Any( x => x.PersonId == personId ) );
+        }
     }
 
     [TestMethod]
-    public async Task DiscoverMovies_WithCast_HasNoResult_InvalidPersonId()
+    public async Task WithCast_HasNoResult_InvalidPersonId()
     {
-        int personId = 0;
-
-        IDiscoverMovieParameterBuilder builder = CreateBuilder();
-        builder.WithCast( personId );
+        var builder = new DiscoverMovieParameterBuilder().WithCast( 0 );
 
         ApiSearchResponse<MovieInfo> response = await _api.DiscoverMoviesAsync( builder );
 
         ApiResponseUtil.AssertNoSearchResults( response );
     }
 
+    [DynamicData( nameof( GetGenreData ), DynamicDataSourceType.Method )]
     [TestMethod]
-    public async Task DiscoverMovies_WithGenre()
+    public async Task WithGenre( Genre genre )
     {
-        int genreId = 28;
-
-        IDiscoverMovieParameterBuilder builder = CreateBuilder();
-        builder.WithGenre( genreId );
+        var builder = new DiscoverMovieParameterBuilder().WithGenre( genre );
 
         ApiSearchResponse<MovieInfo> response = await _api.DiscoverMoviesAsync( builder );
 
         ApiResponseUtil.AssertErrorIsNull( response );
         ApiResponseUtil.AssertMovieInformationStructure( response.Results );
 
-        Assert.IsTrue( response.Results
-            .All( r => r.Genres.Any( g => g.Id == genreId ) ), "No results with genre" );
+        foreach( MovieInfo info in response.Results )
+        {
+            Assert.IsTrue( info.GenreIds.Contains( genre.Id ) );
+            Assert.IsTrue( info.Genres.Contains( genre ) );
+        }
     }
 
+    [DynamicData( nameof( GetGenreData ), DynamicDataSourceType.Method )]
     [TestMethod]
-    public async Task DiscoverMovies_ExcludeGenre()
+    public async Task ExcludeGenre( Genre genre )
     {
-        int genreId = 28;
-
-        IDiscoverMovieParameterBuilder builder = CreateBuilder();
-        builder.ExcludeGenre( genreId );
+        var builder = new DiscoverMovieParameterBuilder().ExcludeGenre( genre );
 
         ApiSearchResponse<MovieInfo> response = await _api.DiscoverMoviesAsync( builder );
 
         ApiResponseUtil.AssertErrorIsNull( response );
         ApiResponseUtil.AssertMovieInformationStructure( response.Results );
 
-        Assert.IsTrue( response.Results
-            .All( r => r.Genres.All( g => g.Id != genreId ) ), "Genre found in results" );
+        foreach( MovieInfo info in response.Results )
+        {
+            Assert.IsFalse( info.GenreIds.Contains( genre.Id ) );
+            Assert.IsFalse( info.Genres.Contains( genre ) );
+        }
     }
 
+    [DataRow( "es" )]
+    [DataRow( "de" )]
+    [DataRow( "fi" )]
     [TestMethod]
-    public async Task DiscoverMovies_WithOriginalLanguage_InFinnish()
+    public async Task WithOriginalLanguage( string originalLanguage )
     {
-        int directorId = 66212;
-        string originalLanguage = "fi";
-
-        IDiscoverMovieParameterBuilder builder = CreateBuilder();
-        builder.WithOriginalLanguage( originalLanguage ).WithCrew( directorId );
+        var builder = new DiscoverMovieParameterBuilder().WithOriginalLanguage( originalLanguage );
 
         ApiSearchResponse<MovieInfo> response = await _api.DiscoverMoviesAsync( builder );
 
         ApiResponseUtil.AssertErrorIsNull( response );
         ApiResponseUtil.AssertMovieInformationStructure( response.Results );
+
+        foreach( MovieInfo info in response.Results )
+        {
+            Movie m = (await _movie.FindByIdAsync( info.Id )).Item;
+
+            Assert.AreEqual( originalLanguage, m.OriginalLanguage, $"{m.OriginalLanguage} - {m}" );
+        }
     }
 
-    [TestMethod]
-    public async Task DiscoverMovies_WithOriginalLanguage_InGerman()
+    private static IEnumerable<object[]> GetGenreData()
     {
-        int directorId = 66212;
-        string originalLanguage = "de";
-
-        IDiscoverMovieParameterBuilder builder = CreateBuilder();
-        builder.WithOriginalLanguage( originalLanguage ).WithCrew( directorId );
-
-        ApiSearchResponse<MovieInfo> response = await _api.DiscoverMoviesAsync( builder );
-
-        ApiResponseUtil.AssertErrorIsNull( response );
-        ApiResponseUtil.AssertMovieInformationStructure( response.Results );
+        yield return new object[] { GenreFactory.Comedy() };
+        yield return new object[] { GenreFactory.Action() };
+        yield return new object[] { GenreFactory.ScienceFiction() };
     }
-
-    private IDiscoverMovieParameterBuilder CreateBuilder()
-        => new DiscoverMovieParameterBuilder();
 }

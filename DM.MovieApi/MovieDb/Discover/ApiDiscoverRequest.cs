@@ -11,7 +11,7 @@ internal class ApiDiscoverRequest : ApiRequestBase, IApiDiscoverRequest
         _genreApi = genreApi;
     }
 
-    public async Task<ApiSearchResponse<MovieInfo>> DiscoverMoviesAsync( IDiscoverMovieParameterBuilder builder, int pageNumber = 1, string language = "en" )
+    public async Task<ApiSearchResponse<MovieInfo>> DiscoverMoviesAsync( DiscoverMovieParameterBuilder builder, int pageNumber = 1, string language = "en" )
     {
         Dictionary<string, string> param = builder.Build();
         param.Add( "language", language );

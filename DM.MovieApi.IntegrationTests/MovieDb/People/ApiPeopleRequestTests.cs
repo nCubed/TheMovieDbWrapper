@@ -4,9 +4,9 @@
 public class ApiPeopleRequestTests
 {
     // ReSharper disable InconsistentNaming
-    const int PersonId_MillaJovovich = 63;
-    const int PersonId_KevinBacon = 4724;
-    const int PersonId_CourteneyCox = 14405;
+    public const int PersonId_MillaJovovich = 63;
+    public const int PersonId_KevinBacon = 4724;
+    public const int PersonId_CourteneyCox = 14405;
     // ReSharper restore InconsistentNaming
 
     private IApiPeopleRequest _api;

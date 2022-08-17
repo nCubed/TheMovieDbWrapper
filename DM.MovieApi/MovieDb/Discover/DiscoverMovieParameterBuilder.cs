@@ -1,14 +1,18 @@
 ﻿namespace DM.MovieApi.MovieDb.Discover;
 
-public class DiscoverMovieParameterBuilder : IDiscoverMovieParameterBuilder
+public class DiscoverMovieParameterBuilder
 {
-    private readonly Dictionary<string, IList<string>> _param;
+    private readonly Dictionary<string, HashSet<string>> _param;
 
     public DiscoverMovieParameterBuilder()
     {
-        _param = new Dictionary<string, IList<string>>();
+        _param = new Dictionary<string, HashSet<string>>();
     }
 
+    /// <summary>
+    /// Builds all parameters for use with an <see cref="ApiRequest.IApiRequest"/>.
+    /// Typically called by the internal engine.
+    /// </summary>
     public Dictionary<string, string> Build()
     {
         var param = new Dictionary<string, string>();
@@ -21,51 +25,165 @@ public class DiscoverMovieParameterBuilder : IDiscoverMovieParameterBuilder
         return param;
     }
 
-    public IDiscoverMovieParameterBuilder WithCast( int personId )
+    /// <summary>
+    /// <para>Only include movies that have one of the cast members.</para>
+    /// <para>May be invoked more than once to add additional values.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder WithCast( params int[] personId )
     {
-        AddParamType( "with_cast" );
-
-        _param["with_cast"].Add( personId.ToString() );
+        AddMultiParamType( "with_cast", personId );
 
         return this;
     }
 
-    public IDiscoverMovieParameterBuilder WithCrew( int personId )
+    /// <summary>
+    /// <para>Only include movies that have one of the crew members.</para>
+    /// <para>May be invoked more than once to add additional values.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder WithCrew( params int[] personId )
     {
-        AddParamType( "with_crew" );
-
-        _param["with_crew"].Add( personId.ToString() );
+        AddMultiParamType( "with_crew", personId );
 
         return this;
     }
 
-    public IDiscoverMovieParameterBuilder WithGenre( int genreId )
+    /// <summary>
+    /// <para>Only include movies that have either a cast or crew member with the
+    /// provided value.</para>
+    /// <para>May be invoked more than once to add additional values.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder WithPeople( params int[] personId )
     {
-        AddParamType( "with_genres" );
-
-        _param["with_genres"].Add( genreId.ToString() );
+        AddMultiParamType( "with_people", personId );
 
         return this;
     }
 
-    public IDiscoverMovieParameterBuilder WithOriginalLanguage( string language )
+    /// <summary>
+    /// <para>Add for each genre to be included in the query.</para>
+    /// <para>May be invoked more than once to add additional values.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder WithGenre( params int[] genreId )
     {
-        AddParamType( "original_language" );
-
-        _param["original_language"].Add( language );
+        AddMultiParamType( "with_genres", genreId );
 
         return this;
     }
 
-    public IDiscoverMovieParameterBuilder ExcludeGenre( int genreId )
-    {
-        AddParamType( "without_genres" );
+    /// <summary>
+    /// <para>Add for each genre to be included in the query.</para>
+    /// <para>May be invoked more than once to add additional values.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder WithGenre( params Genre[] genre )
+        => WithGenre( genre.Select( x => x.Id ).ToArray() );
 
-        _param["without_genres"].Add( genreId.ToString() );
+    /// <summary>
+    /// <para>Add for each genre to be excluded from the query.</para>
+    /// <para>May be invoked more than once to add additional values.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder ExcludeGenre( params int[] genreId )
+    {
+        AddMultiParamType( "without_genres", genreId );
 
         return this;
     }
 
-    private void AddParamType( string name )
-        => _param.TryAdd( name, new List<string>() );
+    /// <summary>
+    /// <para>Add for each genre to be excluded from the query.</para>
+    /// <para>May be invoked more than once to add additional values.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder ExcludeGenre( params Genre[] genre )
+        => ExcludeGenre( genre.Select( x => x.Id ).ToArray() );
+
+    /// <summary>
+    /// <para>Specify an ISO 639-1 string to filter results by their original language value.</para>
+    /// <para>Invoking more than once will overwrite the prior value.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder WithOriginalLanguage( string language )
+    {
+        AddSingleParamType( "with_original_language", language );
+
+        return this;
+    }
+
+    /// <summary>
+    /// <para>Return the results sorted. Default value is popularity descending.</para>
+    /// <para>Invoking more than once will overwrite the prior value.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder SortBy( DiscoverSortBy sort, SortDirection dir )
+    {
+        string value = $"{sort.GetDescription()}.{dir.GetDescription()}";
+
+        AddSingleParamType( "sort_by", value );
+
+        return this;
+    }
+
+    /// <summary>
+    /// <para>A filter to limit the results to a specific primary release year.</para>
+    /// <para>Invoking more than once will overwrite the prior value.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder PrimaryReleaseYear( int year )
+    {
+        AddSingleParamType( "primary_release_year", year.ToString() );
+
+        return this;
+    }
+
+    /// <summary>
+    /// <para>A filter to limit the results to a specific year (looking at all release dates).</para>
+    /// <para>Invoking more than once will overwrite the prior value.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder Year( int year )
+    {
+        AddSingleParamType( "year", year.ToString() );
+
+        return this;
+    }
+
+    /// <summary>
+    /// <para>Filter and only include movies that have a primary release date constrained
+    /// by the FilterExp.</para>
+    /// <para>May be invoked once for each type of FilterExp;
+    /// subsequent invocations will overwrite the prior value.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder PrimaryReleaseDate( DateTime date, FilterExp exp )
+    {
+        string key = $"primary_release_date.{exp.GetDescription()}";
+
+        AddSingleParamType( key, date.ToString( "yyyy-MM-dd" ) );
+
+        return this;
+    }
+
+    /// <summary>
+    /// <para>Filter and only include movies that have a release date (looking at all release
+    /// dates) constrained by the FilterExp.</para>
+    /// <para>May be invoked once for each type of FilterExp;
+    /// subsequent invocations will overwrite the prior value.</para>
+    /// </summary>
+    public DiscoverMovieParameterBuilder ReleaseDate( DateTime date, FilterExp exp )
+    {
+        string key = $"release_date.{exp.GetDescription()}";
+
+        AddSingleParamType( key, date.ToString( "yyyy-MM-dd" ) );
+
+        return this;
+    }
+
+    private void AddMultiParamType( string name, IEnumerable<string> values )
+    {
+        _param.TryAdd( name, new HashSet<string>( StringComparer.OrdinalIgnoreCase ) );
+
+        foreach( string value in values )
+        {
+            _param[name].Add( value );
+        }
+    }
+
+    private void AddMultiParamType( string name, IEnumerable<int> values )
+        => AddMultiParamType( name, values.Select( x => x.ToString() ) );
+
+    private void AddSingleParamType( string name, string value )
+        => _param[name] = new HashSet<string>( new[] { value } );
 }
