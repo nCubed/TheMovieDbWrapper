@@ -1,58 +1,54 @@
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿namespace DM.MovieApi.MovieDb;
 
-namespace DM.MovieApi.MovieDb
+[DataContract]
+public class Country : IEqualityComparer<Country>
 {
-    [DataContract]
-    public class Country : IEqualityComparer<Country>
+    [DataMember( Name = "iso_3166_1" )]
+    public string Iso3166Code { get; set; }
+
+    [DataMember( Name = "name" )]
+    public string Name { get; set; }
+
+    public Country( string iso3166Code, string name )
     {
-        [DataMember( Name = "iso_3166_1" )]
-        public string Iso3166Code { get; set; }
+        Iso3166Code = iso3166Code;
+        Name = name;
+    }
 
-        [DataMember( Name = "name" )]
-        public string Name { get; set; }
-
-        public Country( string iso3166Code, string name )
+    public override bool Equals( object obj )
+    {
+        if( obj is not Country country )
         {
-            Iso3166Code = iso3166Code;
-            Name = name;
+            return false;
         }
 
-        public override bool Equals( object obj )
-        {
-            if( obj is not Country country )
-            {
-                return false;
-            }
+        return Equals( this, country );
+    }
 
-            return Equals( this, country );
+    public bool Equals( Country x, Country y )
+        => x != null && y != null && x.Iso3166Code == y.Iso3166Code && x.Name == y.Name;
+
+    public override int GetHashCode() =>
+        GetHashCode( this );
+
+    public int GetHashCode( Country obj )
+    {
+        unchecked // Overflow is fine, just wrap
+        {
+            int hash = 17;
+            hash = hash * 23 + obj.Iso3166Code.GetHashCode();
+            hash = hash * 23 + obj.Name.GetHashCode();
+            return hash;
+        }
+    }
+
+    public override string ToString()
+    {
+        if( string.IsNullOrWhiteSpace( Name ) )
+        {
+            return "n/a";
         }
 
-        public bool Equals( Country x, Country y )
-            => x != null && y != null && x.Iso3166Code == y.Iso3166Code && x.Name == y.Name;
-
-        public override int GetHashCode() =>
-            GetHashCode( this );
-
-        public int GetHashCode( Country obj )
-        {
-            unchecked // Overflow is fine, just wrap
-            {
-                int hash = 17;
-                hash = hash * 23 + obj.Iso3166Code.GetHashCode();
-                hash = hash * 23 + obj.Name.GetHashCode();
-                return hash;
-            }
-        }
-
-        public override string ToString()
-        {
-            if( string.IsNullOrWhiteSpace( Name ) )
-            {
-                return "n/a";
-            }
-
-            return $"{Name} ({Iso3166Code})";
-        }
+        return $"{Name} ({Iso3166Code})";
     }
 }

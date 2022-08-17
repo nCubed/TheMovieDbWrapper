@@ -1,74 +1,71 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace DM.MovieApi.IntegrationTests.Infrastructure
+namespace DM.MovieApi.IntegrationTests.Infrastructure;
+
+internal class IntegrationMovieDbSettings : IApiSettings
 {
-    internal class IntegrationMovieDbSettings : IApiSettings
+    public const string FileName = "api.creds.json";
+    public readonly string FilePath = Path.Combine( RootDirectory, FileName );
+
+    public string ApiUrl => MovieDbFactory.TheMovieDbApiUrl;
+
+    public string BearerToken { get; private set; }
+
+    /// <summary>
+    /// Loads the API credentials from api.creds.json in the root of the test project.
+    /// </summary>
+    public IntegrationMovieDbSettings()
     {
-        public const string FileName = "api.creds.json";
-        public readonly string FilePath = Path.Combine( RootDirectory, FileName );
+        Hydrate();
+    }
 
-        public string ApiUrl => MovieDbFactory.TheMovieDbApiUrl;
+    /// <summary>
+    /// Loads the API credentials from the provided values. 
+    /// </summary>
+    public IntegrationMovieDbSettings( string apiBearerToken )
+    {
+        BearerToken = apiBearerToken;
+    }
 
-        public string BearerToken { get; private set; }
-
-        /// <summary>
-        /// Loads the API credentials from api.creds.json in the root of the test project.
-        /// </summary>
-        public IntegrationMovieDbSettings()
+    private void Hydrate()
+    {
+        var anon = new
         {
-            Hydrate();
+            BearerToken = "your-v4-bearer-token-here"
+        };
+
+        if( File.Exists( FilePath ) == false )
+        {
+            string structure = JsonConvert.SerializeObject( anon, Formatting.Indented );
+
+            Assert.Fail( $"The file {FileName} does not exist. Expected to find it here:\r\n{FilePath}\r\n\r\n" +
+                         $"{FileName} must exist in the root of the integration project with your API Key " +
+                         "from themoviedb.org. When the project is built, the json file will be output to " +
+                         $"the directory listed above. Use the following json structure:\r\n{structure}\r\n" );
         }
 
-        /// <summary>
-        /// Loads the API credentials from the provided values. 
-        /// </summary>
-        public IntegrationMovieDbSettings( string apiBearerToken )
-        {
-            BearerToken = apiBearerToken;
-        }
+        var json = File.ReadAllText( FilePath );
+        var api = JsonConvert.DeserializeAnonymousType( json, anon );
 
-        private void Hydrate()
-        {
-            var anon = new
-            {
-                BearerToken = "your-v4-bearer-token-here"
-            };
-
-            if( File.Exists( FilePath ) == false )
-            {
-                string structure = JsonConvert.SerializeObject( anon, Formatting.Indented );
-
-                Assert.Fail( $"The file {FileName} does not exist. Expected to find it here:\r\n{FilePath}\r\n\r\n" +
-                            $"{FileName} must exist in the root of the integration project with your API Key " +
-                            "from themoviedb.org. When the project is built, the json file will be output to " +
-                            $"the directory listed above. Use the following json structure:\r\n{structure}\r\n" );
-            }
-
-            var json = File.ReadAllText( FilePath );
-            var api = JsonConvert.DeserializeAnonymousType( json, anon );
-
-            BearerToken = api.BearerToken;
-        }
+        BearerToken = api.BearerToken;
+    }
 
 
-        // ReSharper disable InconsistentNaming
-        private static readonly Lazy<string> _rootDirectory = new( GetRootDirectory );
+    // ReSharper disable InconsistentNaming
+    private static readonly Lazy<string> _rootDirectory = new( GetRootDirectory );
 
-        internal static string RootDirectory => _rootDirectory.Value;
+    internal static string RootDirectory => _rootDirectory.Value;
 
-        private static string GetRootDirectory()
-        {
-            string location = Assembly.GetExecutingAssembly().Location;
-            string dir = Path.GetDirectoryName( location );
+    private static string GetRootDirectory()
+    {
+        string location = Assembly.GetExecutingAssembly().Location;
+        string dir = Path.GetDirectoryName( location );
 
-            Assert.IsFalse( string.IsNullOrEmpty( dir ) );
-            Assert.IsTrue( Directory.Exists( dir ) );
+        Assert.IsFalse( string.IsNullOrEmpty( dir ) );
+        Assert.IsTrue( Directory.Exists( dir ) );
 
-            return dir;
-        }
+        return dir;
     }
 }

@@ -1,41 +1,32 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using DM.MovieApi.ApiRequest;
-using DM.MovieApi.ApiResponse;
-using DM.MovieApi.MovieDb.Genres;
-using DM.MovieApi.MovieDb.Movies;
-using DM.MovieApi.Shims;
+﻿namespace DM.MovieApi.MovieDb.Discover;
 
-namespace DM.MovieApi.MovieDb.Discover
+internal class ApiDiscoverRequest : ApiRequestBase, IApiDiscoverRequest
 {
-    internal class ApiDiscoverRequest : ApiRequestBase, IApiDiscoverRequest
+    private readonly IApiGenreRequest _genreApi;
+
+    [ImportingConstructor]
+    public ApiDiscoverRequest( IApiSettings settings, IApiGenreRequest genreApi )
+        : base( settings )
     {
-        private readonly IApiGenreRequest _genreApi;
+        _genreApi = genreApi;
+    }
 
-        [ImportingConstructor]
-        public ApiDiscoverRequest( IApiSettings settings, IApiGenreRequest genreApi )
-            : base( settings )
+    public async Task<ApiSearchResponse<MovieInfo>> DiscoverMoviesAsync( DiscoverMovieParameterBuilder builder, int pageNumber = 1, string language = "en" )
+    {
+        Dictionary<string, string> param = builder.Build();
+        param.Add( "language", language );
+
+        const string command = "discover/movie";
+
+        ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
+
+        if( response.Error != null )
         {
-            _genreApi = genreApi;
-        }
-
-        public async Task<ApiSearchResponse<MovieInfo>> DiscoverMoviesAsync( IDiscoverMovieParameterBuilder builder, int pageNumber = 1, string language = "en" )
-        {
-            Dictionary<string, string> param = builder.Build();
-            param.Add( "language", language );
-
-            const string command = "discover/movie";
-
-            ApiSearchResponse<MovieInfo> response = await base.SearchAsync<MovieInfo>( command, pageNumber, param );
-
-            if( response.Error != null )
-            {
-                return response;
-            }
-
-            response.Results.PopulateGenres( _genreApi );
-
             return response;
         }
+
+        response.Results.PopulateGenres( _genreApi );
+
+        return response;
     }
 }

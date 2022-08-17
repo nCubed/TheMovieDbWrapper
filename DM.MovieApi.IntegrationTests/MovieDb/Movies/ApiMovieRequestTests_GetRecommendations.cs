@@ -1,45 +1,49 @@
-﻿using System.Threading.Tasks;
-using DM.MovieApi.ApiResponse;
-using DM.MovieApi.MovieDb.Movies;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace DM.MovieApi.IntegrationTests.MovieDb.Movies;
 
-namespace DM.MovieApi.IntegrationTests.MovieDb.Movies
+[TestClass]
+public class GetRecommendationsTests
 {
-    [TestClass]
-    public class GetRecommendationsTests
+    private IApiMovieRequest _api;
+
+    [TestInitialize]
+    public void TestInit()
     {
-        private IApiMovieRequest _api;
+        ApiResponseUtil.ThrottleTests();
 
-        [TestInitialize]
-        public void TestInit()
-        {
-            ApiResponseUtil.ThrottleTests();
+        _api = MovieDbFactory.Create<IApiMovieRequest>().Value;
+    }
 
-            _api = MovieDbFactory.Create<IApiMovieRequest>().Value;
-        }
+    [TestMethod]
+    public async Task GetRecommendationsAsync_Returns_ValidResults()
+    {
+        const int movieId = 104; // run lola run
 
-        [TestMethod]
-        public async Task GetRecommendationsAsync_Returns_ValidResults()
-        {
-            const int movieIdRunLolaRun = 104;
+        ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieId );
 
-            ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieIdRunLolaRun );
+        ApiResponseUtil.AssertErrorIsNull( response );
+        ApiResponseUtil.AssertMovieInformationStructure( response.Results );
 
-            ApiResponseUtil.AssertErrorIsNull( response );
-            ApiResponseUtil.AssertMovieInformationStructure( response.Results );
+        Assert.IsTrue( response.TotalPages > 1 );
+        Assert.IsTrue( response.TotalResults > 20 );
+        Assert.AreEqual( 1, response.PageNumber );
+    }
 
-            Assert.IsTrue( response.TotalPages > 1 );
-            Assert.IsTrue( response.TotalResults > 20 );
-            Assert.AreEqual( 1, response.PageNumber );
-        }
+    [TestMethod]
+    public async Task GetRecommendationsAsync_CanPageResults()
+    {
+        const int movieId = 104; // run lola run
+        const int minimumPageCount = 2;
 
-        [TestMethod]
-        public async Task GetRecommendationsAsync_HasError_InvalidMovieId()
-        {
-            const int movieId = 1;
+        await ApiResponseUtil.AssertCanPageSearchResponse( "unused", minimumPageCount,
+            ( _, pageNumber ) => _api.GetRecommendationsAsync( movieId, pageNumber ), x => x.Id );
+    }
 
-            ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieId );
-            Assert.IsNotNull( response.Error );
-        }
+    [TestMethod]
+    public async Task GetRecommendationsAsync_HasError_InvalidMovieId()
+    {
+        const int movieId = 1;
+
+        ApiSearchResponse<MovieInfo> response = await _api.GetRecommendationsAsync( movieId );
+        Assert.IsNotNull( response.Error );
     }
 }
