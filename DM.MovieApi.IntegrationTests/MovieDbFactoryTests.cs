@@ -78,14 +78,6 @@ public class MovieDbFactoryTests
     [TestMethod]
     public void GetAllApiRequests_CanCreate_IMovieApi()
     {
-        PropertyInfo[] dbApi = typeof( IMovieDbApi )
-            .GetProperties()
-            .Where( x => typeof( IApiRequest ).IsAssignableFrom( x.PropertyType ) )
-            .Distinct()
-            .ToArray();
-
-        Assert.AreEqual( 9, dbApi.Length );
-
         IMovieDbApi api;
 
         try
@@ -101,6 +93,11 @@ public class MovieDbFactoryTests
 
         // ReSharper disable HeuristicUnreachableCode
         Assert.IsNotNull( api );
+
+        PropertyInfo[] dbApi = typeof( IMovieDbApi )
+            .GetProperties()
+            .Where( x => typeof( IApiRequest ).IsAssignableFrom( x.PropertyType ) )
+            .ToArray();
 
         foreach( PropertyInfo pi in dbApi )
         {

@@ -1,4 +1,4 @@
-namespace DM.MovieApi.IntegrationTests;
+﻿namespace DM.MovieApi.IntegrationTests;
 internal static class ApiResponseUtil
 {
     internal const int TestInitThrottle = 375;
@@ -352,6 +352,6 @@ internal static class ApiResponseUtil
         AssertImagePath( guestStars.ProfilePath );
     }
 
-    private static void Log( string msg, string category = null )
+    public static void Log( string msg, string category = null )
         => System.Diagnostics.Trace.WriteLine( msg, category );
 }
